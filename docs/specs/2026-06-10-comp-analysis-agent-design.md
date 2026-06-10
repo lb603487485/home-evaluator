@@ -23,6 +23,9 @@ finding comparable recent sales across multiple sources and reasoning to a value
 - Live data connectors (MLS/Pillar 9, SPIN2) — production story documented instead
 - Fuzzy entity resolution (we control synthetic mess; normalized-exact address join suffices)
 - Self-improving agent loops (future work: LangSmith datasets + LLM-as-judge)
+- RAG/vector retrieval — wrong tool for structured numeric comps (exact predicates + auditable
+  scoring beat cosine similarity); belongs later as semantic re-rank over unstructured listing
+  remarks/appraisal docs, as an enrichment signal inside score/review
 
 **Why synthetic data:** Alberta sold prices are locked behind Pillar 9/land titles (verified:
 Calgary open data has no sales, no interior attributes). That lock-up *is* the business problem.
