@@ -7,9 +7,9 @@ keyboard/agent activity. Offline thinking (away from the session) gets logged wh
 | Date | Start | End | Duration | What we did |
 |------|-------|-----|----------|-------------|
 | 2026-06-10 | 14:06 | 16:18 | 1.4h | Session 1: scoping + design (§1): data-source research, architecture choice (hybrid LangGraph), multi-source ingestion design, risk/scope decisions, spec + CLAUDE.md + implementation plan written, design Q&A (nodes, skills, batch-vs-live, RAG), spec locked. (off-project time excluded, per Bo) |
-| 2026-06-10 | 16:18 | 16:25 | 0.1h | Session 1 addendum: design Q&A (tool use → bind_tools plan tweak, memory/statelessness note, frontend form walkthrough) |
+| 2026-06-10 | 16:18 | 16:29 | 0.2h | Session 1 addendum: design Q&A (tool use → bind_tools plan tweak, memory/statelessness note, frontend form walkthrough), reserve raised to 2h |
 
-**Total so far:** ~1.5h of 12h cap (8.4h build blocks + 2.0h reserve = 11.9h committed, 0.1h spare).
+**Total so far:** ~1.6h of 12h cap (8.4h build blocks + 2.0h reserve remaining).
 Time boxes are strict: a block hitting its box takes its escape hatch immediately — overruns bill the reserve.
 
 ## Plan vs actual (from spec §9)
