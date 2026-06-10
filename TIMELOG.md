@@ -6,15 +6,15 @@ keyboard/agent activity. Offline thinking (away from the session) gets logged wh
 
 | Date | Start | End | Duration | What we did |
 |------|-------|-----|----------|-------------|
-| 2026-06-10 | 14:06 | (ongoing) | ~1.6h so far | Session 1: scoping + design (§1): data-source research, architecture choice (hybrid LangGraph), multi-source ingestion design, risk/scope decisions, spec + CLAUDE.md + implementation plan written, design Q&A (nodes, skills, batch-vs-live), spec locked. (−0.5h: Bo off-project mid-session) |
+| 2026-06-10 | 14:06 | (ongoing) | ~1.4h so far | Session 1: scoping + design (§1): data-source research, architecture choice (hybrid LangGraph), multi-source ingestion design, risk/scope decisions, spec + CLAUDE.md + implementation plan written, design Q&A (nodes, skills, batch-vs-live, RAG), spec locked. (off-project time excluded, per Bo) |
 
-**Total so far:** ~1.6h of 12h (11h planned + 1h reserve)
+**Total so far:** ~1.4h of 12h (11h planned + 1h reserve)
 
 ## Plan vs actual (from spec §9)
 
 | Block | Est | Actual | Status |
 |---|---|---|---|
-| §1 Scope + design (incl. impl. plan) | 1.0h | ~1.6h | done — overran 0.6h: thorough spec + impl. plan + design Q&A. Build blocks must hold their lines; recovery if needed: §5 hatches (batched review, 1-round widening), then user reserve |
+| §1 Scope + design (incl. impl. plan) | 1.0h | ~1.4h | done — overran 0.4h: thorough spec + impl. plan + design Q&A. Build blocks must hold their lines; recovery if needed: §5 hatches (batched review, 1-round widening), then user reserve |
 | §3 Data generator | 1.0h | — | |
 | §4 Ingestion | 1.0h | — | |
 | §5 Agent graph | 3.0h | — | |
