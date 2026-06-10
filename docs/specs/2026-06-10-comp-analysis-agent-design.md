@@ -46,6 +46,11 @@ We synthesize a ground-truth world — which also gives us provable ranking qual
             SSE stream ──► React/Vite single page (§7): live timeline + comps + narrative
 ```
 
+**Two clocks:** data is acquired at *ingestion time* (offline batch — prototype: startup build;
+production: scheduled sync from licensed feeds, never query-time browsing/scraping), while the
+agent at *query time* searches the local merged store in milliseconds. Live retrieval, if ever,
+is a future enrichment adapter — freshness add-on, not foundation.
+
 Principles:
 - **LLM never produces a number that isn't traceable to the engine.** Math = pure code, tested.
   LLM = judgment (search strategy, comp review, notes interpretation) + language (narrative).
@@ -192,6 +197,10 @@ adjustment directions; non-arm's-length rule; flag triggers; valuation on a hand
 3. **Model swaps** → per-node env vars (`INTAKE_MODEL`, `REVIEW_MODEL`, …) — market-pilot pattern
 4. **Frontend swap** → stable API contract; Next.js later = rendering swap
 5. **New pipeline stage** → new LangGraph node (e.g., future title-check between review and valuate)
+6. **Expert-editable instructions** → node prompts are files (`agent/prompts/`); the appraisal
+   methodology guiding `narrate` can be revised by lending staff without code changes. If the
+   product later grows into a multi-procedure underwriting copilot, these become true on-demand
+   skills (one per procedure) with this pipeline as the comp-analysis skill's tool.
 
 ---
 
