@@ -54,6 +54,8 @@ npm run dev                      # UI on :5173 (proxies /api → :8000)
 - Tunable engine constants (weights, adjustment rates, filter defaults) live in
   `backend/engine/config.py` — never scattered as magic numbers.
 - **Time logging:** update `TIMELOG.md` at every work-block boundary (start/end/what).
-  Compare actual vs spec estimates; if a block overruns, invoke its escape hatch early.
+  Time = wall-clock human-involved time (discussion, Bo's thinking/reading/review, Claude's
+  work in session) — not just agent activity. Compare actual vs spec estimates; if a block
+  overruns, invoke its escape hatch early.
 - Follow the workspace Karpathy guidelines (`../CLAUDE.md`): surgical changes, no speculative
   features, state assumptions, verify before claiming done.
