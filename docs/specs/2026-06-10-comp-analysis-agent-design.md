@@ -220,7 +220,7 @@ adjustment directions; non-arm's-length rule; flag triggers; valuation on a hand
 | §7 API + Vite UI | 2.0h | Thu | Streamlit fallback (~30min, API unchanged) — fallback only, not the plan |
 | §6 Tests + eval | 1.5h | Fri | keep ingestion+scoring tests; drop eval table |
 | README + video | 1.5h | Fri | **sacred — never cut** |
-| Reserve (user's) | 1.0h | — | spent only by user decision |
+| Reserve (user's) | 2.0h | — | spent only by user decision (raised from 1h to hard-guarantee ≤12h) |
 
 Checkpoint rule: Thu midday — if the graph isn't demo-able end-to-end, invoke §5/§7 hatches
 immediately rather than Friday night.

@@ -9,7 +9,8 @@ keyboard/agent activity. Offline thinking (away from the session) gets logged wh
 | 2026-06-10 | 14:06 | 16:18 | 1.4h | Session 1: scoping + design (§1): data-source research, architecture choice (hybrid LangGraph), multi-source ingestion design, risk/scope decisions, spec + CLAUDE.md + implementation plan written, design Q&A (nodes, skills, batch-vs-live, RAG), spec locked. (off-project time excluded, per Bo) |
 | 2026-06-10 | 16:18 | 16:25 | 0.1h | Session 1 addendum: design Q&A (tool use → bind_tools plan tweak, memory/statelessness note, frontend form walkthrough) |
 
-**Total so far:** ~1.5h of 12h (11h planned + 1h reserve)
+**Total so far:** ~1.5h of 12h cap (8.4h build blocks + 2.0h reserve = 11.9h committed, 0.1h spare).
+Time boxes are strict: a block hitting its box takes its escape hatch immediately — overruns bill the reserve.
 
 ## Plan vs actual (from spec §9)
 
@@ -22,4 +23,4 @@ keyboard/agent activity. Offline thinking (away from the session) gets logged wh
 | §7 API + Vite UI | 2.0h | — | |
 | §6 Tests + eval | 1.5h | — | |
 | README + video | 1.5h | — | |
-| Reserve (user's) | 1.0h | — | untouched |
+| Reserve (user's) | 2.0h | — | untouched (raised from 1h, 2026-06-10, to guarantee ≤12h total) |
