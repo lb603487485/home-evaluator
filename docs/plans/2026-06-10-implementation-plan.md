@@ -216,7 +216,7 @@ SSE events (`app/events.py`, mirrored in `frontend/src/types.ts`):
 - [ ] `agent/llm.py`: `get_model(node)` → `ChatAnthropic` from `{NODE}_MODEL` env; defaults per contract
 - [ ] Prompts (`agent/prompts/*.md`): per spec §5 — each ends with explicit JSON-only output schema. `narrate.md` includes the methodology section + hard rule "use ONLY numbers provided in the data block"
 - [ ] `intake`: structured output `{normalized_subject, signals: list[str], concerns: list[str]}`; on exception → fallback + `node fallback` event
-- [ ] `search`: when thin, LLM picks ONE move from WIDENING_MOVES with reason (JSON); cap rounds; on exception → deterministic order
+- [ ] `search`: when thin, LLM picks ONE move via **genuine tool-calling** (`bind_tools` over WIDENING_MOVES + `accept_results`, `tool_choice="any"`, each tool takes a `reason` arg); code executes the chosen tool; cap rounds; on exception → deterministic order. (Rubric: literal tool use, visible per-call in LangSmith traces)
 - [ ] `review`: worker prompt gets comp + score_parts + deterministic pre-check results (price/assessed ratio, conflicts, flip flag); JSON verdict; per-worker exception → keep+unreviewed
 - [ ] `narrate`: streamed via `astream`; receives subject, scored+reviewed comps, valuation, flags
 - [ ] Manual verify (needs key): `uv run python -m agent.run_demo` (tiny CLI runner printing events) on 3 subjects: normal Evanston / Bearspaw widening / notes-rich ("backs onto golf course, unfinished basement"). Check: latency ≤~10s, narrative cites only real numbers, review excludes planted non-arm's-length when present
