@@ -6,7 +6,7 @@ keyboard/agent activity. Offline thinking (away from the session) gets logged wh
 
 | Date | Start | End | Duration | What we did |
 |------|-------|-----|----------|-------------|
-| 2026-06-10 | 14:06 | (ongoing) | ~1.4h so far | Session 1: scoping + design (§1): data-source research, architecture choice (hybrid LangGraph), multi-source ingestion design, risk/scope decisions, spec + CLAUDE.md + implementation plan written, design Q&A (nodes, skills, batch-vs-live, RAG), spec locked. (off-project time excluded, per Bo) |
+| 2026-06-10 | 14:06 | 16:18 | 1.4h | Session 1: scoping + design (§1): data-source research, architecture choice (hybrid LangGraph), multi-source ingestion design, risk/scope decisions, spec + CLAUDE.md + implementation plan written, design Q&A (nodes, skills, batch-vs-live, RAG), spec locked. (off-project time excluded, per Bo) |
 
 **Total so far:** ~1.4h of 12h (11h planned + 1h reserve)
 
