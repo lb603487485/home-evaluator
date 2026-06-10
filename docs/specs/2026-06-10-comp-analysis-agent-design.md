@@ -26,6 +26,9 @@ finding comparable recent sales across multiple sources and reasoning to a value
 - RAG/vector retrieval — wrong tool for structured numeric comps (exact predicates + auditable
   scoring beat cosine similarity); belongs later as semantic re-rank over unstructured listing
   remarks/appraisal docs, as an enrichment signal inside score/review
+- Cross-run memory — deliberately stateless: valuations must be independent and reproducible
+  (audit requirement). Within-run state + LangSmith traces suffice; future = run persistence DB
+  and underwriter-feedback loop that tunes weights/prompts between versions, never at runtime
 
 **Why synthetic data:** Alberta sold prices are locked behind Pillar 9/land titles (verified:
 Calgary open data has no sales, no interior attributes). That lock-up *is* the business problem.
