@@ -112,10 +112,11 @@ npm install
 npm run dev                             # UI on :5173 (proxies /api → :8000)
 
 # extras — from backend/
-uv run pytest                           # 84 tests
+uv run pytest                           # 85 tests
 uv run python -m agent.run_demo        # CLI event stream on 3 demo subjects
 uv run python -m eval.eval             # eval vs ground truth → eval/results.md
 uv run python -m data.generate --seed 42   # regenerate the synthetic world
+uv run langgraph dev --port 2025       # LangGraph Studio: visual step-through of the graph
 ```
 
 Without an API key the agent runs in deterministic fallback mode end-to-end (same

@@ -37,6 +37,7 @@ uv run uvicorn app.main:app --reload       # API on :8000
 uv run pytest                    # all tests
 uv run pytest tests/test_scoring.py -k monotonic   # single test
 uv run python -m eval.eval       # eval vs ground truth → markdown table
+uv run langgraph dev --port 2025 # LangGraph Studio dev server (2024 is taken by another project)
 
 # frontend (from frontend/)
 npm install

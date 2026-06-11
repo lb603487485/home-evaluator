@@ -7,20 +7,27 @@ LLM extracts signals/concerns from notes; it never alters the structured subject
 from datetime import date
 
 from agent import llm
+from data.schema import SubjectProperty
 from engine.filters import SearchCriteria
 
 
 async def intake_node(state: dict) -> dict:
-    base = {"criteria": SearchCriteria(),
-            "today": state.get("today") or date.today()}
-    notes = state["subject"].notes.strip()
+    # entry node coerces raw JSON input (Studio/SDK clients) into the typed contract
+    subject = state["subject"]
+    if isinstance(subject, dict):
+        subject = SubjectProperty(**subject)
+    today = state.get("today") or date.today()
+    if isinstance(today, str):
+        today = date.fromisoformat(today)
+    base = {"subject": subject, "criteria": SearchCriteria(), "today": today}
+    notes = subject.notes.strip()
     if not llm.llm_enabled() or not notes:
         return base | {"notes_signals": []}
     try:
         message = await llm.get_model("intake", max_tokens=500).ainvoke([
             ("system", llm.load_prompt("intake")),
             ("user", f"TODAY: {base['today']}\n\n"
-                     f"SUBJECT:\n{state['subject'].model_dump_json(indent=2)}\n\n"
+                     f"SUBJECT:\n{subject.model_dump_json(indent=2)}\n\n"
                      f"NOTES:\n{notes}")])
         data = llm.parse_json_block(llm.message_text(message.content))
         signals = [str(s) for s in data.get("signals", [])]

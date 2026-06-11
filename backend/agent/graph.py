@@ -45,6 +45,11 @@ async def valuate_node(state: dict) -> dict:
     return {"valuation": valuation, "risk_flags": evaluate_rules(ctx)}
 
 
+def make_graph():
+    """Zero-arg factory for LangGraph Studio / `langgraph dev` (see langgraph.json)."""
+    return build_graph()
+
+
 def build_graph(source: SyntheticDataSource | None = None):
     source = source or SyntheticDataSource()
     g = StateGraph(AgentState)

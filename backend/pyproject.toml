@@ -1,7 +1,7 @@
 [project]
 name = "backend"
 version = "0.1.0"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.13"
 dependencies = [
     "fastapi>=0.136.3",
     "langchain-anthropic>=1.4.5",
@@ -11,16 +11,21 @@ dependencies = [
     "pyarrow>=24.0.0",
     "pydantic>=2.13.4",
     "python-dotenv>=1.2.2",
-    "sse-starlette>=3.4.4",
+    "sse-starlette>=2.1.3,<3.4",  # <3.4: langgraph-api (the `langgraph dev` server) caps it
     "uvicorn[standard]>=0.49.0",
 ]
 
 [dependency-groups]
 dev = [
     "httpx>=0.28.1",
+    "langgraph-cli[inmem]>=0.4",
     "pytest>=9.0.3",
     "pytest-asyncio>=1.4.0",
 ]
+
+[tool.uv]
+environments = ["sys_platform == 'darwin'", "sys_platform == 'linux'"]
+prerelease = "allow"  # langgraph-api (the `langgraph dev` server) ships pre-releases for langgraph 1.x
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

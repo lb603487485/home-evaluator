@@ -3,24 +3,22 @@
 **What counts as time:** wall-clock human-involved time — discussion, my (Bo's) thinking and
 reading, reviewing Claude's output, and Claude's working time inside a session. Not just
 keyboard/agent activity. Offline thinking (away from the session) gets logged when reported.
+Parallel sessions bill wall-clock once: a session fully overlapping another block logs its row
+with `0h (parallel)` and adds nothing to the total.
 
 | Date | Start | End | Duration | What we did |
 |------|-------|-----|----------|-------------|
 | 2026-06-10 | 14:06 | 16:18 | 1.4h | Session 1: scoping + design (§1): data-source research, architecture choice (hybrid LangGraph), multi-source ingestion design, risk/scope decisions, spec + CLAUDE.md + implementation plan written, design Q&A (nodes, skills, batch-vs-live, RAG), spec locked. (off-project time excluded, per Bo) |
 | 2026-06-10 | 16:18 | 16:29 | 0.2h | Session 1 addendum: design Q&A (tool use → bind_tools plan tweak, memory/statelessness note, frontend form walkthrough), reserve raised to 2h |
 | 2026-06-11 | 10:25 | 10:57 | 0.5h | Session 2 block 1: T0 scaffold (uv, 3.12, contracts) · T1 schema+normalize (8 tests) · T2 price model+generator, edge cases planted (11 tests) · T3 adapters+merge with provenance (9 tests) → comps.parquet (6,290 rec, 2,603 scorable). 28 tests green, 4 commits. Mid-block verification re-check of T0/T1 at Bo's request |
-
 | 2026-06-11 | 10:57 | 11:20 | 0.4h | Session 2 block 2: T4 filters+scoring (17 tests) · T5 valuation+risk registry, hand-computed fixture exact (22 tests) · T6 six-node graph deterministic e2e, Bearspaw calibration fix (3 tests) · T8 FastAPI SSE (3 tests, reordered before T7 — no API key on machine). 73 tests green, 4 commits. Demo-notes §2/§3 updated |
-
 | 2026-06-11 | 11:14 | 11:25 | 0.2h | Session 2 block 3: T7 LLM nodes — llm.py factory, 4 prompt files, tool-calling widen (bind_tools, accept_results), review prechecks+verdicts, streamed narrate, run_demo CLI; 8 fake-model wiring tests. 81 tests green. **Live-LLM verify pending: needs ANTHROPIC_API_KEY in backend/.env** |
-
 | 2026-06-11 | 11:25 | 11:35 | 0.2h | Session 2 block 4: T9 Vite UI (6 components, SSE reader, verified live in browser — screenshots sent) · T10 eval harness: **MAPE 2.1%, 19/19 within ±10%, scenario asserts pass** (LLM-off baseline). 81 tests, 4 commits. Dev servers left running (:8000/:5173) |
-
 | 2026-06-11 | 11:40 | 12:00 | 0.3h | Session 2 block 5: graph diagram Q&A · Bo added API key → **T7 live-LLM verify run**. Found+fixed: blind widening (now engine-projects per-move counts for the LLM), missing as-of date ("future sale" artifact), verbose reviews (token caps; ~30s→~13s). All planted cases handled correctly live; narrative numbers all trace to data block. LLM-on eval rerun kicked off |
-
 | 2026-06-11 | 12:00 | 12:10 | 0.2h | Session 2 block 6: LLM-on eval caught agent accepting an empty comp set (scenario assert failed) → root-caused (projections showed relax_beds=1) → action-space guardrail + accept logged to audit trail (4 new tests, 84 green) → eval rerun: **MAPE 2.2%, 20/20 within ±10%, median 1.4%, Bearspaw estimated** |
-
+| 2026-06-11 | 12:00 | 12:10 | 0h (parallel) | Session 3 (parallel tab, fully concurrent with block 6 — no added wall-clock): ML roadmap vetting Q&A — graded 4 calibration upgrades (HPI subscription for MARKET_TREND_QOQ, hedonic fit of ADJ, AVM-divergence risk rule, learned WEIGHTS from KV's appraisal archive) against engine seams + verified data paths; what we won't claim (synthetic-trained ML, black-box AVM). Decision + video bullet → demo-notes §1/§2 |
 | 2026-06-11 | 18:05 | 18:20 | 0.3h | Session 2 block 7 (after ~6h away): README drafted per spec §9 — problem, architecture + self-drawn graph, run instructions, planted-cases table, eval table (LLM-on vs baseline), decisions, cuts, production plan, extension points. Screenshots checked into docs/images. 84 tests re-verified |
+
 
 **Total so far:** ~3.7h of 12h cap (6.3h build blocks + 2.0h reserve remaining).
 **State: T0–T10 built and verified; README drafted.** Remaining (Bo): record ≤3-min video + link it in README · create public GitHub repo + push · final read-through of README/demo-notes.

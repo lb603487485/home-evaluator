@@ -50,6 +50,13 @@ async def test_bearspaw_widens_with_caps_and_flags(graph):
     assert out["valuation"].confidence == "C"
 
 
+async def test_accepts_plain_json_input(graph):
+    # LangGraph Studio / SDK clients submit raw JSON, not pydantic objects
+    out = await graph.ainvoke({"subject": EVANSTON.model_dump(),
+                               "today": TODAY.isoformat()})
+    assert out["valuation"] is not None
+
+
 async def test_non_arms_length_never_reaches_scored_set(graph):
     private = set(generate_world(seed=42).manifest["private"])
     out = await graph.ainvoke({"subject": EVANSTON, "today": TODAY})
