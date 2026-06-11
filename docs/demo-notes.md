@@ -89,6 +89,13 @@ Format: **decision** · alternative rejected · why.
 - **Production connectors documented + verified, not built** · building live connectors ·
   hackathon scope; verified all three real channels exist and are batch-shaped (see §1
   production story), so the `CompSource` interface is the seam, not hand-waving (2026-06-11)
+- **Bearspaw spread calibrated to 2.5 km** · leaving acreages on a 5 km disk · with 5 sales on
+  5 km even the capped widening (radius ≤5, ≤2 rounds) usually found *zero* comps; the spec's
+  thin-market story is "widen, log, lower confidence" — an estimate with caveats, not a
+  shrug. Test bed must produce the designed behavior (2026-06-11)
+- **T8 (API) built before T7 (LLM nodes)** · plan order · no ANTHROPIC_API_KEY on this
+  machine yet; shipped the fully verifiable surface first, LLM judgment layered on top
+  (2026-06-11)
 
 ---
 
@@ -108,5 +115,10 @@ Format: **decision** · alternative rejected · why.
   - T4 deterministic comp filtering + similarity scoring (`96f037c`)
   - T5 adjustment-based valuation, confidence grading, risk-rule registry (`235b0bb`)
   - Production connector channels verified real (Calgary open data / Alberta VDA / Pillar 9)
-- **Remaining** (per spec §9): agent graph (3h box) · API + Vite UI (2h) · tests + eval (1.5h)
-  · README + video (1.5h)
+  - T6 six-node LangGraph end-to-end in LLM-off mode (`cec2acb`): widening loop with caps,
+    Send fan-out review, valuation + risk flags; Evanston = clean A-grade run, Bearspaw =
+    2 widening rounds → 1 comp → C-grade with THIN/STALE/EXTRAPOLATION/WIDENED flags
+  - T8 FastAPI: `GET /api/communities` + `POST /api/evaluate` SSE stream (`9589296`);
+    73 tests green
+- **Remaining** (per spec §9): T7 LLM nodes + prompts (80m box; needs `ANTHROPIC_API_KEY` in
+  `backend/.env` for live verify) · T9 Vite UI (90m) · T10 eval (30m) · T11 README + video (90m)
