@@ -53,6 +53,10 @@ candidate lines for the video — pull, don't read verbatim.
 - Measured (2026-06-11, deterministic baseline): **MAPE 2.1%** across 19 held-out subjects,
   **19/19 within ±10%**, median error 2.1%; all planted-edge-case scenario asserts pass
   (Bearspaw widened+flagged, non-arm's-length excluded, conflicts surfaced).
+- Measured (2026-06-11, **LLM ON**): **MAPE 2.2%, 20/20 within ±10%, median error 1.4%** —
+  and the agent now estimates the Bearspaw acreage the deterministic path couldn't
+  (+3.6% from 2 comps, both in the model-nearest-10). The line for the video: LLM judgment
+  didn't degrade accuracy — it recovered an estimate, with the caveats attached.
 
 **ML roadmap one-liner**
 - Same principle as the LLM rule, applied to ML: models *calibrate* the engine's constants
@@ -117,6 +121,13 @@ Format: **decision** · alternative rejected · why.
 - **As-of date injected into every prompt** · assuming the model knows "now" · a review
   verdict called an April 2026 sale "in the future" (knowledge-cutoff artifact); all four
   prompts now carry TODAY (2026-06-11)
+- **Widening action space is code-gated** · trusting the prompt alone · the LLM-on eval
+  caught the agent accepting an EMPTY comp set while `relax_beds` provably projected 1 —
+  a null result chosen over a flagged estimate. Now the engine doesn't offer
+  `accept_results` when the set is empty and a move projects comps, capped moves aren't
+  offered at all, and accept decisions are logged to the audit trail. The eval harness
+  catching a live agent-judgment bug is itself a video beat: ground truth → scenario
+  asserts → caught regression → guardrail (2026-06-11)
 - **ML calibrates the engine, never replaces it (roadmap, no code now)** · training models on
   our synthetic data, or a black-box AVM as the estimate · synthetic-trained ML would just
   reverse-engineer our own generator (circular metrics); a lender needs every dollar traceable
@@ -162,6 +173,9 @@ Format: **decision** · alternative rejected · why.
     panel. Verified live in the browser (LLM-off), screenshots captured
   - T10 eval harness (`d91c4c1`): 20 held-out subjects → **MAPE 2.1%, 19/19 within ±10%**,
     scenario asserts green; results in `backend/eval/results.md`
-- **Remaining**: live-LLM verify of T7 (drop `ANTHROPIC_API_KEY` into `backend/.env`, run
-  `uv run python -m agent.run_demo`, rerun eval LLM-on) · T11 README + video (Friday,
-  protected 1.5h box)
+  - T7 live-LLM verification complete (`f6c69d3`, `db4985d`): three field findings fixed —
+    projections-informed widening, as-of date in prompts, action-space gating after the
+    eval caught an empty-set accept. ~13s/run with streaming
+  - LLM-on eval (`abd9547`): **MAPE 2.2%, 20/20 within ±10%, median 1.4%**, Bearspaw
+    estimated where deterministic couldn't; all scenario asserts green
+- **Remaining**: T11 README + video (Friday, protected 1.5h box) + GitHub repo push

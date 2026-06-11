@@ -1,0 +1,18 @@
+1. shouldn't the agent allow to intake a detailed address of the home?
+2. better UI
+3. i like the info the frontend list after asking. but i want it more clear and easy to read, reader need to know the key factors
+4. should the frontend be more like a chat? or combination of chat and form?
+
+5. have the agent using result of CMA? 
+
+
+6. will ML model helps on trends of effects of each factor (sqft, windows, rooms, area, floor, etc) to a home?
+
+7. should the agent return a their thinking process? they have a conclution and need explain why from all factors and dimensions they during the evaluation.
+
+
+8. memory. seems we need alow users to work on different home at the same time. we need a session for each one and be able to chat and questions to them, which means we need memory to different session. 
+ and time matters, especially the time of evaluation generated.
+
+
+9. should we have an agent or flow to allow the agent response to some generally related question about a home?

@@ -18,8 +18,10 @@ keyboard/agent activity. Offline thinking (away from the session) gets logged wh
 
 | 2026-06-11 | 11:40 | 12:00 | 0.3h | Session 2 block 5: graph diagram Q&A · Bo added API key → **T7 live-LLM verify run**. Found+fixed: blind widening (now engine-projects per-move counts for the LLM), missing as-of date ("future sale" artifact), verbose reviews (token caps; ~30s→~13s). All planted cases handled correctly live; narrative numbers all trace to data block. LLM-on eval rerun kicked off |
 
-**Total so far:** ~3.2h of 12h cap (6.8h build blocks + 2.0h reserve remaining).
-**State: T0–T10 built and verified, including live-LLM.** Remaining: T11 README + video (Friday, protected 1.5h box) + repo push.
+| 2026-06-11 | 12:00 | 12:10 | 0.2h | Session 2 block 6: LLM-on eval caught agent accepting an empty comp set (scenario assert failed) → root-caused (projections showed relax_beds=1) → action-space guardrail + accept logged to audit trail (4 new tests, 84 green) → eval rerun: **MAPE 2.2%, 20/20 within ±10%, median 1.4%, Bearspaw estimated** |
+
+**Total so far:** ~3.4h of 12h cap (6.6h build blocks + 2.0h reserve remaining).
+**State: T0–T10 built and verified, including live-LLM + LLM-on eval.** Remaining: T11 README + video (Friday, protected 1.5h box) + repo push.
 Time boxes are strict: a block hitting its box takes its escape hatch immediately — overruns bill the reserve.
 
 ## Plan vs actual (from spec §9)
