@@ -26,3 +26,11 @@ CONFIDENCE = dict(A=dict(min_comps=6, max_iqr=0.06, min_sim=75),
 
 NON_ARMS_LENGTH_RATIO = 0.75  # price/assessed below this ⇒ suspect
 PRICE_CONFLICT_TOL = 0.005    # >0.5% MLS vs land-titles delta ⇒ Conflict
+STALE_DAYS = 120              # median comp age beyond this ⇒ STALE_COMPS
+
+# Quarterly trend index the engine subscribes to (production: CREA/Teranet HPI).
+# Calibrated to the synthetic world's drift; used for time adjustments.
+MARKET_TREND_QOQ = {"Beltline": 0.018, "Bridgeland": 0.012, "Killarney": 0.012,
+                    "Tuscany": 0.012, "Evanston": 0.012, "Auburn Bay": 0.012,
+                    "Aspen Woods": 0.012, "Bearspaw": 0.006}
+DAYS_PER_QUARTER = 91.25
