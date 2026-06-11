@@ -13,6 +13,11 @@ WIDENING_MOVES = {"extend_days": (+90, 365), "widen_radius": (1.5, 5.0),
 
 MIN_COMPS, TOP_N_REVIEW, MAX_WIDEN_ROUNDS = 5, 8, 2
 
+# Similarity sub-score normalizers: delta at which a dimension's closeness hits 0
+SCORE_NORM = dict(distance_km=5.0, recency_days=365.0, sqft_band_pct=0.35,
+                  beds_baths=4.0, year_years=30.0, lot_sqft=10_000.0,
+                  garage_stalls=2.0)
+
 ADJ = dict(ppsf_marginal=0.5, bed=8_000, bath=6_000, garage=10_000,
            age_per_year=800, age_cap=20_000, lot_per_sqft=2.0, lot_deadband=2_000)
 
