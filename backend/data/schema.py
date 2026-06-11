@@ -43,6 +43,7 @@ class PropertyRecord(BaseModel):
 
 class SubjectProperty(BaseModel):
     community: str
+    address: str = ""  # display + cross-check only; never feeds the engine math
     property_type: str
     beds: int
     baths: float

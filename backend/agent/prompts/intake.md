@@ -16,3 +16,6 @@ Rules:
   4 bedrooms while the form says 3).
 - No advice, no value opinions, no numbers that are not in the notes.
 - Empty lists are fine when the notes carry nothing useful.
+- If SUBJECT.address names a community different from SUBJECT.community, add a concern:
+  "address mentions <X> but community is <Y>". The form's community field is
+  authoritative; never suggest changing it.

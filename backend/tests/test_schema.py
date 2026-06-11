@@ -1,6 +1,6 @@
 from datetime import date
 
-from data.schema import PropertyRecord, normalize_address
+from data.schema import PropertyRecord, SubjectProperty, normalize_address
 
 
 class TestNormalizeAddress:
@@ -63,3 +63,11 @@ class TestPropertyRecord:
         assert rec.conflicts == []
         assert rec.beds_bsmt == 0
         assert PropertyRecord.model_validate_json(rec.model_dump_json()) == rec
+
+
+def test_subject_address_optional_passthrough():
+    s = SubjectProperty(community="Evanston", property_type="detached", beds=3,
+                        baths=2.5, sqft=1850, year_built=2020)
+    assert s.address == ""
+    s2 = s.model_copy(update={"address": "310 Evanston Dr NW"})
+    assert "310 Evanston Dr NW" in s2.model_dump_json()

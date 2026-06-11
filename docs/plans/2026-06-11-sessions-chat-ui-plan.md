@@ -42,7 +42,7 @@ Time accounting continues in `TIMELOG.md` (block boundaries, usage-gap time excl
 - Modify: `backend/agent/prompts/intake.md`
 - Test: `backend/tests/test_schema.py` (append)
 
-- [ ] **Step 1: Failing test** — append to `backend/tests/test_schema.py`:
+- [x] **Step 1: Failing test** — append to `backend/tests/test_schema.py`:
 
 ```python
 def test_subject_address_optional_passthrough():
@@ -54,9 +54,9 @@ def test_subject_address_optional_passthrough():
     assert "310 Evanston Dr NW" in s2.model_dump_json()
 ```
 
-- [ ] **Step 2: Run** `cd backend && uv run pytest tests/test_schema.py -k address -x` → FAIL (no field `address`).
+- [x] **Step 2: Run** `cd backend && uv run pytest tests/test_schema.py -k address -x` → FAIL (no field `address`).
 
-- [ ] **Step 3: Implement** — in `backend/data/schema.py` add one line to `SubjectProperty` after `community: str`:
+- [x] **Step 3: Implement** — in `backend/data/schema.py` add one line to `SubjectProperty` after `community: str`:
 
 ```python
 class SubjectProperty(BaseModel):
@@ -68,9 +68,9 @@ class SubjectProperty(BaseModel):
 
 (No other backend change needed for passthrough: `intake_node` already sends `subject.model_dump_json()` to the LLM, and `narrate._data_block` already sends `state["subject"].model_dump()` — the address rides along automatically.)
 
-- [ ] **Step 4:** `uv run pytest tests/test_schema.py -x` → PASS.
+- [x] **Step 4:** `uv run pytest tests/test_schema.py -x` → PASS.
 
-- [ ] **Step 5: Intake prompt cross-check** — append to `backend/agent/prompts/intake.md`:
+- [x] **Step 5: Intake prompt cross-check** — append to `backend/agent/prompts/intake.md`:
 
 ```markdown
 - If SUBJECT.address names a community different from SUBJECT.community, add a
@@ -78,7 +78,7 @@ class SubjectProperty(BaseModel):
   is authoritative; never suggest changing it.
 ```
 
-- [ ] **Step 6: Full backend suite + commit**
+- [x] **Step 6: Full backend suite + commit**
 
 ```bash
 uv run pytest -q   # expect 85 pass
@@ -508,3 +508,4 @@ Mechanic: `ask.md` gains a third reply shape `{"type": "comp_challenge", "addres
 > One line per task boundary or surprise: timestamp · what landed · next action.
 
 - 2026-06-11 19:55 — Plan written and committed. Next: Task 1 (backend address field, failing test first).
+- 2026-06-11 20:00 — Task 1 done: subject.address field + intake cross-check prompt line, 86 tests green. Next: Task 2 (frontend address + auto-fill).
