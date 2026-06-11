@@ -57,5 +57,8 @@ npm run dev                      # UI on :5173 (proxies /api → :8000)
   Time = wall-clock human-involved time (discussion, Bo's thinking/reading/review, Claude's
   work in session) — not just agent activity. Compare actual vs spec estimates; if a block
   overruns, invoke its escape hatch early.
+- **Demo notes:** at the same boundaries, update `docs/demo-notes.md` — new decisions/trade-offs
+  into §2, completed work into §3, video-worthy lines into §1. It accumulates; never rewrite it
+  from scratch.
 - Follow the workspace Karpathy guidelines (`../CLAUDE.md`): surgical changes, no speculative
   features, state assumptions, verify before claiming done.
