@@ -55,6 +55,14 @@ class SyntheticDataSource:
             self._df = df
         return self._df
 
+    def communities(self) -> list[dict]:
+        sold = self._frame()
+        sold = sold[sold["sold_price"].notna()]
+        return [dict(community=name, sales=int(len(group)),
+                     median_price=int(group["sold_price"].median()),
+                     types=sorted(group["property_type"].unique()))
+                for name, group in sold.groupby("community")]
+
     def community_center(self, community: str) -> tuple[float, float]:
         rows = self._frame()
         rows = rows[rows["community"] == community]
