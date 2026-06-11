@@ -1,17 +1,30 @@
 """Intake: validate subject + mine free-text notes for signals.
 
-Task 6: deterministic fallback only — subject passes through, default criteria.
-Task 7 adds the LLM path; on any LLM failure this fallback is the behavior.
+LLM extracts signals/concerns from notes; it never alters the structured subject
+(guardrail: engine inputs come from the form only). Fallback: skip the notes.
 """
 
 from datetime import date
 
+from agent import llm
 from engine.filters import SearchCriteria
 
 
 async def intake_node(state: dict) -> dict:
-    return {
-        "notes_signals": [],
-        "criteria": SearchCriteria(),
-        "today": state.get("today") or date.today(),
-    }
+    base = {"criteria": SearchCriteria(),
+            "today": state.get("today") or date.today()}
+    notes = state["subject"].notes.strip()
+    if not llm.llm_enabled() or not notes:
+        return base | {"notes_signals": []}
+    try:
+        message = await llm.get_model("intake").ainvoke([
+            ("system", llm.load_prompt("intake")),
+            ("user", f"SUBJECT:\n{state['subject'].model_dump_json(indent=2)}\n\n"
+                     f"NOTES:\n{notes}")])
+        data = llm.parse_json_block(llm.message_text(message.content))
+        signals = [str(s) for s in data.get("signals", [])]
+        signals += [f"concern: {c}" for c in data.get("concerns", [])]
+        return base | {"notes_signals": signals[:10]}
+    except Exception as exc:
+        return base | {"notes_signals": [],
+                       "errors": [f"intake: LLM fallback ({exc})"]}

@@ -48,7 +48,11 @@ async def _event_stream(subject: SubjectProperty):
                 continue
             for node, delta in chunk.items():
                 delta = delta or {}
-                if node == "intake":
+                if delta.get("errors"):
+                    yield node_event(node, "fallback", detail="; ".join(delta["errors"]))
+                if node == "widen":
+                    yield node_event("widen", "done", detail=delta.get("widen_reason"))
+                elif node == "intake":
                     yield node_event("intake", "done",
                                      detail=", ".join(delta.get("notes_signals") or [])
                                      or None)

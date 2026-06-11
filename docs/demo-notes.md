@@ -51,6 +51,12 @@ candidate lines for the video — pull, don't read verbatim.
 - Synthetic ground-truth world → ranking and valuation quality is *measured* against known
   truth (eval harness), not vibes.
 
+**ML roadmap one-liner**
+- Same principle as the LLM rule, applied to ML: models *calibrate* the engine's constants
+  (adjustment rates, trend index, similarity weights) and cross-check it (AVM divergence as
+  one more risk rule) — they never replace the explainable comp logic. Every seam already
+  exists in `engine/config.py` and the risk-rule registry.
+
 ---
 
 ## §2 Decisions & trade-offs
@@ -96,6 +102,16 @@ Format: **decision** · alternative rejected · why.
 - **T8 (API) built before T7 (LLM nodes)** · plan order · no ANTHROPIC_API_KEY on this
   machine yet; shipped the fully verifiable surface first, LLM judgment layered on top
   (2026-06-11)
+- **ML calibrates the engine, never replaces it (roadmap, no code now)** · training models on
+  our synthetic data, or a black-box AVM as the estimate · synthetic-trained ML would just
+  reverse-engineer our own generator (circular metrics); a lender needs every dollar traceable
+  to a named comp. Verified-workable upgrades, in order: (1) subscribe `MARKET_TREND_QOQ` to
+  CREA/Teranet HPI — config already anticipates it; (2) fit `ADJ` coefficients by hedonic
+  regression on licensed Pillar 9 solds (~25–30k Calgary sales/yr; adjustment ladder is
+  already linear, so fitted coefficients are a drop-in config change); (3) GBM AVM as a
+  divergence tripwire — one appended risk rule + one optional context field; (4) learn
+  `WEIGHTS` from comps chosen in KV's own appraisal archive (proprietary label source no
+  competitor has) — furthest out, needs PDF extraction pipeline (2026-06-11)
 
 ---
 

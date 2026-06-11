@@ -20,6 +20,7 @@ class AgentState(TypedDict, total=False):
     notes_signals: list[str]
     criteria: SearchCriteria
     widen_reason: str
+    widen_accepted: bool
     search_log: Annotated[list[dict], operator.add]  # {round, criteria, found, reason}
     candidates: list[PropertyRecord]
     exclusions: list[dict]  # {address_key, reason, ...}

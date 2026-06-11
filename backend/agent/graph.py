@@ -8,7 +8,8 @@ from langgraph.graph import END, START, StateGraph
 from agent.nodes.intake import intake_node
 from agent.nodes.narrate import narrate_node
 from agent.nodes.review import fan_out_reviews, review_comp_node
-from agent.nodes.search import make_search_node, route_after_search, widen_node
+from agent.nodes.search import (make_search_node, route_after_search,
+                                route_after_widen, widen_node)
 from agent.state import AgentState
 from data.store import SyntheticDataSource
 from engine.config import TOP_N_REVIEW
@@ -58,7 +59,7 @@ def build_graph(source: SyntheticDataSource | None = None):
     g.add_edge(START, "intake")
     g.add_edge("intake", "search")
     g.add_conditional_edges("search", route_after_search, ["score", "widen"])
-    g.add_edge("widen", "search")
+    g.add_conditional_edges("widen", route_after_widen, ["search", "score"])
     g.add_conditional_edges("score", fan_out_reviews, ["review_comp", "valuate"])
     g.add_edge("review_comp", "valuate")
     g.add_edge("valuate", "narrate")
