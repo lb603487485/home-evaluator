@@ -104,7 +104,8 @@ def _stale_comps(ctx: ValuationContext) -> RiskFlag | None:
 
 
 def _widened_search(ctx: ValuationContext) -> RiskFlag | None:
-    widened = [e for e in ctx.search_log if e.get("round", 0) > 0]
+    widened = [e for e in ctx.search_log if e.get("round", 0) > 0
+               and not str(e.get("reason", "")).startswith("accept_results")]
     if widened:
         return RiskFlag(code="WIDENED_SEARCH", severity="info",
                         message=f"Search criteria were widened {len(widened)} time(s) "

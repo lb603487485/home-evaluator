@@ -29,8 +29,10 @@ SUBJECT = SubjectProperty(community="Evanston", property_type="detached", beds=3
 class FakeModel:
     def __init__(self, message):
         self.message = message
+        self.bound_tools: list | None = None
 
     def bind_tools(self, tools, tool_choice=None):
+        self.bound_tools = list(tools)
         return self
 
     async def ainvoke(self, _messages):
@@ -45,7 +47,9 @@ def llm_on(monkeypatch):
     monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
 
     def install(message):
-        monkeypatch.setattr(llm, "get_model", lambda node, **kw: FakeModel(message))
+        model = FakeModel(message)
+        monkeypatch.setattr(llm, "get_model", lambda node, **kw: model)
+        return model
     return install
 
 
@@ -63,8 +67,13 @@ WIDEN_STATE = dict(subject=SUBJECT, criteria=SearchCriteria(), candidates=[],
 
 
 class StubSource:
+    """Projects `finds` comps for criteria whose days window was extended."""
+
+    def __init__(self, finds: int = 0):
+        self.finds = finds
+
     async def fetch(self, subject, criteria, today):
-        return []
+        return list(range(self.finds)) if criteria.days > 180 else []
 
 
 widen_node = make_widen_node(StubSource())
@@ -92,6 +101,32 @@ class TestWiden:
         out = await widen_node(WIDEN_STATE)
         assert out["criteria"].days == 270  # first deterministic move: extend_days
         assert out.get("widen_accepted") is not True
+
+    async def test_accept_not_offered_when_empty_set_but_moves_project_comps(self, llm_on):
+        model = llm_on(AIMessage(content="", tool_calls=[
+            {"name": "extend_days", "args": {"reason": "older sales exist"},
+             "id": "1"}]))
+        node = make_widen_node(StubSource(finds=2))  # extend_days projects 2 comps
+        await node(WIDEN_STATE)  # candidates is empty
+        names = {t.__name__ for t in model.bound_tools}
+        assert "accept_results" not in names
+        assert "extend_days" in names
+
+    async def test_accept_offered_when_set_is_nonempty(self, llm_on):
+        model = llm_on(AIMessage(content="", tool_calls=[
+            {"name": "accept_results", "args": {"reason": "good enough"}, "id": "1"}]))
+        node = make_widen_node(StubSource(finds=2))
+        await node({**WIDEN_STATE, "candidates": ["c1", "c2", "c3"]})
+        assert "accept_results" in {t.__name__ for t in model.bound_tools}
+
+    async def test_accept_decision_is_logged_to_search_log(self, llm_on):
+        llm_on(AIMessage(content="", tool_calls=[
+            {"name": "accept_results", "args": {"reason": "market is simply thin"},
+             "id": "1"}]))
+        out = await widen_node({**WIDEN_STATE, "candidates": ["c1"]})
+        [entry] = out["search_log"]
+        assert entry["reason"].startswith("accept_results")
+        assert entry["found"] == 1
 
 
 class TestReview:

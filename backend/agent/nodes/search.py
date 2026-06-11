@@ -43,6 +43,7 @@ class accept_results(BaseModel):
 
 
 WIDEN_TOOLS = [extend_days, widen_radius, relax_sqft, relax_beds, accept_results]
+TOOL_BY_NAME = {tool.__name__: tool for tool in WIDEN_TOOLS}
 
 
 def make_search_node(source):
@@ -88,7 +89,12 @@ def make_widen_node(source):
                 if projected != state["criteria"]:  # skip moves already at their cap
                     projections[move] = len(await source.fetch(
                         state["subject"], projected, state["today"]))
-            model = llm.get_model("search").bind_tools(WIDEN_TOOLS, tool_choice="any")
+            # action-space guardrail: accepting an EMPTY set while a move provably
+            # finds comps is a null result — don't offer it
+            tools = [TOOL_BY_NAME[move] for move in projections]
+            if state["candidates"] or not any(projections.values()):
+                tools.append(accept_results)
+            model = llm.get_model("search").bind_tools(tools, tool_choice="any")
             message = await model.ainvoke([
                 ("system", llm.load_prompt("search")),
                 ("user", json.dumps({
@@ -103,8 +109,12 @@ def make_widen_node(source):
             call = message.tool_calls[0]
             move, reason = call["name"], call["args"].get("reason", "")
             if move == "accept_results":
-                return {"widen_accepted": True,
-                        "widen_reason": f"accept_results: {reason}"}
+                decision = f"accept_results: {reason}"
+                return {"widen_accepted": True, "widen_reason": decision,
+                        "search_log": [dict(  # the declined-to-widen call is audit too
+                            round=len(state["search_log"]),
+                            criteria=state["criteria"].model_dump(),
+                            found=len(state["candidates"]), reason=decision)]}
             return {"criteria": apply_move(state["criteria"], move),
                     "widen_reason": f"{move}: {reason}"}
         except Exception as exc:

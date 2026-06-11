@@ -13,9 +13,11 @@ How to choose:
   whose trade-off costs least for THIS subject (older sales → extend_days · farther
   sales → widen_radius · less-similar size → relax_sqft · different layouts → relax_beds).
 - If no move reaches the minimum but one finds more than the current set, take it.
-- If projections show no move materially improves the set (or a move is absent because
-  it is already at its cap) → accept_results; the valuation will carry
-  THIN_COMPS / WIDENED_SEARCH flags instead of chasing weak comps.
+- If projections show no move materially improves an already-usable set → accept_results;
+  the valuation will carry THIN_COMPS / WIDENED_SEARCH flags instead of chasing weak comps.
+  An estimate from a few flagged comps beats no estimate — never settle for an empty set
+  while any move projects comps. (Tools already at their cap, or accept_results when it
+  would mean an empty result, are not offered.)
 
 Caps are enforced by the engine; choosing an already-capped move wastes the round.
 Always provide a one-sentence reason in the tool call — it is logged verbatim in the
