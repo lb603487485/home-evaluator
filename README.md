@@ -222,8 +222,8 @@ calibrate and cross-check the explainable engine — they never replace it.
 
 ## Time log
 
-Built in ~3.5h of wall-clock human-involved time against a 12h cap (design 1.6h, build +
-verification ~1.9h) — itemized per block with plan-vs-actual in [`TIMELOG.md`](TIMELOG.md).
+Built in ~3.7h of wall-clock human-involved time against a 12h cap (design 1.6h, build +
+verification ~2.1h) — itemized per block with plan-vs-actual in [`TIMELOG.md`](TIMELOG.md).
 
 ## What's next
 

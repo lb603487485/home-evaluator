@@ -20,8 +20,10 @@ keyboard/agent activity. Offline thinking (away from the session) gets logged wh
 
 | 2026-06-11 | 12:00 | 12:10 | 0.2h | Session 2 block 6: LLM-on eval caught agent accepting an empty comp set (scenario assert failed) → root-caused (projections showed relax_beds=1) → action-space guardrail + accept logged to audit trail (4 new tests, 84 green) → eval rerun: **MAPE 2.2%, 20/20 within ±10%, median 1.4%, Bearspaw estimated** |
 
-**Total so far:** ~3.4h of 12h cap (6.6h build blocks + 2.0h reserve remaining).
-**State: T0–T10 built and verified, including live-LLM + LLM-on eval.** Remaining: T11 README + video (Friday, protected 1.5h box) + repo push.
+| 2026-06-11 | 18:05 | 18:20 | 0.3h | Session 2 block 7 (after ~6h away): README drafted per spec §9 — problem, architecture + self-drawn graph, run instructions, planted-cases table, eval table (LLM-on vs baseline), decisions, cuts, production plan, extension points. Screenshots checked into docs/images. 84 tests re-verified |
+
+**Total so far:** ~3.7h of 12h cap (6.3h build blocks + 2.0h reserve remaining).
+**State: T0–T10 built and verified; README drafted.** Remaining (Bo): record ≤3-min video + link it in README · create public GitHub repo + push · final read-through of README/demo-notes.
 Time boxes are strict: a block hitting its box takes its escape hatch immediately — overruns bill the reserve.
 
 ## Plan vs actual (from spec §9)
