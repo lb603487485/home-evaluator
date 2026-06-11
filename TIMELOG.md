@@ -16,8 +16,10 @@ keyboard/agent activity. Offline thinking (away from the session) gets logged wh
 
 | 2026-06-11 | 11:25 | 11:35 | 0.2h | Session 2 block 4: T9 Vite UI (6 components, SSE reader, verified live in browser — screenshots sent) · T10 eval harness: **MAPE 2.1%, 19/19 within ±10%, scenario asserts pass** (LLM-off baseline). 81 tests, 4 commits. Dev servers left running (:8000/:5173) |
 
-**Total so far:** ~2.9h of 12h cap (7.1h build blocks + 2.0h reserve remaining).
-**State: T0–T10 all built and verified.** Remaining: live-LLM verify of T7 (needs `ANTHROPIC_API_KEY` in `backend/.env`, then `uv run python -m agent.run_demo` + eval rerun) · T11 README + video (Friday, protected 1.5h box).
+| 2026-06-11 | 11:40 | 12:00 | 0.3h | Session 2 block 5: graph diagram Q&A · Bo added API key → **T7 live-LLM verify run**. Found+fixed: blind widening (now engine-projects per-move counts for the LLM), missing as-of date ("future sale" artifact), verbose reviews (token caps; ~30s→~13s). All planted cases handled correctly live; narrative numbers all trace to data block. LLM-on eval rerun kicked off |
+
+**Total so far:** ~3.2h of 12h cap (6.8h build blocks + 2.0h reserve remaining).
+**State: T0–T10 built and verified, including live-LLM.** Remaining: T11 README + video (Friday, protected 1.5h box) + repo push.
 Time boxes are strict: a block hitting its box takes its escape hatch immediately — overruns bill the reserve.
 
 ## Plan vs actual (from spec §9)

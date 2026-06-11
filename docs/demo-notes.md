@@ -108,6 +108,15 @@ Format: **decision** · alternative rejected · why.
 - **Intake LLM never rewrites the subject** · plan's normalized_subject output · guardrail:
   engine inputs come from the form only; the LLM contributes signals/concerns, not numbers —
   same principle as the narrate rule (2026-06-11)
+- **Widening LLM chooses from engine-projected counts** · letting it reason blind · live
+  verify caught it picking widen_radius twice on plausible-but-wrong intuition → 0 comps
+  where the dumb fallback found 1. Now the engine pre-computes what every move would find
+  and the LLM picks the best trade-off — judgment grounded in computed facts, the
+  hybrid principle applied to search itself. Great video beat: round-2 reason cites
+  projected yields (2026-06-11)
+- **As-of date injected into every prompt** · assuming the model knows "now" · a review
+  verdict called an April 2026 sale "in the future" (knowledge-cutoff artifact); all four
+  prompts now carry TODAY (2026-06-11)
 - **ML calibrates the engine, never replaces it (roadmap, no code now)** · training models on
   our synthetic data, or a black-box AVM as the estimate · synthetic-trained ML would just
   reverse-engineer our own generator (circular metrics); a lender needs every dollar traceable
