@@ -18,9 +18,9 @@ with `0h (parallel)` and adds nothing to the total.
 | 2026-06-11 | 12:00 | 12:10 | 0.2h | Session 2 block 6: LLM-on eval caught agent accepting an empty comp set (scenario assert failed) → root-caused (projections showed relax_beds=1) → action-space guardrail + accept logged to audit trail (4 new tests, 84 green) → eval rerun: **MAPE 2.2%, 20/20 within ±10%, median 1.4%, Bearspaw estimated** |
 | 2026-06-11 | 12:00 | 12:10 | 0h (parallel) | Session 3 (parallel tab, fully concurrent with block 6 — no added wall-clock): ML roadmap vetting Q&A — graded 4 calibration upgrades (HPI subscription for MARKET_TREND_QOQ, hedonic fit of ADJ, AVM-divergence risk rule, learned WEIGHTS from KV's appraisal archive) against engine seams + verified data paths; what we won't claim (synthetic-trained ML, black-box AVM). Decision + video bullet → demo-notes §1/§2 |
 | 2026-06-11 | 18:05 | 18:20 | 0.3h | Session 2 block 7 (after ~6h away): README drafted per spec §9 — problem, architecture + self-drawn graph, run instructions, planted-cases table, eval table (LLM-on vs baseline), decisions, cuts, production plan, extension points. Screenshots checked into docs/images. 84 tests re-verified |
+| 2026-06-11 | 18:25 | 18:45 | 0.3h | Session 2 block 8: LangGraph Studio support — langgraph.json + make_graph factory + JSON-input coercion at intake (85 tests). Dependency fight: cli 0.1.54 had silently resolved (no `dev` command); fixed via requires-python <3.13, prerelease allow for langgraph-api, sse-starlette <3.4 (dev-server cap). Verified live run through dev API on :2025 (:2024 owned by another project) |
 
-
-**Total so far:** ~3.7h of 12h cap (6.3h build blocks + 2.0h reserve remaining).
+**Total so far:** ~4.0h of 12h cap (6.0h build blocks + 2.0h reserve remaining).
 **State: T0–T10 built and verified; README drafted.** Remaining (Bo): record ≤3-min video + link it in README · create public GitHub repo + push · final read-through of README/demo-notes.
 Time boxes are strict: a block hitting its box takes its escape hatch immediately — overruns bill the reserve.
 
