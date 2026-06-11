@@ -50,6 +50,9 @@ candidate lines for the video — pull, don't read verbatim.
 **Provable quality**
 - Synthetic ground-truth world → ranking and valuation quality is *measured* against known
   truth (eval harness), not vibes.
+- Measured (2026-06-11, deterministic baseline): **MAPE 2.1%** across 19 held-out subjects,
+  **19/19 within ±10%**, median error 2.1%; all planted-edge-case scenario asserts pass
+  (Bearspaw widened+flagged, non-arm's-length excluded, conflicts surfaced).
 
 **ML roadmap one-liner**
 - Same principle as the LLM rule, applied to ML: models *calibrate* the engine's constants
@@ -144,5 +147,12 @@ Format: **decision** · alternative rejected · why.
     with deterministic pre-checks, streamed narration with the only-numbers-from-the-data-
     block rule; every node degrades to its deterministic fallback on LLM failure (tested
     with fake/raising models, 81 tests). Live-LLM run pending an API key
-- **Remaining** (per spec §9): T7 LLM nodes + prompts (80m box; needs `ANTHROPIC_API_KEY` in
-  `backend/.env` for live verify) · T9 Vite UI (90m) · T10 eval (30m) · T11 README + video (90m)
+  - T9 single-page Vite UI (`d22237a`): form with demo presets, live agent timeline with
+    fallback badges, valuation banner with range bar + confidence + flag chips, comp table
+    with expandable adjustment ladder + per-field provenance badges, streaming narrative
+    panel. Verified live in the browser (LLM-off), screenshots captured
+  - T10 eval harness (`d91c4c1`): 20 held-out subjects → **MAPE 2.1%, 19/19 within ±10%**,
+    scenario asserts green; results in `backend/eval/results.md`
+- **Remaining**: live-LLM verify of T7 (drop `ANTHROPIC_API_KEY` into `backend/.env`, run
+  `uv run python -m agent.run_demo`, rerun eval LLM-on) · T11 README + video (Friday,
+  protected 1.5h box)
