@@ -193,7 +193,7 @@ export function persistSessions(s: SessionsState)    // keep newest 30 sessions 
 - Modify: `frontend/src/types.ts` (comps event payload)
 - Test: `backend/tests/test_api.py` (append)
 
-- [ ] **Step 1: Failing test:**
+- [x] **Step 1: Failing test:**
 
 ```python
 async def test_comps_event_carries_exclusions(client):
@@ -204,7 +204,7 @@ async def test_comps_event_carries_exclusions(client):
     assert comps_data  # additive field present on the comps event
 ```
 
-- [ ] **Step 2:** Run it → FAIL. **Implement** in `api.py` score branch:
+- [x] **Step 2:** Run it → FAIL. **Implement** in `api.py` score branch:
 
 ```python
 elif node == "score":
@@ -214,7 +214,7 @@ elif node == "score":
         "exclusions": delta.get("exclusions") or []})
 ```
 
-- [ ] **Step 3:** `uv run pytest tests/test_api.py -x` → PASS. Update `types.ts` comps event: `{ type: 'comps'; data: { items: ScoredComp[]; exclusions?: { address_key: string; reason: string }[] } }`; store them in `RunState`. Commit — `"feat: exclusion summaries on comps event (additive)"`
+- [x] **Step 3:** `uv run pytest tests/test_api.py -x` → PASS. Update `types.ts` comps event: `{ type: 'comps'; data: { items: ScoredComp[]; exclusions?: { address_key: string; reason: string }[] } }`; store them in `RunState`. Commit — `"feat: exclusion summaries on comps event (additive)"`
 
 ### Task 5: Layout + SessionList + Transcript + HeroCard
 
@@ -510,3 +510,4 @@ Mechanic: `ask.md` gains a third reply shape `{"type": "comp_challenge", "addres
 - 2026-06-11 19:55 — Plan written and committed. Next: Task 1 (backend address field, failing test first).
 - 2026-06-11 20:00 — Task 1 done: subject.address field + intake cross-check prompt line, 86 tests green. Next: Task 2 (frontend address + auto-fill).
 - 2026-06-11 20:05 — Task 2 done: address input + deterministic auto-fill + mismatch warning, tsc clean. F1 closed under box. Next: Task 3 (session store).
+- 2026-06-11 20:12 — Task 4 done (pulled before Task 3 so types compile in one pass): exclusions on comps event (search-node accumulate, incomplete filtered, cap 20), 87 tests. Next: Task 3 sessions.ts.

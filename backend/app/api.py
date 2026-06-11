@@ -39,6 +39,7 @@ async def _event_stream(subject: SubjectProperty):
     run_id = uuid4().hex[:12]
     started = time.perf_counter()
     reviews: list[dict] = []
+    exclusions: list[dict] = []
     yield node_event("intake", "started")
     try:
         async for mode, chunk in graph.astream({"subject": subject},
@@ -58,11 +59,16 @@ async def _event_stream(subject: SubjectProperty):
                                      or None)
                 elif node == "search":
                     [entry] = delta["search_log"]
+                    # judgment-relevant exclusions only; "incomplete" is data noise
+                    exclusions = [e for e in delta.get("exclusions") or []
+                                  if e.get("reason") != "incomplete"][:20]
                     yield sse_event("search_update", entry)
                 elif node == "score":
                     yield node_event("search", "done")
-                    yield sse_event("comps", {"items": [
-                        s.model_dump(mode="json") for s in delta["scored"]]})
+                    yield sse_event("comps", {
+                        "items": [s.model_dump(mode="json")
+                                  for s in delta["scored"]],
+                        "exclusions": exclusions})
                 elif node == "review_comp":
                     reviews.extend(r.model_dump() for r in delta["reviews"])
                     yield sse_event("reviews", {"items": reviews})

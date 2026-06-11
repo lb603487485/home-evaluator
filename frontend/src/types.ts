@@ -99,6 +99,11 @@ export interface NodeEvent {
   detail?: string
 }
 
+export interface Exclusion {
+  address_key: string
+  reason: string
+}
+
 export interface CommunityInfo {
   community: string
   sales: number
@@ -109,7 +114,7 @@ export interface CommunityInfo {
 export type AgentEvent =
   | { type: 'node'; data: NodeEvent }
   | { type: 'search_update'; data: SearchUpdate }
-  | { type: 'comps'; data: { items: ScoredComp[] } }
+  | { type: 'comps'; data: { items: ScoredComp[]; exclusions?: Exclusion[] } }
   | { type: 'reviews'; data: { items: ReviewVerdict[] } }
   | { type: 'valuation'; data: ValuationPayload }
   | { type: 'narrative_delta'; data: { text: string } }

@@ -45,3 +45,10 @@ async def test_evaluate_streams_events_in_order(client):
 async def test_invalid_subject_rejected(client):
     r = await client.post("/api/evaluate", json={"community": "Evanston"})
     assert r.status_code == 422
+
+
+async def test_comps_event_carries_exclusions(client):
+    r = await client.post("/api/evaluate", json=SUBJECT)
+    comps_lines = [l for l in r.text.splitlines()
+                   if l.startswith("data:") and '"items"' in l and '"score_parts"' in l]
+    assert comps_lines and '"exclusions"' in comps_lines[0]
