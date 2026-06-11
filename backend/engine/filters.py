@@ -10,7 +10,7 @@ import pandas as pd
 from pydantic import BaseModel
 
 from data.schema import PropertyRecord, SubjectProperty
-from engine.config import FILTER_DEFAULTS, WIDENING_MOVES
+from engine.config import FILTER_DEFAULTS, NON_ARMS_LENGTH_RATIO, WIDENING_MOVES
 
 
 class SearchCriteria(BaseModel):
@@ -45,6 +45,28 @@ def apply_filters(df: pd.DataFrame, subject: SubjectProperty,
                <= criteria.sqft_pct * subject.sqft)
             & ((df["beds"].astype(float) - subject.beds).abs() <= criteria.beds_delta))
     return df[mask]
+
+
+def find_exclusions(df: pd.DataFrame, subject: SubjectProperty,
+                    center: tuple[float, float], criteria: SearchCriteria,
+                    today: date) -> list[dict]:
+    """Sales inside the search box that cannot serve as comps, with the reason."""
+    sold = (df["sold_price"].notna() & df["sold_date"].notna()
+            & (df["property_type"] == subject.property_type))
+    df = df[sold]
+    distance = haversine_km(df["lat"], df["lon"], *center)
+    days_ago = df["sold_date"].map(lambda d: (today - d).days)
+    box = df[(distance <= criteria.radius_km) & (days_ago <= criteria.days)]
+    exclusions = []
+    for row in box.to_dict("records"):
+        if row["assessed_value"] and row["sold_price"] / row["assessed_value"] \
+                < NON_ARMS_LENGTH_RATIO:
+            exclusions.append(dict(
+                address_key=row["address_key"], reason="non_arms_length",
+                ratio=round(row["sold_price"] / row["assessed_value"], 2)))
+        elif pd.isna(row["sqft"]) or pd.isna(row["beds"]):
+            exclusions.append(dict(address_key=row["address_key"], reason="incomplete"))
+    return exclusions
 
 
 def apply_move(criteria: SearchCriteria, move: str) -> SearchCriteria:

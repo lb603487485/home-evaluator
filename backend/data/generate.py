@@ -106,7 +106,9 @@ COMMUNITIES = {
             bsmt_p=0.4,
             streets=["Aspen Summit Dr SW", "Aspen Stone Blvd SW", "Aspen Ridge Way SW"])}),
     "Bearspaw": dict(
-        centroid=(51.1850, -114.3650), radius_km=5.0,
+        # 2.5 km disk: widened search (radius cap 5.0) can reach its 5 sales,
+        # so the thin-market scenario ends in a low-confidence estimate, not zero comps
+        centroid=(51.1850, -114.3650), radius_km=2.5,
         types={"detached": dict(
             sales=5, properties=80, sqft=(2400, 4600), beds=(3, 5),
             baths=(3.0, 4.5), year=(1988, 2020), lot=(85_000, 240_000), garage=(3, 3),

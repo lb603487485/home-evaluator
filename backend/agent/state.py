@@ -1,30 +1,31 @@
-"""AgentState contract. Node I/O models land with their tasks (see implementation plan).
-
-Not yet defined (stub references below stay as string annotations until then):
-- SearchCriteria  (engine/filters.py, Task 4)  — radius_km, days, sqft_pct, beds_delta
-- ScoredComp      (engine/scoring.py, Task 4)  — comp + score + score_parts
-- Valuation       (engine/valuation.py, Task 5) — estimate, low, high, confidence, adjustments
-- RiskFlag        (engine/risk_rules.py, Task 5)
-- ReviewVerdict   (agent/nodes/review.py, Task 7) — address_key, verdict keep|demote|exclude,
-  reason, unreviewed
-"""
+"""AgentState — the contract every node reads from and writes to."""
 
 from __future__ import annotations
 
-from typing import TypedDict
+import operator
+from datetime import date
+from typing import Annotated, TypedDict
 
+from agent.nodes.review import ReviewVerdict
 from data.schema import PropertyRecord, SubjectProperty
+from engine.filters import SearchCriteria
+from engine.risk_rules import RiskFlag
+from engine.scoring import ScoredComp
+from engine.valuation import Valuation
 
 
 class AgentState(TypedDict, total=False):
     subject: SubjectProperty
+    today: date
     notes_signals: list[str]
     criteria: SearchCriteria
-    search_log: list[dict]  # {round, criteria, found, reason}
+    widen_reason: str
+    search_log: Annotated[list[dict], operator.add]  # {round, criteria, found, reason}
     candidates: list[PropertyRecord]
+    exclusions: list[dict]  # {address_key, reason, ...}
     scored: list[ScoredComp]
-    reviews: list[ReviewVerdict]
-    valuation: Valuation
+    reviews: Annotated[list[ReviewVerdict], operator.add]  # Send fan-out accumulates
+    valuation: Valuation | None
     risk_flags: list[RiskFlag]
     narrative: str
-    errors: list[str]
+    errors: Annotated[list[str], operator.add]

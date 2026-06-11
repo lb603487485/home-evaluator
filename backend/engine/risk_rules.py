@@ -27,7 +27,7 @@ class RiskFlag(BaseModel):
 class ValuationContext(BaseModel):
     subject: SubjectProperty
     scored: list[ScoredComp]
-    valuation: Valuation
+    valuation: Valuation | None  # None when no comp survived
     exclusions: list[dict] = Field(default_factory=list)  # {address_key, reason, ...}
     search_log: list[dict] = Field(default_factory=list)  # {round, criteria, found, reason}
     today: date
@@ -45,6 +45,8 @@ def _thin_comps(ctx: ValuationContext) -> RiskFlag | None:
 
 def _high_dispersion(ctx: ValuationContext) -> RiskFlag | None:
     v = ctx.valuation
+    if v is None:
+        return None
     iqr_ratio = (v.high - v.low) / v.estimate
     if iqr_ratio >= CONFIDENCE["C"]["min_iqr"]:
         return RiskFlag(code="HIGH_DISPERSION", severity="caution",
