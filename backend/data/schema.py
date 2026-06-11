@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from datetime import date
 from typing import Literal
 
@@ -47,4 +48,34 @@ class SubjectProperty(BaseModel):
     notes: str = ""
 
 
-# normalize_address(raw: str) -> str  — implemented in Task 1 (TDD)
+_CITY_RE = re.compile(r",\s*CALGARY(?:\s*,?\s*(?:AB|ALBERTA))?\s*$")
+_UNIT_RE = re.compile(r"^\s*(?:#|UNIT\b|APT\b)\s*(\w+)\s*[,\-]?\s*")
+
+_ABBREV = {
+    "AVENUE": "AVE", "AV": "AVE",
+    "STREET": "ST",
+    "WY": "WAY",
+    "DRIVE": "DR",
+    "ROAD": "RD",
+    "BOULEVARD": "BLVD",
+    "CRESCENT": "CRES",
+    "PLACE": "PL",
+    "COURT": "CT",
+    "NORTHWEST": "NW", "NORTHEAST": "NE", "SOUTHWEST": "SW", "SOUTHEAST": "SE",
+}
+
+
+def normalize_address(raw: str) -> str:
+    """Canonical join key: uppercase, city dropped, unit prefix unified,
+    suffix/direction abbreviated, punctuation stripped."""
+    s = raw.upper()
+    s = _CITY_RE.sub("", s)
+    unit = None
+    if m := _UNIT_RE.match(s):
+        unit = m.group(1)
+        s = s[m.end():]
+    s = re.sub(r"[^\w\s]", " ", s)
+    tokens = [_ABBREV.get(t, t) for t in s.split()]
+    if unit:
+        tokens.insert(0, unit)
+    return " ".join(tokens)
