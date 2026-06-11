@@ -35,6 +35,11 @@ class PropertyRecord(BaseModel):
     sources: dict[str, str] = Field(default_factory=dict)  # field -> "mls" | "land_titles" | "assessment"
     conflicts: list[Conflict] = Field(default_factory=list)
 
+    @property
+    def complete_for_comps(self) -> bool:
+        """Scorable as a comp; incomplete records still feed non-arm's-length detection."""
+        return None not in (self.sqft, self.beds, self.sold_price, self.sold_date)
+
 
 class SubjectProperty(BaseModel):
     community: str
