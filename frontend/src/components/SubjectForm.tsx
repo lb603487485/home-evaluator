@@ -1,0 +1,129 @@
+import { useState } from 'react'
+import type { CommunityInfo, SubjectProperty } from '../types'
+
+const PRESETS: Record<string, SubjectProperty> = {
+  'Evanston detached': {
+    community: 'Evanston', property_type: 'detached', beds: 3, baths: 2.5,
+    sqft: 1850, year_built: 2020, lot_sqft: 4000, garage_stalls: 2, notes: '',
+  },
+  'Bearspaw acreage': {
+    community: 'Bearspaw', property_type: 'detached', beds: 4, baths: 3.5,
+    sqft: 3000, year_built: 2005, lot_sqft: 150000, garage_stalls: 3, notes: '',
+  },
+  'With notes': {
+    community: 'Evanston', property_type: 'detached', beds: 3, baths: 2.5,
+    sqft: 1850, year_built: 2020, lot_sqft: 4000, garage_stalls: 2,
+    notes: 'backs onto golf course, unfinished basement, original windows',
+  },
+}
+
+interface Props {
+  communities: CommunityInfo[]
+  disabled: boolean
+  onSubmit: (subject: SubjectProperty) => void
+}
+
+export default function SubjectForm({ communities, disabled, onSubmit }: Props) {
+  const [subject, setSubject] = useState<SubjectProperty>(PRESETS['Evanston detached'])
+  const types = communities.find(c => c.community === subject.community)?.types
+    ?? ['detached']
+
+  const set = (patch: Partial<SubjectProperty>) =>
+    setSubject(prev => ({ ...prev, ...patch }))
+
+  const field = 'w-full rounded-md border border-slate-300 bg-white px-2 py-1.5 text-sm'
+  const label = 'block text-xs font-medium text-slate-500 mt-3 mb-1'
+
+  return (
+    <form
+      className="rounded-xl bg-white p-4 shadow-sm"
+      onSubmit={e => { e.preventDefault(); onSubmit(subject) }}
+    >
+      <h2 className="text-sm font-semibold text-slate-700">Subject property</h2>
+
+      <div className="mt-2 flex flex-wrap gap-1">
+        {Object.entries(PRESETS).map(([name, preset]) => (
+          <button
+            key={name} type="button" disabled={disabled}
+            className="rounded-full border border-slate-300 px-2 py-0.5 text-xs text-slate-600 hover:bg-slate-100"
+            onClick={() => setSubject(preset)}
+          >
+            {name}
+          </button>
+        ))}
+      </div>
+
+      <label className={label}>Community</label>
+      <select
+        className={field} value={subject.community} disabled={disabled}
+        onChange={e => {
+          const community = e.target.value
+          const ctypes = communities.find(c => c.community === community)?.types ?? []
+          set({ community, property_type: ctypes.includes(subject.property_type) ? subject.property_type : ctypes[0] })
+        }}
+      >
+        {communities.map(c => (
+          <option key={c.community} value={c.community}>
+            {c.community} ({c.sales} sales)
+          </option>
+        ))}
+      </select>
+
+      <label className={label}>Property type</label>
+      <select
+        className={field} value={subject.property_type} disabled={disabled}
+        onChange={e => set({ property_type: e.target.value })}
+      >
+        {types.map(t => <option key={t} value={t}>{t}</option>)}
+      </select>
+
+      <div className="grid grid-cols-2 gap-2">
+        <div>
+          <label className={label}>Beds</label>
+          <input type="number" min={0} className={field} value={subject.beds}
+            disabled={disabled} onChange={e => set({ beds: +e.target.value })} />
+        </div>
+        <div>
+          <label className={label}>Baths</label>
+          <input type="number" min={0} step={0.5} className={field} value={subject.baths}
+            disabled={disabled} onChange={e => set({ baths: +e.target.value })} />
+        </div>
+        <div>
+          <label className={label}>Sqft</label>
+          <input type="number" min={200} className={field} value={subject.sqft}
+            disabled={disabled} onChange={e => set({ sqft: +e.target.value })} />
+        </div>
+        <div>
+          <label className={label}>Year built</label>
+          <input type="number" min={1900} max={2026} className={field} value={subject.year_built}
+            disabled={disabled} onChange={e => set({ year_built: +e.target.value })} />
+        </div>
+        <div>
+          <label className={label}>Lot sqft</label>
+          <input type="number" min={0} className={field} value={subject.lot_sqft ?? ''}
+            placeholder="n/a" disabled={disabled}
+            onChange={e => set({ lot_sqft: e.target.value === '' ? null : +e.target.value })} />
+        </div>
+        <div>
+          <label className={label}>Garage stalls</label>
+          <input type="number" min={0} max={6} className={field} value={subject.garage_stalls}
+            disabled={disabled} onChange={e => set({ garage_stalls: +e.target.value })} />
+        </div>
+      </div>
+
+      <label className={label}>Notes (free text — the agent mines these)</label>
+      <textarea
+        className={`${field} h-20 resize-none`} value={subject.notes} disabled={disabled}
+        placeholder="e.g. backs onto golf course, unfinished basement"
+        onChange={e => set({ notes: e.target.value })}
+      />
+
+      <button
+        type="submit" disabled={disabled}
+        className="mt-4 w-full rounded-lg bg-indigo-600 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50"
+      >
+        {disabled ? 'Evaluating…' : 'Evaluate'}
+      </button>
+    </form>
+  )
+}
