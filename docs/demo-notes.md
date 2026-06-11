@@ -157,6 +157,19 @@ Format: **decision** · alternative rejected · why.
   LLM "adjusting" the estimate · `/api/ask` returns a modified subject; the diff is computed
   in code, shown in the transcript, and run as a separate linked session through the normal
   pipeline — every what-if is a full audited evaluation (2026-06-11)
+- **Human disagreement = challenge → agent re-review, not click-override** · an exclude
+  button that flips verdicts and recomputes · Bo's call: a click that overrules the agent
+  with no argument makes agent judgment decoration. The reviewer states a claim in chat; the
+  agent re-reviews that comp with the claim as evidence and either revises (engine recomputes,
+  reversal logged) or defends (objection recorded in the report) — mirrors real appraisal
+  review (comments back to the appraiser, revise-or-rebut). Production backstop: licensed
+  sign-off with mandatory written justification (2026-06-11)
+- **AVM stand-in = transparent $/sqft market norm, never a trained fake** · GBM trained on
+  synthetic data as an "independent" cross-check · trained on data our own price model
+  generated, it would always agree — the divergence flag would never fire; theater. A median
+  $/sqft yardstick is honest (labeled what it is), genuinely diverges on planted cases, and
+  exercises the exact production seam: independent estimator → disagreement becomes a risk
+  flag, never a replacement estimate (2026-06-11)
 
 ---
 

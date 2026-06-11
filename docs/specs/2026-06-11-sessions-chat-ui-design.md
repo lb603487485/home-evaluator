@@ -39,7 +39,8 @@ while not being viewed. Right pane: the active session.
 - Risk flags as full sentences (not tooltips)
 - `Evaluated <date time> · comps as-of <date> · run took <N>s`
 - Expandable: comp table (gains an **Adjusted $** column) + adjustment ladders + provenance,
-  as today
+  as today; the per-dimension similarity breakdown moves from hover-tooltip into the expanded
+  row ("why this comp ranks here")
 
 Below the pinned card, the **transcript** scrolls: the submitted subject as a user message
 (digest includes "built YYYY" and notes), agent progress as friendly messages derived from
@@ -121,7 +122,21 @@ Cut ladder, invoked in order the moment a box blows:
 3. localStorage persistence → sessions live until refresh
 4. Form collapse → form just stays put
 
-## 8. Verification
+## 8. Stretch queue (approved 2026-06-11 evening; run only after F1–F4 land in box, in order, stop when the clock says)
+
+| # | Item | Box | Design |
+|---|---|---|---|
+| S1 | **Comp challenge → agent re-review** | 1.0h | Third `/api/ask` response type, `comp_challenge`: the user disputes a comp in chat ("comp 3 backs onto a highway"); backend re-runs the **existing** review logic for that one comp with the claim appended as a signal. Agent agrees → existing engine recompute path (re-adjust, re-reconcile, regrade confidence, re-run risk rules), hero card updates, both challenge and reversal logged. Agent disagrees → keeps/demotes with stated reasons, objection recorded in the report. The human contributes evidence and challenge — never the number, never the verdict directly. (Replaces the rejected one-click override: a click that flips a verdict with no argument makes agent judgment decoration. Production note for README: licensed sign-off with mandatory written justification remains the legal backstop.) |
+| S2 | **Market-norm baseline divergence flag** | 0.5h | New engine function: median $/sqft of recent same-type community sales × subject sqft. New registered risk rule: estimate diverging > tolerance from that yardstick → caution flag carrying both numbers; silent under a minimum sample (≥5 sales) so thin markets don't flag on noise. Labeled "market-norm baseline ($/sqft)" — never "AVM". Demonstrates the AVM-divergence seam honestly (README: production swaps the baseline for a GBM AVM on licensed solds; rule and wiring unchanged). A *trained* fake-AVM stays rejected: trained on our synthetic data it would just be the generator checking itself. |
+| S3 | **ML calibration pipeline demo** | 0.75h | Fit hedonic regression (numpy lstsq, no new deps) on synthetic sales → table of fitted per-factor $ rates vs hand-set `engine/config.py` rates → optional eval rerun with fitted rates. Framed transparently: demonstrates the calibration *mechanism* (roadmap item 2) — fitted coefficients recovering the generator's truth is the point, not a quality claim. |
+
+Settled as no-build during the same discussion: comparing against a second CMA (ground-truth
+eval is strictly stronger evidence; AVM-divergence is the production form) · agent in the
+ingestion loop (two-clocks decision stands; LLM-assisted triage of unresolvable merge
+conflicts is a README enrichment line) · day-N data updates (evaluations are dated opinions
+against snapshots; re-evaluate as a new session, STALE_COMPS already guards).
+
+## 9. Verification
 
 - **pytest:** address passthrough + presence in narrative context; intake address-vs-community
   signal (fake LLM); `/api/ask` answer and what_if branches (fake LLM); diff computation;
