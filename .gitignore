@@ -13,6 +13,7 @@ dist/
 
 # Data artifacts
 *.parquet
+backend/data/raw/
 
 # Misc
 .DS_Store
