@@ -19,9 +19,10 @@ with `0h (parallel)` and adds nothing to the total.
 | 2026-06-11 | 12:00 | 12:10 | 0h (parallel) | Session 3 (parallel tab, fully concurrent with block 6 — no added wall-clock): ML roadmap vetting Q&A — graded 4 calibration upgrades (HPI subscription for MARKET_TREND_QOQ, hedonic fit of ADJ, AVM-divergence risk rule, learned WEIGHTS from KV's appraisal archive) against engine seams + verified data paths; what we won't claim (synthetic-trained ML, black-box AVM). Decision + video bullet → demo-notes §1/§2 |
 | 2026-06-11 | 18:05 | 18:20 | 0.3h | Session 2 block 7 (after ~6h away): README drafted per spec §9 — problem, architecture + self-drawn graph, run instructions, planted-cases table, eval table (LLM-on vs baseline), decisions, cuts, production plan, extension points. Screenshots checked into docs/images. 84 tests re-verified |
 | 2026-06-11 | 18:25 | 18:45 | 0.3h | Session 2 block 8: LangGraph Studio support — langgraph.json + make_graph factory + JSON-input coercion at intake (85 tests). Dependency fight: cli 0.1.54 had silently resolved (no `dev` command); fixed via requires-python <3.13, prerelease allow for langgraph-api, sse-starlette <3.4 (dev-server cap). Verified live run through dev API on :2025 (:2024 owned by another project) |
+| 2026-06-11 | 18:26 | 19:15 | 0.5h | Session 4: UX design brainstorm with browser mockups (Bo's 4 asks → 6 decisions): chat-hybrid (form in, transcript out), per-home sessions w/ background runs + localStorage, pinned hero valuation card w/ key-factors line + timestamps, address intake + deterministic community auto-fill + mismatch guards, `/api/ask` Q&A + what-if re-runs (visible diff → linked session). Design v3 approved; spec addendum written. 0.3h overlap with block 8 billed once |
 
-**Total so far:** ~4.0h of 12h cap (6.0h build blocks + 2.0h reserve remaining).
-**State: T0–T10 built and verified; README drafted.** Remaining (Bo): record ≤3-min video + link it in README · create public GitHub repo + push · final read-through of README/demo-notes.
+**Total so far:** ~4.5h of 12h cap (5.5h build blocks + 2.0h reserve remaining).
+**State: T0–T10 built and verified; README drafted; UX addendum approved (spec: `docs/specs/2026-06-11-sessions-chat-ui-design.md`, boxed 3.0h F1–F4).** Remaining: F1–F4 UX build · (Bo) record ≤3-min video + link it in README · create public GitHub repo + push · final read-through of README/demo-notes.
 Time boxes are strict: a block hitting its box takes its escape hatch immediately — overruns bill the reserve.
 
 ## Plan vs actual (from spec §9)
@@ -35,4 +36,5 @@ Time boxes are strict: a block hitting its box takes its escape hatch immediatel
 | §7 API + Vite UI | 2.0h | ~0.4h | done — T8+T9, UI verified live |
 | §6 Tests + eval | 1.5h | ~0.1h | done — tests were in-line (TDD); T10 eval harness |
 | README + video | 1.5h | — | |
+| UX addendum (sessions/chat/address, spec 2026-06-11) | 0.5h design + 3.0h boxed build | 0.5h design | design done; F1–F4 boxes set at observed velocity, 4-step cut ladder armed |
 | Reserve (user's) | 2.0h | — | untouched (raised from 1h, 2026-06-10, to guarantee ≤12h total) |

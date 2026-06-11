@@ -58,6 +58,11 @@ candidate lines for the video — pull, don't read verbatim.
   (+3.6% from 2 comps, both in the model-nearest-10). The line for the video: LLM judgment
   didn't degrade accuracy — it recovered an estimate, with the caveats attached.
 
+**Follow-up chat one-liner** (2026-06-11 UX addendum)
+- Each home is a session you can question afterward — answers cite only computed results, and
+  "what if the basement were finished?" spawns a *linked, fully audited re-evaluation* with the
+  field change shown as a diff. Never an LLM-adjusted number.
+
 **ML roadmap one-liner**
 - Same principle as the LLM rule, applied to ML: models *calibrate* the engine's constants
   (adjustment rates, trend index, similarity weights) and cross-check it (AVM divergence as
@@ -138,6 +143,20 @@ Format: **decision** · alternative rejected · why.
   divergence tripwire — one appended risk rule + one optional context field; (4) learn
   `WEIGHTS` from comps chosen in KV's own appraisal archive (proprietary label source no
   competitor has) — furthest out, needs PDF extraction pipeline (2026-06-11)
+- **Chat-hybrid UI: form in, transcript out** · full free-text chat intake · structured fields
+  are the lender-grade input contract (typos must not move a valuation); the per-home session
+  transcript + follow-up Q&A give the agent feel without a multi-turn intake loop (~4–6h +
+  new failure modes, rejected the night before deadline). Sessions run in the background —
+  leave, return, green done-badge (2026-06-11)
+- **Address intake is display + cross-check, not geocoding** · pretending to geocode against
+  synthetic geography · deterministic community auto-fill from the typed address; mismatches
+  flagged twice (form warning + intake contradiction signal); a wrong address can never move
+  the number — community + attributes stay the only engine inputs. Production: geocoder →
+  lat/lon → the *existing* haversine filter, zero engine changes (2026-06-11)
+- **What-if = visible field diff + fresh linked run** · chat silently mutating inputs, or the
+  LLM "adjusting" the estimate · `/api/ask` returns a modified subject; the diff is computed
+  in code, shown in the transcript, and run as a separate linked session through the normal
+  pipeline — every what-if is a full audited evaluation (2026-06-11)
 
 ---
 
@@ -178,4 +197,10 @@ Format: **decision** · alternative rejected · why.
     eval caught an empty-set accept. ~13s/run with streaming
   - LLM-on eval (`abd9547`): **MAPE 2.2%, 20/20 within ±10%, median 1.4%**, Bearspaw
     estimated where deterministic couldn't; all scenario asserts green
-- **Remaining**: T11 README + video (Friday, protected 1.5h box) + GitHub repo push
+- **2026-06-11 (evening)** — UX addendum designed and approved via browser-mockup brainstorm
+  (`docs/specs/2026-06-11-sessions-chat-ui-design.md`): per-home sessions with background runs,
+  chat-hybrid transcript with pinned hero valuation card, address intake + community auto-fill
+  + mismatch guards, `/api/ask` follow-up Q&A with what-if re-runs. Boxed 3.0h (F1–F4), 4-step
+  cut ladder armed. Build pending
+- **Remaining**: F1–F4 UX addendum build · T11 README + video (Friday, protected 1.5h box) +
+  GitHub repo push
