@@ -12,7 +12,9 @@ keyboard/agent activity. Offline thinking (away from the session) gets logged wh
 
 | 2026-06-11 | 10:57 | 11:20 | 0.4h | Session 2 block 2: T4 filters+scoring (17 tests) · T5 valuation+risk registry, hand-computed fixture exact (22 tests) · T6 six-node graph deterministic e2e, Bearspaw calibration fix (3 tests) · T8 FastAPI SSE (3 tests, reordered before T7 — no API key on machine). 73 tests green, 4 commits. Demo-notes §2/§3 updated |
 
-**Total so far:** ~2.5h of 12h cap (7.5h build blocks + 2.0h reserve remaining).
+| 2026-06-11 | 11:14 | 11:25 | 0.2h | Session 2 block 3: T7 LLM nodes — llm.py factory, 4 prompt files, tool-calling widen (bind_tools, accept_results), review prechecks+verdicts, streamed narrate, run_demo CLI; 8 fake-model wiring tests. 81 tests green. **Live-LLM verify pending: needs ANTHROPIC_API_KEY in backend/.env** |
+
+**Total so far:** ~2.7h of 12h cap (7.3h build blocks + 2.0h reserve remaining).
 Time boxes are strict: a block hitting its box takes its escape hatch immediately — overruns bill the reserve.
 
 ## Plan vs actual (from spec §9)

@@ -102,6 +102,9 @@ Format: **decision** · alternative rejected · why.
 - **T8 (API) built before T7 (LLM nodes)** · plan order · no ANTHROPIC_API_KEY on this
   machine yet; shipped the fully verifiable surface first, LLM judgment layered on top
   (2026-06-11)
+- **Intake LLM never rewrites the subject** · plan's normalized_subject output · guardrail:
+  engine inputs come from the form only; the LLM contributes signals/concerns, not numbers —
+  same principle as the narrate rule (2026-06-11)
 - **ML calibrates the engine, never replaces it (roadmap, no code now)** · training models on
   our synthetic data, or a black-box AVM as the estimate · synthetic-trained ML would just
   reverse-engineer our own generator (circular metrics); a lender needs every dollar traceable
@@ -136,5 +139,10 @@ Format: **decision** · alternative rejected · why.
     2 widening rounds → 1 comp → C-grade with THIN/STALE/EXTRAPOLATION/WIDENED flags
   - T8 FastAPI: `GET /api/communities` + `POST /api/evaluate` SSE stream (`9589296`);
     73 tests green
+  - T7 LLM judgment nodes (`a7f0e32`): intake signal mining, widening via genuine
+    tool-calling (bind_tools + accept_results, reasons logged verbatim), per-comp review
+    with deterministic pre-checks, streamed narration with the only-numbers-from-the-data-
+    block rule; every node degrades to its deterministic fallback on LLM failure (tested
+    with fake/raising models, 81 tests). Live-LLM run pending an API key
 - **Remaining** (per spec §9): T7 LLM nodes + prompts (80m box; needs `ANTHROPIC_API_KEY` in
   `backend/.env` for live verify) · T9 Vite UI (90m) · T10 eval (30m) · T11 README + video (90m)
