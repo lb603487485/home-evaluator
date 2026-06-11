@@ -92,9 +92,9 @@ git commit -m "feat: optional subject address — schema passthrough + intake cr
 - Modify: `frontend/src/types.ts:3-13` (add `address: string` to SubjectProperty)
 - Modify: `frontend/src/components/SubjectForm.tsx`
 
-- [ ] **Step 1:** `types.ts` — add `address: string` after `community` in `SubjectProperty`.
+- [x] **Step 1:** `types.ts` — add `address: string` after `community` in `SubjectProperty`.
 
-- [ ] **Step 2:** `SubjectForm.tsx` — add `address: ''` to every `PRESETS` entry (give 'Evanston detached' `address: '310 Evanston Dr NW'` so the demo auto-fill fires). Add above the Community label:
+- [x] **Step 2:** `SubjectForm.tsx` — add `address: ''` to every `PRESETS` entry (give 'Evanston detached' `address: '310 Evanston Dr NW'` so the demo auto-fill fires). Add above the Community label:
 
 ```tsx
 const matched = communities.find(c =>
@@ -120,9 +120,9 @@ const mismatch = matched && matched !== subject.community
 
 Note: auto-fill must also keep `property_type` valid — reuse the same logic as the community `<select>` `onChange` (if the new community's types don't include the current type, switch to its first type).
 
-- [ ] **Step 3: Verify** — `cd frontend && npx tsc -b --noEmit` → clean. Manual: typing "12 Tuscany Hills Rd NW" flips the dropdown to Tuscany; then choosing Evanston manually shows the amber warning.
+- [x] **Step 3: Verify** — `cd frontend && npx tsc -b --noEmit` → clean. Manual: typing "12 Tuscany Hills Rd NW" flips the dropdown to Tuscany; then choosing Evanston manually shows the amber warning.
 
-- [ ] **Step 4: Commit** — `git commit -am "feat: address input with community auto-fill + mismatch warning"`
+- [x] **Step 4: Commit** — `git commit -am "feat: address input with community auto-fill + mismatch warning"`
 
 **F1 box check (0.5h).** Over → cut ladder step 4 is not relevant here; simply ship Task 1 only (backend field) and move on.
 
@@ -509,3 +509,4 @@ Mechanic: `ask.md` gains a third reply shape `{"type": "comp_challenge", "addres
 
 - 2026-06-11 19:55 — Plan written and committed. Next: Task 1 (backend address field, failing test first).
 - 2026-06-11 20:00 — Task 1 done: subject.address field + intake cross-check prompt line, 86 tests green. Next: Task 2 (frontend address + auto-fill).
+- 2026-06-11 20:05 — Task 2 done: address input + deterministic auto-fill + mismatch warning, tsc clean. F1 closed under box. Next: Task 3 (session store).

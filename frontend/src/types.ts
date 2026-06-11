@@ -2,6 +2,7 @@
 
 export interface SubjectProperty {
   community: string
+  address: string
   property_type: string
   beds: number
   baths: number

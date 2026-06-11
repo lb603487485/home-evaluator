@@ -3,15 +3,16 @@ import type { CommunityInfo, SubjectProperty } from '../types'
 
 const PRESETS: Record<string, SubjectProperty> = {
   'Evanston detached': {
-    community: 'Evanston', property_type: 'detached', beds: 3, baths: 2.5,
+    community: 'Evanston', address: '310 Evanston Dr NW', property_type: 'detached',
+    beds: 3, baths: 2.5,
     sqft: 1850, year_built: 2020, lot_sqft: 4000, garage_stalls: 2, notes: '',
   },
   'Bearspaw acreage': {
-    community: 'Bearspaw', property_type: 'detached', beds: 4, baths: 3.5,
+    community: 'Bearspaw', address: '', property_type: 'detached', beds: 4, baths: 3.5,
     sqft: 3000, year_built: 2005, lot_sqft: 150000, garage_stalls: 3, notes: '',
   },
   'With notes': {
-    community: 'Evanston', property_type: 'detached', beds: 3, baths: 2.5,
+    community: 'Evanston', address: '', property_type: 'detached', beds: 3, baths: 2.5,
     sqft: 1850, year_built: 2020, lot_sqft: 4000, garage_stalls: 2,
     notes: 'backs onto golf course, unfinished basement, original windows',
   },
@@ -30,6 +31,23 @@ export default function SubjectForm({ communities, disabled, onSubmit }: Props) 
 
   const set = (patch: Partial<SubjectProperty>) =>
     setSubject(prev => ({ ...prev, ...patch }))
+
+  // deterministic community auto-fill: typed address contains a known community name
+  const matched = communities.find(c =>
+    subject.address.toLowerCase().includes(c.community.toLowerCase()))?.community
+  const mismatch = matched && matched !== subject.community
+
+  const onAddress = (address: string) => {
+    const hit = communities.find(c =>
+      address.toLowerCase().includes(c.community.toLowerCase()))
+    if (!hit) { set({ address }); return }
+    const ctypes = hit.types
+    set({
+      address, community: hit.community,
+      property_type: ctypes.includes(subject.property_type)
+        ? subject.property_type : ctypes[0],
+    })
+  }
 
   const field = 'w-full rounded-md border border-slate-300 bg-white px-2 py-1.5 text-sm'
   const label = 'block text-xs font-medium text-slate-500 mt-3 mb-1'
@@ -52,6 +70,18 @@ export default function SubjectForm({ communities, disabled, onSubmit }: Props) 
           </button>
         ))}
       </div>
+
+      <label className={label}>Address (optional)</label>
+      <input
+        type="text" className={field} value={subject.address} disabled={disabled}
+        placeholder="e.g. 310 Evanston Dr NW"
+        onChange={e => onAddress(e.target.value)}
+      />
+      {mismatch && (
+        <p className="mt-1 text-xs text-amber-600">
+          ⚠ address mentions <b>{matched}</b> — community is set to <b>{subject.community}</b>
+        </p>
+      )}
 
       <label className={label}>Community</label>
       <select
