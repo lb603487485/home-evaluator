@@ -14,6 +14,7 @@ from agent import llm
 def _data_block(state: dict) -> str:
     valuation = state["valuation"]
     return json.dumps({
+        "today": state["today"],
         "subject": state["subject"].model_dump(),
         "intake_signals": state.get("notes_signals") or [],
         "search_log": state.get("search_log") or [],

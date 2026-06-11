@@ -17,9 +17,10 @@ async def intake_node(state: dict) -> dict:
     if not llm.llm_enabled() or not notes:
         return base | {"notes_signals": []}
     try:
-        message = await llm.get_model("intake").ainvoke([
+        message = await llm.get_model("intake", max_tokens=500).ainvoke([
             ("system", llm.load_prompt("intake")),
-            ("user", f"SUBJECT:\n{state['subject'].model_dump_json(indent=2)}\n\n"
+            ("user", f"TODAY: {base['today']}\n\n"
+                     f"SUBJECT:\n{state['subject'].model_dump_json(indent=2)}\n\n"
                      f"NOTES:\n{notes}")])
         data = llm.parse_json_block(llm.message_text(message.content))
         signals = [str(s) for s in data.get("signals", [])]

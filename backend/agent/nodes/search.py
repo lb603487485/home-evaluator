@@ -76,26 +76,38 @@ def _deterministic_widen(state: dict) -> dict:
             "widen_reason": f"{move}: only {len(state['candidates'])} comps found"}
 
 
-async def widen_node(state: dict) -> dict:
-    if not llm.llm_enabled():
-        return _deterministic_widen(state)
-    try:
-        model = llm.get_model("search").bind_tools(WIDEN_TOOLS, tool_choice="any")
-        message = await model.ainvoke([
-            ("system", llm.load_prompt("search")),
-            ("user", json.dumps({
-                "subject": state["subject"].model_dump(),
-                "current_criteria": state["criteria"].model_dump(),
-                "rounds_so_far": state["search_log"],
-                "comps_found": len(state["candidates"]),
-                "min_comps_wanted": MIN_COMPS,
-            }, default=str, indent=2))])
-        call = message.tool_calls[0]
-        move, reason = call["name"], call["args"].get("reason", "")
-        if move == "accept_results":
-            return {"widen_accepted": True, "widen_reason": f"accept_results: {reason}"}
-        return {"criteria": apply_move(state["criteria"], move),
-                "widen_reason": f"{move}: {reason}"}
-    except Exception as exc:
-        return _deterministic_widen(state) | {
-            "errors": [f"widen: LLM fallback ({exc})"]}
+def make_widen_node(source):
+    async def widen_node(state: dict) -> dict:
+        if not llm.llm_enabled():
+            return _deterministic_widen(state)
+        try:
+            # the engine projects what each move would find; the LLM chooses informed
+            projections = {}
+            for move in WIDENING_MOVES:
+                projected = apply_move(state["criteria"], move)
+                if projected != state["criteria"]:  # skip moves already at their cap
+                    projections[move] = len(await source.fetch(
+                        state["subject"], projected, state["today"]))
+            model = llm.get_model("search").bind_tools(WIDEN_TOOLS, tool_choice="any")
+            message = await model.ainvoke([
+                ("system", llm.load_prompt("search")),
+                ("user", json.dumps({
+                    "today": state["today"],
+                    "subject": state["subject"].model_dump(),
+                    "current_criteria": state["criteria"].model_dump(),
+                    "rounds_so_far": state["search_log"],
+                    "comps_found": len(state["candidates"]),
+                    "min_comps_wanted": MIN_COMPS,
+                    "projected_comps_per_move": projections,
+                }, default=str, indent=2))])
+            call = message.tool_calls[0]
+            move, reason = call["name"], call["args"].get("reason", "")
+            if move == "accept_results":
+                return {"widen_accepted": True,
+                        "widen_reason": f"accept_results: {reason}"}
+            return {"criteria": apply_move(state["criteria"], move),
+                    "widen_reason": f"{move}: {reason}"}
+        except Exception as exc:
+            return _deterministic_widen(state) | {
+                "errors": [f"widen: LLM fallback ({exc})"]}
+    return widen_node

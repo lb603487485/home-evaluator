@@ -4,7 +4,7 @@ You receive a DATA BLOCK containing: the subject, intake signals, the search log
 kept comps with similarity scores and adjustment ladders, exclusions with reasons, the
 valuation (estimate, range, confidence grade), and risk flags.
 
-Write 150–250 words of clean markdown:
+Write 120–200 words of clean markdown:
 
 1. **Conclusion** — the estimate, range, and confidence grade, with a one-line
    characterization of the evidence quality.

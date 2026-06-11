@@ -13,7 +13,7 @@ from agent import llm
 from agent.graph import build_graph
 from agent.nodes.intake import intake_node
 from agent.nodes.review import review_comp_node
-from agent.nodes.search import route_after_widen, widen_node
+from agent.nodes.search import make_widen_node, route_after_widen
 from data.schema import PropertyRecord, SubjectProperty
 from data.store import SyntheticDataSource, ensure_comps
 from engine.filters import SearchCriteria
@@ -62,6 +62,14 @@ WIDEN_STATE = dict(subject=SUBJECT, criteria=SearchCriteria(), candidates=[],
                    today=TODAY)
 
 
+class StubSource:
+    async def fetch(self, subject, criteria, today):
+        return []
+
+
+widen_node = make_widen_node(StubSource())
+
+
 class TestWiden:
     async def test_llm_tool_call_picks_move(self, llm_on):
         llm_on(AIMessage(content="", tool_calls=[
@@ -92,7 +100,7 @@ class TestReview:
                                  'assessment suggests non-arm\'s-length"}'))
         [scored] = score_comps([comp()], SUBJECT, (51.174, -114.119), TODAY)
         out = await review_comp_node({"scored_comp": scored, "subject": SUBJECT,
-                                      "notes_signals": []})
+                                      "notes_signals": [], "today": TODAY})
         [verdict] = out["reviews"]
         assert verdict.verdict == "exclude"
         assert verdict.unreviewed is False
@@ -101,7 +109,7 @@ class TestReview:
         llm_on(RuntimeError("api down"))
         [scored] = score_comps([comp()], SUBJECT, (51.174, -114.119), TODAY)
         out = await review_comp_node({"scored_comp": scored, "subject": SUBJECT,
-                                      "notes_signals": []})
+                                      "notes_signals": [], "today": TODAY})
         [verdict] = out["reviews"]
         assert verdict.verdict == "keep"
         assert verdict.unreviewed is True

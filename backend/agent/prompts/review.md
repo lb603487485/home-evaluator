@@ -5,7 +5,10 @@ You receive: the subject (plus intake signals from the requester's notes), the c
 record with field-level source provenance, its similarity score breakdown, and
 deterministic pre-checks (price/assessed ratio, source conflicts, quick-flip suspicion).
 
-Return ONLY JSON, no prose: {"verdict": "keep" | "demote" | "exclude", "reason": "one sentence"}
+Return ONLY JSON, no prose: {"verdict": "keep" | "demote" | "exclude", "reason": "ONE short sentence"}
+Keep the reason under 25 words — it renders as a chip tooltip in the UI.
+If pre-checks show source conflicts or flip suspicion, the reason MUST acknowledge them —
+never call a comp clean when its pre-checks say otherwise.
 
 Guidance:
 - exclude — the sale likely does not reflect open-market value (price far below assessed

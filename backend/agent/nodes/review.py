@@ -50,7 +50,8 @@ def fan_out_reviews(state: dict):
     if not top:
         return "valuate"
     return [Send("review_comp", {"scored_comp": s, "subject": state["subject"],
-                                 "notes_signals": state.get("notes_signals") or []})
+                                 "notes_signals": state.get("notes_signals") or [],
+                                 "today": state["today"]})
             for s in top]
 
 
@@ -64,9 +65,10 @@ async def review_comp_node(payload: dict) -> dict:
     if not llm.llm_enabled():
         return _fallback(scored, "kept without LLM review")
     try:
-        message = await llm.get_model("review").ainvoke([
+        message = await llm.get_model("review", max_tokens=300).ainvoke([
             ("system", llm.load_prompt("review")),
-            ("user", "SUBJECT:\n" + payload["subject"].model_dump_json(indent=2)
+            ("user", f"TODAY: {payload['today']}\n\n"
+             + "SUBJECT:\n" + payload["subject"].model_dump_json(indent=2)
              + "\nINTAKE SIGNALS: " + (", ".join(payload["notes_signals"]) or "none")
              + "\n\nCOMP:\n" + scored.comp.model_dump_json(indent=2)
              + "\n\nSIMILARITY: " + str(scored.score)
