@@ -18,7 +18,7 @@ from agent.graph import build_graph
 from app.events import node_event, sse_event
 from data.schema import SubjectProperty
 from data.store import SyntheticDataSource, ensure_comps
-from engine.methodology import methodology_block
+from engine.methodology import methodology_block, methodology_data
 
 router = APIRouter(prefix="/api")
 
@@ -33,6 +33,13 @@ def get_runtime():
 async def communities() -> list[dict]:
     source, _ = get_runtime()
     return source.communities()
+
+
+@router.get("/methodology")
+async def methodology() -> dict:
+    """Engine constants + rule meanings, structured for the UI popovers —
+    the same generated artifact the chat grounding and docs/handbook.md use."""
+    return methodology_data()
 
 
 @router.post("/evaluate")

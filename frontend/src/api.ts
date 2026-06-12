@@ -90,6 +90,18 @@ export async function extract(text: string): Promise<ExtractResponse> {
   return res.json()
 }
 
+export interface Methodology {
+  weights: Record<string, number>
+  confidence: Record<string, string>
+  flags: Record<string, string>
+}
+
+export async function fetchMethodology(): Promise<Methodology> {
+  const res = await fetch('/api/methodology')
+  if (!res.ok) throw new Error(`methodology: HTTP ${res.status}`)
+  return res.json()
+}
+
 export function postFeedback(body: {
   session_id: string
   rating: number

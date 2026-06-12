@@ -1,5 +1,7 @@
 import { useEffect, useReducer, useState } from 'react'
-import { evaluate, fetchCommunities, postFeedback } from './api'
+import {
+  evaluate, fetchCommunities, fetchMethodology, postFeedback, type Methodology,
+} from './api'
 import ChatInput from './components/ChatInput'
 import FeedbackStrip from './components/FeedbackStrip'
 import HeroCard from './components/HeroCard'
@@ -18,8 +20,11 @@ export default function App() {
   const [prefill, setPrefill] = useState<SubjectProperty | null>(null)
   const [now, setNow] = useState(() => Date.now())
 
+  const [methodology, setMethodology] = useState<Methodology | null>(null)
+
   useEffect(() => {
     fetchCommunities().then(setCommunities).catch(console.error)
+    fetchMethodology().then(setMethodology).catch(console.error)
   }, [])
 
   useEffect(() => { persistSessions(state) }, [state])
@@ -125,7 +130,7 @@ export default function App() {
                   ✎ edit in form
                 </button>
               </div>
-              <HeroCard session={active} now={now} />
+              <HeroCard session={active} now={now} methodology={methodology} />
             </div>
             {active.run.phase === 'done' && active.run.valuation && (
               <div className="shrink-0">

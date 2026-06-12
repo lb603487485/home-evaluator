@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { cad } from '../api'
+import { cad, type Methodology } from '../api'
 import type { Session } from '../sessions'
 import CompTable from './CompTable'
 import FlagChips from './FlagChips'
@@ -12,9 +12,16 @@ const CONFIDENCE_STYLES: Record<string, string> = {
 
 const fmtSigned = (n: number) => (n > 0 ? '+' : '') + cad.format(n)
 
-export default function HeroCard({ session, now }: { session: Session; now: number }) {
+interface Props {
+  session: Session
+  now: number
+  methodology?: Methodology | null
+}
+
+export default function HeroCard({ session, now, methodology }: Props) {
   const { run, subject } = session
   const [showComps, setShowComps] = useState(false)
+  const [showGrade, setShowGrade] = useState(false)
 
   // slim progress strip until the valuation lands
   if (run.phase === 'running' && !run.valuation) {
@@ -82,11 +89,20 @@ export default function HeroCard({ session, now }: { session: Session; now: numb
       <div className="text-xs text-stone-500">Subject: {recap}</div>
       <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <span className="text-3xl font-extrabold text-stone-900">{cad.format(v.estimate)}</span>
-        <span
-          title="Confidence grade: comp count, dispersion, similarity"
-          className={`rounded-lg px-2.5 py-0.5 text-base font-bold ${CONFIDENCE_STYLES[v.confidence ?? 'C']}`}
-        >
-          {v.confidence}
+        <span className="relative">
+          <button
+            type="button"
+            title="Confidence grade: comp count, dispersion, similarity — click for thresholds"
+            className={`rounded-lg px-2.5 py-0.5 text-base font-bold ${CONFIDENCE_STYLES[v.confidence ?? 'C']}`}
+            onClick={() => setShowGrade(g => !g)}
+          >
+            {v.confidence}
+          </button>
+          {showGrade && methodology && v.confidence && (
+            <span className="absolute left-0 top-full z-10 mt-1 block w-72 rounded-lg border border-stone-200 bg-white p-2 text-xs font-normal text-stone-700 shadow-lg">
+              <b>Confidence {v.confidence}</b> — {methodology.confidence[v.confidence]}
+            </span>
+          )}
         </span>
         <span className="text-sm text-stone-600">
           range {cad.format(v.low!)} – {cad.format(v.high!)}
@@ -109,7 +125,7 @@ export default function HeroCard({ session, now }: { session: Session; now: numb
           {' '}({run.originalValuation.confidence}). The exchange is in the chat below.
         </div>
       )}
-      <FlagChips flags={v.flags} />
+      <FlagChips flags={v.flags} meanings={methodology?.flags} />
       {stamp}
       <button
         type="button" onClick={() => setShowComps(s => !s)}

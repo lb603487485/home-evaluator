@@ -68,6 +68,7 @@ Three stances drive every decision (full reasoning + complete decision log:
 | Comp challenge → re-review: claim as evidence → revise or defend, both logged | argued, not clicked | `POST /api/ask` |
 | Feedback capture + diagnosis report (JSONL training lines, sliced deltas, names config knobs) | the underwriter loop | `POST /api/feedback` · `eval.feedback` |
 | Eval vs ground truth + scenario asserts; hedonic calibration demo (R² 0.976) | provable quality | `eval.eval` · `eval.calibrate` |
+| Methodology handbook + UI popovers, generated from engine constants (drift-guarded by a test) | docs can't lie | [`docs/handbook.md`](docs/handbook.md) · `GET /api/methodology` |
 | LangGraph Studio + LangSmith tracing support | every tool-call inspectable | `langgraph.json` |
 
 ## Architecture
@@ -185,10 +186,11 @@ npm install
 npm run dev                             # UI on :5173 (proxies /api → :8000)
 
 # extras — from backend/
-uv run pytest                           # 124 tests
+uv run pytest                           # 128 tests
 uv run python -m agent.run_demo        # CLI event stream on 3 demo subjects
 uv run python -m eval.eval             # eval vs ground truth → eval/results.md
 uv run python -m eval.calibrate        # hedonic fit vs engine rates → eval/calibration.md
+uv run python -m engine.methodology    # regenerate docs/handbook.md from engine constants
 uv run python -m data.generate --seed 42   # regenerate the synthetic world
 uv run langgraph dev --port 2025       # LangGraph Studio: visual step-through of the graph
 ```
