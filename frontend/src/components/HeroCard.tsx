@@ -118,7 +118,7 @@ export default function HeroCard({ session, now }: { session: Session; now: numb
         {showComps ? '▾ hide' : '▸ show'} comp table — {kept.length} kept of {run.comps.length} scored, with adjustment ladders
       </button>
       {showComps && (
-        <div className="mt-2">
+        <div className="mt-2 max-h-[45vh] overflow-y-auto">
           <CompTable comps={run.comps} reviews={run.reviews} adjustments={run.adjustments} />
         </div>
       )}

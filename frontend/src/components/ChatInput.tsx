@@ -78,7 +78,7 @@ export default function ChatInput({ session, onMessage, onWhatIf, onRevalue }: P
 
   return (
     <form
-      className="flex gap-2"
+      className="flex shrink-0 gap-2"
       onSubmit={e => { e.preventDefault(); void send() }}
     >
       <input

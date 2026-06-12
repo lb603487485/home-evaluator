@@ -66,26 +66,34 @@ export default function App() {
         </h1>
       </header>
 
-      <div className="grid gap-4 lg:grid-cols-[20rem_1fr]">
-        <div className="space-y-3">
-          <SubjectForm
-            communities={communities} disabled={false}
-            collapsed={formCollapsed} onToggle={() => setFormCollapsed(c => !c)}
-            onSubmit={startRun}
-          />
-          <SessionList sessions={state} now={now}
-            onSelect={id => dispatch({ type: 'select', id })} />
+      <div className="grid gap-4 lg:h-[calc(100vh-6.5rem)] lg:grid-cols-[20rem_1fr] lg:grid-rows-[minmax(0,1fr)]">
+        <div className="flex min-h-0 flex-col gap-3">
+          <div className="min-h-0 overflow-y-auto">
+            <SubjectForm
+              communities={communities} disabled={false}
+              collapsed={formCollapsed} onToggle={() => setFormCollapsed(c => !c)}
+              onSubmit={startRun}
+            />
+          </div>
+          <div className="min-h-0 flex-1 overflow-y-auto">
+            <SessionList sessions={state} now={now}
+              onSelect={id => dispatch({ type: 'select', id })} />
+          </div>
         </div>
 
         {active ? (
-          <div className="flex flex-col gap-3">
+          <div className="flex min-h-0 flex-col gap-3">
             {active.run.phase === 'error' && (
-              <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+              <div className="shrink-0 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
                 {active.run.error}
               </div>
             )}
-            <HeroCard session={active} now={now} />
-            <Transcript session={active} />
+            <div className="shrink-0">
+              <HeroCard session={active} now={now} />
+            </div>
+            <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+              <Transcript session={active} />
+            </div>
             <ChatInput
               session={active}
               onMessage={(id, role, text) =>
