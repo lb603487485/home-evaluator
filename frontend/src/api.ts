@@ -1,4 +1,4 @@
-import type { AgentEvent, CommunityInfo, SubjectProperty } from './types'
+import type { AgentEvent, CommunityInfo, SubjectProperty, ValuationPayload } from './types'
 
 export async function fetchCommunities(): Promise<CommunityInfo[]> {
   const res = await fetch('/api/communities')
@@ -49,10 +49,16 @@ export async function evaluate(
 }
 
 export interface AskResponse {
-  type: 'answer' | 'what_if'
+  type: 'answer' | 'what_if' | 'comp_challenge'
   text: string
   modified_subject?: SubjectProperty
   changes?: { field: string; before: unknown; after: unknown }[]
+  // comp_challenge fields
+  address?: string
+  verdict?: 'keep' | 'demote' | 'exclude'
+  reason?: string
+  changed?: boolean
+  revaluation?: ValuationPayload
 }
 
 export async function ask(body: {

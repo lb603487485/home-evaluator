@@ -19,8 +19,10 @@ export interface RunState {
   reviews: Record<string, ReviewVerdict>
   adjustments: Record<string, AdjustedComp>
   valuation: ValuationPayload | null
+  originalValuation?: ValuationPayload | null  // pre-challenge record, never mutated
   narrative: string
   lastSearch?: SearchUpdate
+  searchLog: SearchUpdate[]
   error?: string
   totalS?: number
 }
@@ -29,7 +31,7 @@ export type RunAction = { type: 'start' } | { type: 'fail'; message: string } | 
 
 export const INITIAL_RUN: RunState = {
   phase: 'idle', timeline: [], comps: [], exclusions: [], reviews: {},
-  adjustments: {}, valuation: null, narrative: '',
+  adjustments: {}, valuation: null, narrative: '', searchLog: [],
 }
 
 export function runReducer(state: RunState, action: RunAction): RunState {
@@ -54,6 +56,7 @@ export function runReducer(state: RunState, action: RunAction): RunState {
       return {
         ...state,
         lastSearch: action.data,
+        searchLog: [...state.searchLog, action.data],
         timeline: [...state.timeline, { kind: 'search', text }],
       }
     }
@@ -117,6 +120,7 @@ export type SessionsAction =
   | { type: 'select'; id: string }
   | { type: 'run-event'; id: string; action: RunAction }
   | { type: 'qa'; id: string; msg: ChatMsg }
+  | { type: 'revalue'; id: string; valuation: ValuationPayload }
 
 export function sessionsReducer(s: SessionsState, a: SessionsAction): SessionsState {
   switch (a.type) {
@@ -159,6 +163,18 @@ export function sessionsReducer(s: SessionsState, a: SessionsAction): SessionsSt
         ...s,
         byId: { ...s.byId, [a.id]: { ...target, qa: [...target.qa, a.msg] } },
       }
+    }
+    case 'revalue': {
+      const target = s.byId[a.id]
+      if (!target) return s
+      const run = {
+        ...target.run,
+        originalValuation: target.run.originalValuation ?? target.run.valuation,
+        valuation: a.valuation,
+        adjustments: Object.fromEntries(
+          (a.valuation.adjustments ?? []).map(adj => [adj.address_key, adj])),
+      }
+      return { ...s, byId: { ...s.byId, [a.id]: { ...target, run } } }
     }
   }
 }

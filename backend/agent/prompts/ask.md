@@ -19,3 +19,12 @@ Reply with a single JSON object, nothing else:
 or
   {"type": "what_if", "text": "<one line saying you'll re-evaluate with the change>",
    "modified_subject": { ...full SubjectProperty JSON... }}
+or — ONLY when the user disputes a specific comparable sale (by address or row
+number) with a stated reason — pass their objection to a formal re-review:
+  {"type": "comp_challenge",
+   "address_key": "<the address_key of that comp from CONTEXT.comps>",
+   "claim": "<the user's objection, faithfully restated>",
+   "text": "<one line saying you'll re-review that comp against their claim>"}
+A question ABOUT a comp ("why is comp 2 ranked higher?") is an answer, not a
+challenge. A challenge asserts the comp shouldn't count as-is ("comp 2 backs onto
+a highway, it's not comparable").

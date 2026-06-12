@@ -62,6 +62,8 @@ async def ask(req: AskRequest) -> dict:
                      f"PRIOR Q&A:\n{history or '(none)'}\n\n"
                      f"QUESTION: {req.question}")])
         data = llm.parse_json_block(llm.message_text(message.content))
+        if data.get("type") == "comp_challenge":
+            return await _comp_challenge(req, data)
         if data.get("type") != "what_if":
             return {"type": "answer", "text": str(data.get("text", ""))}
         modified = SubjectProperty(**data["modified_subject"])
@@ -77,6 +79,56 @@ async def ask(req: AskRequest) -> dict:
     except Exception as exc:
         return {"type": "answer",
                 "text": f"(assistant unavailable — {exc}; the tables above stand)"}
+
+
+async def _comp_challenge(req: AskRequest, data: dict) -> dict:
+    """Reviewer disputes a comp: re-run the SAME review judgment with the claim as
+    evidence; only a changed verdict re-runs the engine (valuate + risk rules).
+    The human supplies evidence — never the verdict, never the number."""
+    from agent.graph import apply_reviews
+    from agent.nodes.review import ReviewVerdict, review_comp_node
+    from engine.risk_rules import ValuationContext, evaluate_rules
+    from engine.scoring import ScoredComp
+    from engine.valuation import valuate
+
+    ctx = req.context
+    scored = [ScoredComp(**s) for s in ctx.get("scored_full") or []]
+    key = data.get("address_key")
+    target = next((s for s in scored if s.comp.address_key == key), None)
+    if target is None:
+        return {"type": "answer",
+                "text": "I couldn't match that comp in this evaluation — name it by "
+                        "its address or row number."}
+    subject = SubjectProperty(**ctx["subject"])
+    today = date.fromisoformat(ctx["as_of"])
+    claim = str(data.get("claim") or req.question)
+    out = await review_comp_node({
+        "scored_comp": target, "subject": subject, "today": today,
+        "notes_signals": [f"reviewer challenge: {claim}"]})
+    [verdict] = out["reviews"]
+    if verdict.unreviewed:  # review LLM failed — don't fake a re-review
+        return {"type": "answer",
+                "text": "(couldn't re-review that comp right now — the original "
+                        "verdict stands)"}
+    reviews = {r["address_key"]: ReviewVerdict(**r) for r in ctx.get("reviews") or []}
+    prior = reviews.get(key)
+    changed = verdict.verdict != (prior.verdict if prior else "keep")
+    resp = {"type": "comp_challenge", "address_key": key,
+            "address": target.comp.address, "verdict": verdict.verdict,
+            "reason": verdict.reason, "changed": changed,
+            "text": str(data.get("text", ""))}
+    if changed:
+        reviews[key] = verdict
+        kept = apply_reviews(scored, reviews)
+        valuation = valuate(kept, subject, today) if kept else None
+        vctx = ValuationContext(subject=subject, scored=kept, valuation=valuation,
+                                exclusions=ctx.get("exclusions") or [],
+                                search_log=ctx.get("search_log") or [], today=today)
+        resp["revaluation"] = {
+            **(valuation.model_dump(mode="json") if valuation
+               else {"estimate": None}),
+            "flags": [f.model_dump() for f in evaluate_rules(vctx)]}
+    return resp
 
 
 async def _event_stream(subject: SubjectProperty):

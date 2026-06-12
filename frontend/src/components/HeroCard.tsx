@@ -101,6 +101,14 @@ export default function HeroCard({ session, now }: { session: Session; now: numb
       <div className="mt-2 text-sm text-slate-700">
         <b>Key factors:</b> {factors}
       </div>
+      {run.originalValuation && (
+        <div className="mt-1 rounded-md border border-amber-300 bg-amber-50 px-2 py-1 text-xs text-amber-800">
+          ⚖ Reviewer challenge applied — revised from{' '}
+          {run.originalValuation.estimate != null
+            ? cad.format(run.originalValuation.estimate) : 'no estimate'}
+          {' '}({run.originalValuation.confidence}). The exchange is in the chat below.
+        </div>
+      )}
       <FlagChips flags={v.flags} />
       {stamp}
       <button

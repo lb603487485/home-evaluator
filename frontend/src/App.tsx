@@ -95,6 +95,8 @@ export default function App() {
                   whatIfOf: parent.id,
                   nameSuffix: ` (what-if: ${label.slice(0, 32)})`,
                 })}
+              onRevalue={(id, valuation) =>
+                dispatch({ type: 'revalue', id, valuation })}
             />
           </div>
         ) : (
