@@ -31,6 +31,45 @@ problem, so this prototype synthesizes a realistic Calgary world with a known
 ground-truth price model — which also makes quality **measurable** instead of vibes
 (see [Eval results](#eval-results)).
 
+## The approach
+
+Three stances drive every decision (full reasoning + complete decision log:
+[`docs/deep-dive.md`](docs/deep-dive.md)):
+
+- **As a product — the deliverable is a defensible number.** Estimate + range +
+  confidence + risk flags, every dollar traceable to a named comp and a tested formula.
+  Humans stay in the loop through typed, visible doors: the form is the input contract
+  (extraction proposes, never feeds the engine), disagreement is argued via challenges
+  (never clicked away), feedback is captured but never auto-applied.
+- **As an agent — LLM judgment inside a code-gated action space.** A six-node LangGraph
+  where the math is pure tested code and the LLM contributes judgment and language;
+  per-node model selection (Haiku where volume, Sonnet where judgment); three
+  integration modes used deliberately — tool-calling where the model chooses *actions*
+  (widening), context injection where facts must *always* be present (chat grounding),
+  typed JSON-to-code where anything *mutates results* (what-ifs, challenges).
+- **As measurement — quality is proven, not vibed.** A synthetic world with a known
+  ground-truth price model makes ranking and valuation quality measurable; ML and an
+  AVM-style baseline calibrate and cross-check the explainable engine — they never
+  replace it, and the eval is the arbiter of every retune.
+
+## What's included
+
+| Feature | The point | Where |
+|---|---|---|
+| Multi-source ingestion, field-level provenance, recorded conflicts | the business pain, demonstrated | `backend/data/` |
+| Deterministic engine: filters → 8-dim similarity → adjustments → valuation, A/B/C confidence, risk-rule registry | every dollar traceable | `backend/engine/` |
+| Agentic search widening from engine-projected move yields (≤2 rounds, reasons logged) | judgment, code-gated | `backend/agent/` |
+| Per-comp LLM review (parallel fan-out, deterministic pre-checks, keep/demote/exclude) | auditable verdicts | `backend/agent/` |
+| Streamed appraiser narrative (only numbers from the data block) | language, not arithmetic | `backend/agent/` |
+| Paste-box extraction → form prefill, community inference constrained to known list | propose, never feed | `POST /api/extract` |
+| Per-home sessions: background runs, done-badges, reload persistence | session = future DB schema | `frontend/src/sessions.ts` |
+| Grounded follow-up chat (config-generated methodology + market stats; off-topic declined) | answers from constants, not vibes | `POST /api/ask` |
+| What-if re-runs: code-computed diff → linked audited evaluation | no silent mutations | `POST /api/ask` |
+| Comp challenge → re-review: claim as evidence → revise or defend, both logged | argued, not clicked | `POST /api/ask` |
+| Feedback capture + diagnosis report (JSONL training lines, sliced deltas, names config knobs) | the underwriter loop | `POST /api/feedback` · `eval.feedback` |
+| Eval vs ground truth + scenario asserts; hedonic calibration demo (R² 0.976) | provable quality | `eval.eval` · `eval.calibrate` |
+| LangGraph Studio + LangSmith tracing support | every tool-call inspectable | `langgraph.json` |
+
 ## Architecture
 
 ```
@@ -146,7 +185,7 @@ npm install
 npm run dev                             # UI on :5173 (proxies /api → :8000)
 
 # extras — from backend/
-uv run pytest                           # 100 tests
+uv run pytest                           # 124 tests
 uv run python -m agent.run_demo        # CLI event stream on 3 demo subjects
 uv run python -m eval.eval             # eval vs ground truth → eval/results.md
 uv run python -m eval.calibrate        # hedonic fit vs engine rates → eval/calibration.md
@@ -225,8 +264,8 @@ never moves a weight at runtime — capture (this feature) → diagnose (this re
 
 ## Design decisions & trade-offs
 
-- **Synthetic data with a ground-truth model** over scraping: real Alberta sold prices
-  are inaccessible (that's the business problem); bonus is provable eval.
+As an **agent**:
+
 - **Hybrid agent** over pure-LLM: a lender needs every dollar traceable to a named comp
   and a tested formula. The LLM judges; the engine computes.
 - **No RAG/vector retrieval** for structured comps: exact predicates + auditable scoring
@@ -234,12 +273,27 @@ never moves a weight at runtime — capture (this feature) → diagnose (this re
   unstructured listing remarks, as an enrichment signal.
 - **Stateless across runs** by design: valuations must be independent and reproducible
   (audit requirement). Learning happens offline, between versions.
+- **Widening capped at 2 rounds**, every move capped — bounded cost, latency, and audit size.
+- **Chat grounding by injection, not tools**: an uncalled tool silently skips grounding;
+  injected context is structurally always present (flip condition in
+  [What's next](#whats-next-designed-not-built)).
+
+As a **product**:
+
+- **Synthetic data with a ground-truth model** over scraping: real Alberta sold prices
+  are inaccessible (that's the business problem); bonus is provable eval.
+- **Form in, transcript out** over free-text chat intake: structured fields are the
+  lender-grade input contract (a typo must never move a valuation); the per-home
+  transcript + follow-up chat deliver the agent feel without a multi-turn intake loop.
+- **Challenge → re-review** over a one-click comp override: a click that overrules the
+  agent with no argument makes agent judgment decoration; a stated claim the agent
+  weighs as evidence mirrors real appraisal review.
 - **Precedence, recorded**: land-titles price > MLS (registered legal record);
   assessment year-built > realtor-entered MLS; disagreements become flags, not silent fixes.
-- **Widening capped at 2 rounds**, every move capped — bounded cost, latency, and audit size.
 
-The full decision log with rejected alternatives lives in
-[`docs/demo-notes.md`](docs/demo-notes.md).
+The full decision log with rejected alternatives — grouped agent / product / data & ML /
+process — lives in [`docs/deep-dive.md`](docs/deep-dive.md) §4; the raw chronological
+log in [`docs/demo-notes.md`](docs/demo-notes.md).
 
 ## What I cut and why
 
@@ -293,10 +347,14 @@ divergence wiring a production AVM would slot into).
 
 ## Time log
 
-Built in ~6.1h of wall-clock human-involved time against a 12h cap — itemized per block
+Built in ~10h of wall-clock human-involved time against a 12h cap — itemized per block
 with plan-vs-actual in [`TIMELOG.md`](TIMELOG.md).
 
-## What's next
+## What's next (designed, not built)
+
+Nothing in this section exists in code yet — each item is deliberately deferred, with
+its seam already in place (full roadmap with the ML ladder and hardening backlog:
+[`docs/deep-dive.md`](docs/deep-dive.md) §5).
 
 Server-side run persistence (in-flight runs surviving refresh) · the feedback loop's
 last mile (the captured ratings driving offline weight/prompt retunes between versions —

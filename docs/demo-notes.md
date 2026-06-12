@@ -433,5 +433,14 @@ Format: **decision** · alternative rejected · why.
   passes, frontend lint currently fails on the edit-in-form prefill effect. Review
   findings to address before submission: code-enforce what-if field changes, preserve
   market-baseline context on comp-challenge revaluation, and clear the lint failure.
-- **Remaining**: S6 tag handbook (0.5h, pending green light) · detailed README pass
-  (Bo's ask) · T11 video (protected 1.5h box) + GitHub repo push · final read-through
+- **2026-06-12 (late afternoon)** — Detailed README pass (Bo's ask): README gains "The
+  approach" (three stances: product / agent / measurement), a 13-row "What's included"
+  feature table, agent-vs-product grouping of the trade-offs, explicit "What's next
+  (designed, not built)" framing; stale facts fixed (124 tests, ~10h). New
+  **`docs/deep-dive.md`** — presentation companion: full problem understanding, approach
+  from agent and product perspectives (incl. how ML / the AVM stand-in / the eval
+  combine), complete decision log with rejected alternatives (agent · product & UX ·
+  data & ML · process), roadmap of not-yet-built work incl. the honest hardening
+  backlog, and the build process. Screenshots still stale → retake in video prep
+- **Remaining**: S6 tag handbook (0.5h, pending green light) · T11 video (protected
+  1.5h box) + GitHub repo push · screenshot retake · final read-through
