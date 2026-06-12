@@ -264,7 +264,8 @@ Format: **decision** · alternative rejected · why.
   market stats) · typed-JSON-to-code where anything *mutates results* (what-ifs,
   challenges — the audited doors). Flips when grounding outgrows the prompt (comp-store
   queries, handbook search, HPI lookups): then a read-only retrieval tool layer is right,
-  mutations stay code-dispatched. Production-note line for README at S9 (2026-06-12)
+  mutations stay code-dispatched. Bo's call: retrieval-tools layer is now an official
+  roadmap item — landed in README §What's next (2026-06-12)
 - **Similarity recency weight kept at 20/100 (Bo's #17)** · weighting recent sales harder ·
   the engine already *corrects* old prices forward via the trend index, so recency's job is
   only the uncertainty correction can't fix (regime shifts, index lag); more recency weight

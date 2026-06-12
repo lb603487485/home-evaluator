@@ -276,6 +276,19 @@ Server-side run persistence (in-flight runs surviving refresh) + underwriter fee
 loop (comp challenges → offline weight/prompt tuning between versions), semantic
 enrichment over listing remarks, title-check stage, and the production connectors above.
 
+**Chat grounding graduates to a read-only retrieval tool layer.** Today the chat is
+grounded by injection: the config-generated methodology block and all-community market
+stats ride along in every `/api/ask` call — the right design while grounding is ~1.5k
+tokens of constants plus eight stat rows, because injected context can't be silently
+skipped the way an uncalled tool can. It flips when grounding outgrows the prompt:
+comp-store queries ("every sale on this street"), handbook search, live HPI lookups
+become read-only retrieval *tools* the model calls on demand (natural shape: an MCP
+server over engine functions, reusable by any client). The division of labor is the
+durable part: facts that must always be present stay injected (methodology) · the model
+chooses retrievals (tools) · anything that mutates results stays a typed action executed
+by audited code (what-ifs, comp challenges) — the guarantee lives in the handlers, not
+the wire format, so the migration changes plumbing, never the trust boundary.
+
 **Sessions move server-side with accounts.** Today's localStorage `Session` object is
 already the schema — subject, run state, chat, timestamps, what-if lineage — so a
 `sessions` table keyed by (account, session) takes it verbatim, and persistence is
