@@ -19,6 +19,8 @@ backend/eval/feedback_report.md
 
 # Misc
 .DS_Store
+TIMELOG.md
+docs/demo-notes.md
 docs/questions.txt
 
 # LangGraph Studio runtime state
