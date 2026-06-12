@@ -281,6 +281,13 @@ Format: **decision** · alternative rejected · why.
   queries, handbook search, HPI lookups): then a read-only retrieval tool layer is right,
   mutations stay code-dispatched. Bo's call: retrieval-tools layer is now an official
   roadmap item — landed in README §What's next (2026-06-12)
+- **Hero = warm gradient w/ dark figure (B); chat conclusion = white accent-bar card (C)**
+  · the S11 mockup's dark stone-900 hero, or one style for both verdict surfaces · Bo at
+  checkpoint 3: dark hero too heavy in real use. Picked from 3 live mockups on the real
+  page background (served on a temp port for his own browser): hero keeps the original
+  gradient shape re-warmed (orange-100→white, dark figure — the number reads "document",
+  not "dashboard"), while the conclusion bubble takes the white accent-bar family, so the
+  two verdict surfaces are siblings, not twins (2026-06-12)
 - **Similarity recency weight kept at 20/100 (Bo's #17)** · weighting recent sales harder ·
   the engine already *corrects* old prices forward via the trend index, so recency's job is
   only the uncertainty correction can't fix (regime shifts, index lag); more recency weight
@@ -421,5 +428,10 @@ Format: **decision** · alternative rejected · why.
   manual what-if). Video benefit: the closing shot is the conclusion callout — the
   agent's verdict reads like a verdict, not a wall of text. README screenshots stale →
   retake during video prep
+- **2026-06-12 (late afternoon)** — Project review pass: repo contract checked against
+  API/graph/engine/frontend paths; backend tests pass (124), frontend production build
+  passes, frontend lint currently fails on the edit-in-form prefill effect. Review
+  findings to address before submission: code-enforce what-if field changes, preserve
+  market-baseline context on comp-challenge revaluation, and clear the lint failure.
 - **Remaining**: S6 tag handbook (0.5h, pending green light) · detailed README pass
   (Bo's ask) · T11 video (protected 1.5h box) + GitHub repo push · final read-through
