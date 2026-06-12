@@ -138,7 +138,10 @@ Cut ladder, invoked in order the moment a box blows:
 | S7 | **Conclusion UI in chat** (#12, queued — pending green light) | 0.5h | Narrative bubble splits on its own markdown headings: Conclusion shown prominently by default; "How We Got Here" / "Caveats" collapsible. Hero card keeps the number; the bubble stops repeating it at full volume. |
 | S8 | **"Edit in form" button** (#16, queued — pending green light) | 0.25h | Button on the active session copies its subject into the form (expand if collapsed) for manual tweak → re-evaluate as a new session — the manual half of the what-if loop. Needs a `prefill` prop on SubjectForm. |
 
-Suggested next-session order: S5 → S6 → S8 → S7 (~2.0h total).
+**Next-session order (Bo, 2026-06-12): S5 → S8 → S7 → S6** (~2.0h total). Rationale: S8
+is smallest; S7 may change chat UI styling, and S6's popovers/handbook should inherit
+that styling, not precede it. **Checkpoint protocol: build strictly one at a time — after
+each item, stop, hand to Bo for live verification, and start the next only on his OK.**
 
 Settled as no-build during the same discussion: comparing against a second CMA (ground-truth
 eval is strictly stronger evidence; AVM-divergence is the production form) · agent in the
