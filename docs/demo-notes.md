@@ -324,5 +324,13 @@ Format: **decision** · alternative rejected · why.
   (keep weights, three-rung adjustability story) · S9 feedback capture + S10 feedback
   report designed and queued (spec §8) · final build order locked:
   S5 → S9+S10 → S7 → S8 → S6, Bo reviews after each item
+- **2026-06-12 (afternoon)** — S5 chat grounding + prompt hardenings (`d232990`, TDD,
+  114 tests): methodology block generated from `engine/config.py` + risk-rule registry
+  (a test forces every registered rule to appear — new rule without a meaning fails CI);
+  `/api/ask` now carries METHODOLOGY + MARKET STATS; what-ifs scoped to the latest
+  message; challenge claims weighed as unverified. Live: "how do you adjust for an older
+  sale?" → answer cites Evanston 1.2%/quarter, 20-pt recency, 365-day decay — every
+  number config-true; Toronto investment question politely declined. Video beat: ask the
+  agent *how its own math works* and it answers from the engine's constants, not vibes
 - **Remaining**: build queue above (~3.25h boxed) · T11 video (Friday, protected 1.5h box)
   + GitHub repo push · final read-through
