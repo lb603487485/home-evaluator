@@ -107,7 +107,7 @@ export default function Transcript({ session }: { session: Session }) {
           'cursor-pointer select-none text-xs font-semibold uppercase text-stone-500'
         return (
           <div className="self-start flex w-[85%] max-w-[85%] flex-col gap-1.5">
-            <div className="rounded-xl border-l-4 border-orange-600 bg-orange-100/70 px-3 py-2 text-sm text-stone-800">
+            <div className="rounded-xl border border-stone-200 border-l-4 border-l-orange-600 bg-white px-3 py-2 text-sm text-stone-800 shadow-sm">
               <div className="flex items-center gap-2">
                 <span className="text-xs font-semibold uppercase text-orange-700">
                   🤖 Conclusion

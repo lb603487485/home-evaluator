@@ -37,7 +37,7 @@ export default function HeroCard({ session, now }: { session: Session; now: numb
   ].filter(Boolean).join(' · ')
 
   const stamp = session.evaluatedAt && (
-    <div className="mt-2 text-xs text-stone-400">
+    <div className="mt-2 text-xs text-stone-500">
       Evaluated <b>{new Date(session.evaluatedAt).toLocaleString([], {
         month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}</b>
       {' · '}comps as-of {new Date(session.evaluatedAt).toLocaleDateString([], {
@@ -48,9 +48,9 @@ export default function HeroCard({ session, now }: { session: Session; now: numb
 
   if (v.estimate == null) {
     return (
-      <div className="rounded-xl border-2 border-stone-700 bg-stone-900 p-4 shadow-md">
-        <div className="text-xs text-stone-400">Subject: {recap}</div>
-        <p className="mt-2 text-sm text-stone-300">
+      <div className="rounded-xl border-2 border-orange-400 bg-gradient-to-b from-orange-100 to-white p-4 shadow-md">
+        <div className="text-xs text-stone-500">Subject: {recap}</div>
+        <p className="mt-2 text-sm text-stone-600">
           No usable comparable sales survived review — no estimate produced.
         </p>
         <FlagChips flags={v.flags} />
@@ -78,28 +78,28 @@ export default function HeroCard({ session, now }: { session: Session; now: numb
   const pct = span > 0 ? ((v.estimate - v.low!) / span) * 100 : 50
 
   return (
-    <div className="rounded-xl border-2 border-stone-700 bg-stone-900 p-4 shadow-md">
-      <div className="text-xs text-stone-400">Subject: {recap}</div>
+    <div className="rounded-xl border-2 border-orange-400 bg-gradient-to-b from-orange-100 to-white p-4 shadow-md">
+      <div className="text-xs text-stone-500">Subject: {recap}</div>
       <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <span className="text-3xl font-extrabold text-orange-400">{cad.format(v.estimate)}</span>
+        <span className="text-3xl font-extrabold text-stone-900">{cad.format(v.estimate)}</span>
         <span
           title="Confidence grade: comp count, dispersion, similarity"
           className={`rounded-lg px-2.5 py-0.5 text-base font-bold ${CONFIDENCE_STYLES[v.confidence ?? 'C']}`}
         >
           {v.confidence}
         </span>
-        <span className="text-sm text-stone-300">
+        <span className="text-sm text-stone-600">
           range {cad.format(v.low!)} – {cad.format(v.high!)}
         </span>
       </div>
       <div className="mt-2">
-        <div className="relative h-1.5 rounded-full bg-stone-700">
-          <div className="absolute -top-1 h-3.5 w-1 rounded bg-orange-500"
+        <div className="relative h-1.5 rounded-full bg-orange-200">
+          <div className="absolute -top-1 h-3.5 w-1 rounded bg-orange-600"
             style={{ left: `${pct}%` }} />
         </div>
       </div>
-      <div className="mt-2 text-sm text-stone-300">
-        <b className="text-stone-200">Key factors:</b> {factors}
+      <div className="mt-2 text-sm text-stone-700">
+        <b>Key factors:</b> {factors}
       </div>
       {run.originalValuation && (
         <div className="mt-1 rounded-md border border-amber-300 bg-amber-50 px-2 py-1 text-xs text-amber-800">
@@ -113,7 +113,7 @@ export default function HeroCard({ session, now }: { session: Session; now: numb
       {stamp}
       <button
         type="button" onClick={() => setShowComps(s => !s)}
-        className="mt-2 text-xs font-medium text-orange-400 hover:underline"
+        className="mt-2 text-xs font-medium text-orange-700 hover:underline"
       >
         {showComps ? '▾ hide' : '▸ show'} comp table — {kept.length} kept of {run.comps.length} scored, with adjustment ladders
       </button>
