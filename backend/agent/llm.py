@@ -20,6 +20,7 @@ DEFAULTS = {
     "review": "claude-haiku-4-5",
     "narrate": "claude-sonnet-4-6",
     "ask": "claude-sonnet-4-6",
+    "extract": "claude-sonnet-4-6",
 }
 
 PROMPTS_DIR = Path(__file__).parent / "prompts"

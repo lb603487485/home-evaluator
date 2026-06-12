@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { extract } from '../api'
 import type { CommunityInfo, SubjectProperty } from '../types'
 
 const PRESETS: Record<string, SubjectProperty> = {
@@ -30,6 +31,39 @@ export default function SubjectForm({
   communities, disabled, collapsed = false, onToggle, onSubmit,
 }: Props) {
   const [subject, setSubject] = useState<SubjectProperty>(PRESETS['Evanston detached'])
+  const [pasteText, setPasteText] = useState('')
+  const [extracting, setExtracting] = useState(false)
+  const [inferred, setInferred] =
+    useState<{ value: string; reason: string } | null>(null)
+  const [extractNote, setExtractNote] = useState('')
+
+  const fillFromText = async () => {
+    const text = pasteText.trim()
+    if (!text || extracting) return
+    setExtracting(true)
+    setExtractNote('')
+    try {
+      const res = await extract(text)
+      const patch: Partial<SubjectProperty> = { ...res.fields }
+      if (res.community) {
+        patch.community = res.community.value
+        const ctypes = communities.find(
+          c => c.community === res.community!.value)?.types ?? []
+        const type = patch.property_type ?? subject.property_type
+        patch.property_type = ctypes.includes(type) ? type : ctypes[0]
+        setInferred(res.community.source === 'inferred'
+          ? { value: res.community.value, reason: res.community.reason } : null)
+      }
+      if (!Object.keys(patch).length) {
+        setExtractNote('Nothing recognized — fill the form manually.')
+      }
+      set(patch)
+    } catch (err) {
+      setExtractNote(`Extraction failed (${String(err)}) — fill the form manually.`)
+    } finally {
+      setExtracting(false)
+    }
+  }
   const types = communities.find(c => c.community === subject.community)?.types
     ?? ['detached']
 
@@ -91,6 +125,21 @@ export default function SubjectForm({
         ))}
       </div>
 
+      <label className={label}>Describe the home (paste a sentence, listing line, or address)</label>
+      <textarea
+        className={`${field} h-14 resize-none`} value={pasteText} disabled={disabled}
+        placeholder={'e.g. "88 9 St NE, Calgary, 3 bed 2.5 bath bungalow, ~1400 sqft, built 1952"'}
+        onChange={e => setPasteText(e.target.value)}
+      />
+      <button
+        type="button" disabled={disabled || extracting || !pasteText.trim()}
+        className="mt-1 w-full rounded-md border border-indigo-300 bg-indigo-50 py-1 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 disabled:opacity-50"
+        onClick={() => void fillFromText()}
+      >
+        {extracting ? 'Extracting…' : 'Fill form from text'}
+      </button>
+      {extractNote && <p className="mt-1 text-xs text-amber-600">{extractNote}</p>}
+
       <label className={label}>Address (optional)</label>
       <input
         type="text" className={field} value={subject.address} disabled={disabled}
@@ -109,6 +158,7 @@ export default function SubjectForm({
         onChange={e => {
           const community = e.target.value
           const ctypes = communities.find(c => c.community === community)?.types ?? []
+          setInferred(null)
           set({ community, property_type: ctypes.includes(subject.property_type) ? subject.property_type : ctypes[0] })
         }}
       >
@@ -118,6 +168,11 @@ export default function SubjectForm({
           </option>
         ))}
       </select>
+      {inferred && subject.community === inferred.value && (
+        <p className="mt-1 text-xs text-amber-600">
+          ⚐ inferred from the address ({inferred.reason}) — verify
+        </p>
+      )}
 
       <label className={label}>Property type</label>
       <select

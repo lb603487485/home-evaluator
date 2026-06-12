@@ -187,6 +187,14 @@ Format: **decision** · alternative rejected · why.
   $/sqft yardstick is honest (labeled what it is), genuinely diverges on planted cases, and
   exercises the exact production seam: independent estimator → disagreement becomes a risk
   flag, never a replacement estimate (2026-06-11)
+- **Free-text intake = extract-to-form, geocoding = constrained LLM inference** · full
+  chat intake, or an external geocoder API · the paste box prefills the *form* and the
+  human confirms it before anything runs — extraction proposes, never feeds the engine
+  (same pattern as the what-if diff). Community inference is constrained to the dataset's
+  8 communities or null, labeled "inferred — verify"; an external geocoder would add an
+  API key + network dependency on demo day to answer a question the 8-community store
+  doesn't ask. Production swaps the inference call for a real geocoder, wiring unchanged
+  (2026-06-12)
 - **Chat memory scoped to the session; cross-session/cross-run memory excluded by design**
   · agent remembering conversations across homes and runs · every answer must be
   reproducible from that home's report alone (audit); roadmapped as needs-driven:

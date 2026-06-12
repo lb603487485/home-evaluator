@@ -38,6 +38,54 @@ async def evaluate(subject: SubjectProperty) -> EventSourceResponse:
     return EventSourceResponse(_event_stream(subject))
 
 
+class ExtractRequest(BaseModel):
+    text: str
+
+
+# whitelist + coercion: only these fields may prefill the form, with these types
+_EXTRACT_FIELDS = {"address": str, "property_type": str, "beds": int,
+                   "baths": float, "sqft": int, "year_built": int,
+                   "lot_sqft": int, "garage_stalls": int, "notes": str}
+
+
+@router.post("/extract")
+async def extract(req: ExtractRequest) -> dict:
+    """Free text → form prefill. The LLM proposes; the user confirms the form —
+    extraction never feeds the engine directly. Community is constrained to the
+    dataset's known communities or null. Degrades to empty, never 500s."""
+    empty = {"fields": {}, "community": None}
+    if not llm.llm_enabled():
+        return empty
+    source, _ = get_runtime()
+    known = [c["community"] for c in source.communities()]
+    try:
+        message = await llm.get_model("extract", max_tokens=600).ainvoke([
+            ("system", llm.load_prompt("extract")),
+            ("user", f"KNOWN COMMUNITIES: {', '.join(known)}\n\nTEXT:\n{req.text}")])
+        data = llm.parse_json_block(llm.message_text(message.content))
+        fields = {}
+        for key, value in (data.get("fields") or {}).items():
+            cast = _EXTRACT_FIELDS.get(key)
+            if cast is None or value is None:
+                continue
+            try:
+                fields[key] = cast(value)
+            except (TypeError, ValueError):
+                continue
+        community = None
+        proposal = data.get("community") or {}
+        if proposal.get("value") in known:
+            community = {
+                "value": proposal["value"],
+                "source": ("named" if proposal["value"].lower() in req.text.lower()
+                           else "inferred"),
+                "reason": str(proposal.get("reason", ""))[:200],
+            }
+        return {"fields": fields, "community": community}
+    except Exception:
+        return empty
+
+
 class AskRequest(BaseModel):
     question: str
     history: list[dict] = []  # [{role, text}] prior Q&A, oldest first

@@ -107,6 +107,13 @@ time* searches the local merged store in milliseconds.
 
 And around the run, the UI:
 
+- **Describe-the-home paste box** — paste a listing sentence or just an address
+  ("88 9 St NE, Calgary, AB T2E 4E1, 3 bed 2.5 bath, built 1952…") and one extraction
+  call prefills the form; the community resolves even for inner-city numbered streets
+  (postal prefix + quadrant → Bridgeland), constrained to the dataset's communities and
+  labeled "⚐ inferred — verify". Nothing auto-submits — the human confirms the form, so
+  extraction can propose but never silently feed the engine. (Production: a geocoder
+  replaces the inference call; the wiring doesn't change.)
 - **Sessions** — every home is its own session (form on the left; the typed address
   auto-fills the community, and a mismatch is warned about in the form, cross-checked
   again by intake, and flagged in the transcript). Runs continue in the background —

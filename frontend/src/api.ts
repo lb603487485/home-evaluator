@@ -75,6 +75,21 @@ export async function ask(body: {
   return res.json()
 }
 
+export interface ExtractResponse {
+  fields: Partial<SubjectProperty>
+  community: { value: string; source: 'named' | 'inferred'; reason: string } | null
+}
+
+export async function extract(text: string): Promise<ExtractResponse> {
+  const res = await fetch('/api/extract', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text }),
+  })
+  if (!res.ok) throw new Error(`extract: HTTP ${res.status}`)
+  return res.json()
+}
+
 export const cad = new Intl.NumberFormat('en-CA', {
   style: 'currency',
   currency: 'CAD',

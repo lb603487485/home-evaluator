@@ -18,6 +18,8 @@
 13. chat input box stick on bottom, won't need to scroll down to look for the inputbox. the chat panel may need a fix height or something that won't get longer as the conversation going on UI. user can scroll but not scroll the whole page to look after.
 14. subject property don't automatically collapse after click evaluate.
 
+15. should we allow user to put a everything in a sentense and the app extract home info from it?
+
 
 9. should we have an agent or flow to allow the agent response to some generally related question about a home?
 
@@ -26,3 +28,5 @@
 
 11. need explainations on tag meanings (such as A/B/C means, NON_ARMS_LENGTH_EXCLUDED, DATA_CONFLICT), can be a hand book to users
 12. better UI of the conclusion in chat
+
+16. should we have a button to auto filled the current conversation's property to the property form?
