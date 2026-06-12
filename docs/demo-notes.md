@@ -94,6 +94,19 @@ judge Q&A only)
   report diagnoses (S10), calibrate proposes, eval disposes: capture today, calibrate
   tomorrow, and the engine never moves on vibes.
 
+**S9+S10 60-sec feedback demo script** (2026-06-12 — **NOT in the 3-min main cut**, per
+Bo's ~15:30 call above; keep for judge Q&A, a backup take, or if a re-record frees a
+minute. One real line already sits in `feedback.jsonl` — 4★/$620k vs $599.1k B — keep
+it, it makes the report non-empty):
+- On a completed session: feedback strip under the hero card → rate 4★ + comment +
+  "your estimate $620k" → strip collapses to its summary, ★4 badge in the session list
+  (survives reload)
+- Terminal: `uv run python -m eval.feedback` → show `eval/feedback_report.md`:
+  user-vs-engine delta sliced by confidence/community/risk flag, "n < 10: directional
+  only" caveat, callouts naming the exact `engine/config.py` knob
+- The line to say: *feedback proposes, eval disposes* — user labels never move a weight
+  at runtime
+
 **S5 grounded-chat demo script** (2026-06-12 — questions to type on camera, in a
 completed session's chat; every cited number is config-true):
 - "How does similarity scoring work?" → weights (distance 25 · recency 20 · sqft 20 …)

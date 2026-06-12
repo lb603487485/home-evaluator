@@ -129,6 +129,9 @@ And around the run, the UI:
   re-reconciles; the card shows "⚖ challenge applied — revised from $X" with the
   original preserved) or defends its verdict — your objection stays in the record
   either way. The human supplies evidence; the agent judges; the engine computes.
+- **Feedback on every valuation** — rate a finished evaluation (1–5★, optional comment +
+  your own estimate) right under its valuation card; each label becomes a durable,
+  self-contained training example. See the **Underwriter feedback loop** section below.
 
 ## How to run
 
