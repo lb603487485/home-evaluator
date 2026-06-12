@@ -254,6 +254,17 @@ Format: **decision** · alternative rejected · why.
   names the `config.py` knob to investigate; `eval.calibrate` proposes rates,
   `eval.eval` validates against ground truth. Feedback proposes, eval disposes
   (2026-06-12)
+- **Chat grounding = context injection, not LLM tools (Bo's question, post-S5)** · exposing
+  methodology/market stats as callable tools · a tool the model may not call can silently
+  skip grounding — a plausible, ungrounded answer with no failure signal; injected context
+  is structurally always present. The data is tiny and static (~1.5k tokens of constants +
+  8 stat rows), so retrieval round-trips buy nothing. Division of labor the codebase
+  follows: tools where the model *chooses actions* (search widening picks among
+  engine-projected moves) · injection where facts must always be present (methodology,
+  market stats) · typed-JSON-to-code where anything *mutates results* (what-ifs,
+  challenges — the audited doors). Flips when grounding outgrows the prompt (comp-store
+  queries, handbook search, HPI lookups): then a read-only retrieval tool layer is right,
+  mutations stay code-dispatched. Production-note line for README at S9 (2026-06-12)
 - **Similarity recency weight kept at 20/100 (Bo's #17)** · weighting recent sales harder ·
   the engine already *corrects* old prices forward via the trend index, so recency's job is
   only the uncertainty correction can't fix (regime shifts, index lag); more recency weight
