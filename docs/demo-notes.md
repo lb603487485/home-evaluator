@@ -170,6 +170,11 @@ Format: **decision** · alternative rejected · why.
   $/sqft yardstick is honest (labeled what it is), genuinely diverges on planted cases, and
   exercises the exact production seam: independent estimator → disagreement becomes a risk
   flag, never a replacement estimate (2026-06-11)
+- **Time-log total = wall-clock union of intervals, with a per-row `Counted` column** ·
+  summing raw row durations · parallel/overlapping sessions double-bill the 12h cap (Bo
+  caught a real 0.1h double-count). Rows keep their true Duration; `Counted` carries the
+  net contribution (overlap attributed to the earliest row), so the total audits as one
+  column sum (2026-06-11)
 
 ---
 
@@ -215,5 +220,8 @@ Format: **decision** · alternative rejected · why.
   chat-hybrid transcript with pinned hero valuation card, address intake + community auto-fill
   + mismatch guards, `/api/ask` follow-up Q&A with what-if re-runs. Boxed 3.0h (F1–F4), 4-step
   cut ladder armed. Build pending
+- **2026-06-11 (late evening)** — Time-log accounting audit: fixed a 0.1h overlap double-count,
+  reworked totals to wall-clock union of intervals with a per-row Counted column. 5.3h of 12h
+  cap used, 2.0h reserve intact
 - **Remaining**: F1–F4 UX addendum build · T11 README + video (Friday, protected 1.5h box) +
   GitHub repo push

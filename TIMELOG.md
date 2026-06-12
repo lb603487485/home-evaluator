@@ -22,10 +22,11 @@ union of intervals). Total = sum of Counted; overlapping rows carry a note namin
 | 2026-06-11 | 18:25 | 18:45 | 0.3h | 0.3h | Session 2 block 8: LangGraph Studio support — langgraph.json + make_graph factory + JSON-input coercion at intake (85 tests). Dependency fight: cli 0.1.54 had silently resolved (no `dev` command); fixed via requires-python <3.13, prerelease allow for langgraph-api, sse-starlette <3.4 (dev-server cap). Verified live run through dev API on :2025 (:2024 owned by another project) |
 | 2026-06-11 | 18:26 | 19:15 | 0.8h | 0.5h | Session 4: UX design brainstorm with browser mockups (Bo's 4 asks → 6 decisions): chat-hybrid (form in, transcript out), per-home sessions w/ background runs + localStorage, pinned hero valuation card w/ key-factors line + timestamps, address intake + deterministic community auto-fill + mismatch guards, `/api/ask` Q&A + what-if re-runs (visible diff → linked session). Design v3 approved; spec addendum written. Overlaps block 8 by 0.3h (18:26–18:45) — counted once in total |
 | 2026-06-11 | 19:15 | 19:50 | 0.6h | 0.6h | Session 4 cont.: design Q&A (Bo's Q5–7 + follow-ups) → 3 stretch items specced + 3 no-builds settled. Bo redesigned S1: challenge→re-review replaces click-override (human contributes evidence, agent re-judges, both logged). AVM stand-in = transparent $/sqft norm divergence flag, trained-fake rejected. ML calibration demo queued last. Spec §8 stretch queue added; green light to build |
+| 2026-06-11 | 19:50 | 20:10 | 0.3h | 0.3h | Session 5: time-log accounting audit (Bo spotted overlap double-billing) — fixed 0.1h block 2/3 double-count; convention reworked: Duration = real row time, total = wall-clock union of intervals, new Counted column = per-row contribution net of overlap (total = one column sum). 4 commits |
 
-**Total so far (wall-clock):** ~5.0h of 12h cap = sum of Counted column (Duration sums to
-5.6h; 0.6h of overlap counted once: 0.1h blocks 2/3 + 0.2h session 3 + 0.3h block 8/session 4).
-(5.0h build blocks + 2.0h reserve remaining.)
+**Total so far (wall-clock):** ~5.3h of 12h cap = sum of Counted column (Duration sums to
+5.9h; 0.6h of overlap counted once: 0.1h blocks 2/3 + 0.2h session 3 + 0.3h block 8/session 4).
+(4.7h build blocks + 2.0h reserve remaining.)
 **State: T0–T10 built and verified; README drafted; UX addendum approved (spec: `docs/specs/2026-06-11-sessions-chat-ui-design.md`, boxed 3.0h F1–F4).** Remaining: F1–F4 UX build · (Bo) record ≤3-min video + link it in README · create public GitHub repo + push · final read-through of README/demo-notes.
 Time boxes are strict: a block hitting its box takes its escape hatch immediately — overruns bill the reserve.
 
