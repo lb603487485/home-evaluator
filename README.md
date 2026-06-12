@@ -269,6 +269,16 @@ Server-side run persistence (in-flight runs surviving refresh) + underwriter fee
 loop (comp challenges → offline weight/prompt tuning between versions), semantic
 enrichment over listing remarks, title-check stage, and the production connectors above.
 
+**Sessions move server-side with accounts.** Today's localStorage `Session` object is
+already the schema — subject, run state, chat, timestamps, what-if lineage — so a
+`sessions` table keyed by (account, session) takes it verbatim, and persistence is
+isolated behind two functions in `sessions.ts` that become `GET/PUT /api/sessions`.
+Accounts buy cross-device access, underwriters reviewing an analyst's session (the
+challenge log as a review artifact), and provenance for the tuning loop. The valuation
+endpoints stay stateless either way — the store sits beside the audit path, never
+inside it — and server-stored sessions bring the usual lending-data obligations
+(retention, access control, encryption at rest).
+
 **Conversational memory — only if demand shows up.** Today the chat remembers within a
 session (last 6 turns) and deliberately nothing across sessions or runs: every answer
 must be reproducible from that home's report alone. Two audit-compatible extensions if
