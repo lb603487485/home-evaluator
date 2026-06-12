@@ -86,18 +86,17 @@ candidate lines for the video — pull, don't read verbatim.
   one more risk rule) — they never replace the explainable comp logic. Every seam already
   exists in `engine/config.py` and the risk-rule registry.
 
-**Feedback loop one-liner** (2026-06-12, S9+S10 — **Bo's call ~15:30: NOT shown in the
-video**; the README's "Underwriter feedback loop" section carries it. Keep this line for
-judge Q&A only)
+**Feedback loop one-liner** (2026-06-12, S9+S10 — **REVERSED ~17:05: Bo WILL demo the
+feedback loop in the video himself**, superseding the ~15:30 not-in-video call; README
+disclaimers removed, section retitled plain "Underwriter feedback loop")
 - Every weight is a named constant, every retune is a human decision validated against
   ground truth — *adjustable everywhere, automatic nowhere*. Feedback captures (S9), the
   report diagnoses (S10), calibrate proposes, eval disposes: capture today, calibrate
   tomorrow, and the engine never moves on vibes.
 
-**S9+S10 60-sec feedback demo script** (2026-06-12 — **NOT in the 3-min main cut**, per
-Bo's ~15:30 call above; keep for judge Q&A, a backup take, or if a re-record frees a
-minute. One real line already sits in `feedback.jsonl` — 4★/$620k vs $599.1k B — keep
-it, it makes the report non-empty):
+**S9+S10 60-sec feedback demo script** (2026-06-12 — **back IN the demo per Bo's ~17:05
+reversal** of the ~15:30 call; this is the on-camera script. One real line already sits
+in `feedback.jsonl` — 4★/$620k vs $599.1k B — keep it, it makes the report non-empty):
 - On a completed session: feedback strip under the hero card → rate 4★ + comment +
   "your estimate $620k" → strip collapses to its summary, ★4 badge in the session list
   (survives reload)
@@ -311,7 +310,16 @@ Format: **decision** · alternative rejected · why.
   budget is already full and a live rating demo adds risk for a feature judges can read;
   README gains a dedicated "Underwriter feedback loop (not shown in the demo video)"
   section + the stale future-tense lines fixed; detailed README polish pass queued before
-  submission (Bo, 2026-06-12 ~15:30)
+  submission (Bo, 2026-06-12 ~15:30) — **REVERSED ~17:05, see next entry**
+- **Feedback loop back IN the demo video (reversal of the ~15:30 call)** · keeping it
+  README-only · Bo will demo S9+S10 on camera himself; README's not-in-video heading
+  suffix + blockquote removed, deep-dive feature carrier updated to video + README,
+  §1 60-sec script promoted back to main-cut material (Bo, 2026-06-12 ~17:05)
+- **`$/sqft` always in code spans in GitHub-rendered docs** · bare `$` in prose · two
+  bare `$` signs in one paragraph form a `$…$` span that GitHub's math renderer
+  mathifies (caught by Bo's screenshot: the README valuate bullet rendered as garbled
+  LaTeX between "marginal `$/sqft`" and "median-`$/sqft`"); code spans suppress math
+  parsing (2026-06-12)
 
 ---
 
@@ -374,7 +382,7 @@ Format: **decision** · alternative rejected · why.
   - F3 `/api/ask` + per-session chat: grounded answers (live test cited the 3 conflicted
     comps and the demoted comp's 44.62 score from context); what-if "triple garage?" →
     diff chip `garage_stalls: 2 → 3` → linked session → **engine** moved the estimate
-    +$10k ($629,679 → $639,679) — the guardrail story, demonstrated
+    +$10k (`$629,679 → $639,679`) — the guardrail story, demonstrated
   - F4 eval guard: 20/20 within ±10% held (MAPE 2.5% this run vs 2.2% recorded —
     run-to-run review-verdict variance, engine identical; official results.md kept);
     2 new screenshots in docs/images; README updated (sessions/chat section, production
@@ -450,7 +458,15 @@ Format: **decision** · alternative rejected · why.
   three spends (chat grounding, popovers, handbook) — none can disagree. Video beat if
   wanted: click the B badge and the actual A/B/C thresholds pop up — the UI explains
   itself from the same constants the engine computes with. **BUILD QUEUE COMPLETE**
-- **Remaining**: review-pass triage (lint on prefill effect, what-if code-enforcement,
-  challenge-revaluation baseline) · T11 video (protected 1.5h box, 2.0h reserve intact)
-  + GitHub repo push · screenshot retake (warm theme) · final read-through
+- **2026-06-12 (early evening)** — README rendering fix + feedback-loop reversal (Bo's
+  screenshot + call): GitHub math renderer was mathifying the valuate bullet (two bare
+  `$` = a `$…$` span) → `$/sqft` now code-spanned in README + deep-dive · feedback loop
+  back IN the video (Bo ~17:05): README section retitled plain "Underwriter feedback
+  loop", blockquote disclaimer removed, deep-dive carrier → video + README, §1 script
+  promoted to main cut · deep-dive trued up to S6 (handbook row 14 in the feature table,
+  removed from roadmap; lint line dropped from hardening backlog — fixed `acc6df5`;
+  128 tests)
+- **Remaining**: review-pass triage (what-if code-enforcement, challenge-revaluation
+  baseline) · T11 video (protected 1.5h box, 2.0h reserve intact) + GitHub repo push ·
+  screenshot retake (warm theme) · final read-through
   (README · deep-dive · handbook · demo-notes)

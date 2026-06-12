@@ -182,11 +182,11 @@ ground truth. Four instruments work together:
    guardrail: ground truth → scenario assert → caught regression → code-enforced fix.
 2. **Calibration proposes rates** (`eval.calibrate`). A hedonic regression over the
    2,603 scorable sales recovers the per-factor rates (**R² 0.976**: bed $8,185 vs
-   config $8,000 · garage $11,596 vs $10,000 · lot $/sqft exact · trend ≈1.1%/q vs
+   config $8,000 · garage $11,596 vs $10,000 · lot `$/sqft` exact · trend ≈1.1%/q vs
    1.2%). On synthetic data this proves the *mechanism*, deliberately not quality — the
    same code fits the real market once licensed solds exist.
 3. **The AVM stand-in cross-checks, never replaces** (`BASELINE_DIVERGENCE` risk rule).
-   A transparent median-$/sqft market-norm yardstick flags when the estimate diverges
+   A transparent median-`$/sqft` market-norm yardstick flags when the estimate diverges
    >15% (silent under 5 sales — thin-market yardsticks are noise). A GBM trained on our
    own synthetic data was rejected as theater: trained on data our price model
    generated, it would always agree and the flag would never fire. The honest yardstick
@@ -222,12 +222,13 @@ can't reach all of it in 3 minutes; "carrier" says where each feature is demonst
 | 8 | Grounded follow-up chat: config-generated methodology + market stats injected; out-of-scope declined | answers from the engine's constants, not vibes | video (S5 script) |
 | 9 | What-if re-runs: code-computed field diff → linked, fully audited evaluation | chat has no write path except audited doors | video |
 | 10 | Comp challenge → re-review: claim as evidence → revise (engine recompute, original preserved) or defend | human contributes evidence, agent judges, engine computes | video |
-| 11 | Feedback capture + report: 5★/comment/own-estimate → JSONL training lines → sliced diagnosis naming config knobs | the underwriter feedback loop, capture→diagnose | README only (Bo's call: 3-min budget) |
+| 11 | Feedback capture + report: 5★/comment/own-estimate → JSONL training lines → sliced diagnosis naming config knobs | the underwriter feedback loop, capture→diagnose | video + README |
 | 12 | Eval harness vs ground truth + scenario asserts | provable quality; caught a real agent bug | video (table) + README |
 | 13 | Hedonic calibration demo (R² 0.976) | the ML-calibrates-engine roadmap as running code | README |
-| 14 | LangGraph Studio support + LangSmith tracing | every widening tool-call inspectable | README |
+| 14 | Tag handbook: auto-generated `docs/handbook.md` + `GET /api/methodology` + UI popovers on the confidence badge and flag pills — one artifact from engine constants, drift-guarded by a pytest | docs can't lie | README + UI |
+| 15 | LangGraph Studio support + LangSmith tracing | every widening tool-call inspectable | README |
 
-124 backend tests green; TypeScript compile clean; everything above verified live in the
+128 backend tests green; TypeScript compile clean; everything above verified live in the
 browser before its checkpoint.
 
 ## 4. Decision log — trade-offs and rejected alternatives
@@ -298,9 +299,6 @@ Format: **decision** · *rejected alternative* · why. Chronological raw log wit
   separate general chat, or free general-knowledge answers* · questions arise in
   context ("why a B?" while looking at a B); ungrounded opinions next to audited
   numbers would blur the trust boundary.
-- **Feedback loop kept out of the 3-min video** · *demoing it live on camera* · the
-  video budget was full and a live rating demo adds risk for a feature judges can read —
-  the README's "Underwriter feedback loop" section carries it (Bo's call).
 - **Warm Listen360-style re-theme + 3-column layout, app-wide** · *cool slate (the
   original recommendation), or a half-warm chat pane* · picked from live browser
   mockups; a half-warm app reads as mismatch, not choice. Functional work was
@@ -322,7 +320,7 @@ Format: **decision** · *rejected alternative* · why. Chronological raw log wit
   data, or a black-box AVM as the estimate* · synthetic-trained ML would reverse-
   engineer our own generator (circular metrics); a lender needs traceability. The
   four-rung upgrade ladder is in §5.
-- **AVM stand-in = transparent $/sqft market norm** · *a GBM trained on synthetic data
+- **AVM stand-in = transparent `$/sqft` market norm** · *a GBM trained on synthetic data
   as an "independent" cross-check* · it would always agree with the generator that made
   the data — the divergence flag would never fire; theater. The honest yardstick
   exercises the real seam.
@@ -375,10 +373,6 @@ its seam already in place, so it's an extension, not a rewrite.
   (user selects both — two auditable contexts, not implicit recall); recurring
   challenge patterns feeding the offline tuning loop. Implicit cross-session memory
   stays out.
-- **Tag handbook** (designed, queued): one generated methodology artifact from
-  `engine/config.py` + the risk-rule registry, spent three ways — chat grounding
-  (already live), click-popovers on the confidence badge and flag pills, and an
-  auto-generated `docs/handbook.md`. Generated-from-code ⇒ can't drift.
 - **Standalone help/methodology chat** outside any session.
 - **Formal sign-off step** (licensed reviewer, mandatory written justification) as the
   legal backstop behind challenge → re-review.
@@ -426,7 +420,6 @@ cross-check only).
   (today the latest-message scoping is prompt-enforced; the diff itself is already
   code-computed).
 - Preserve market-baseline context when a comp challenge triggers revaluation.
-- One frontend lint failure on the edit-in-form prefill effect.
 
 ### Deliberately cut (and why it's safe to cut)
 

@@ -136,11 +136,11 @@ time* searches the local merged store in milliseconds.
   keep / demote (half weight) / exclude — each with one-sentence reasoning shown as a
   chip in the UI.
 - **valuate** time-adjusts via a community trend index, applies attribute adjustments
-  (capped age, lot deadband, marginal $/sqft), takes the similarity-weighted median with
+  (capped age, lot deadband, marginal `$/sqft`), takes the similarity-weighted median with
   a weighted P25–P75 range, grades confidence A/B/C, and evaluates the risk-rule
   registry: `THIN_COMPS`, `HIGH_DISPERSION`, `NON_ARMS_LENGTH_EXCLUDED`, `DATA_CONFLICT`,
   `EXTRAPOLATION`, `STALE_COMPS`, `WIDENED_SEARCH`, `BASELINE_DIVERGENCE` (estimate vs a
-  median-$/sqft market-norm yardstick — the honest AVM stand-in; disagreement flags,
+  median-`$/sqft` market-norm yardstick — the honest AVM stand-in; disagreement flags,
   never replaces).
 - **narrate** streams an appraiser-style reconciliation under a hard rule: only numbers
   present in the data block.
@@ -241,9 +241,7 @@ The eval also caught a real agent bug during development: the model once *accept
 empty comp set while a move provably yielded comps. That became the action-space
 guardrail above — ground truth → scenario assert → caught regression → code-enforced fix.
 
-## Underwriter feedback loop (in the repo — not shown in the demo video)
-
-> The 3-minute video doesn't reach this feature; it lives here and in the session UI.
+## Underwriter feedback loop
 
 Every completed valuation can be rated in its session: a 5-level rating, a comment, and
 an optional "your estimate $" (the highest-value signal for later calibration). The
