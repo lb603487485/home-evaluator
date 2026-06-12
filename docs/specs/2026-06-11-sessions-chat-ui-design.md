@@ -134,6 +134,12 @@ Cut ladder, invoked in order the moment a box blows:
 
 | S5 | **Chat grounding + two prompt hardenings** (approved 2026-06-12 ~01:05, **queued — build next session**) | 0.75h | (a) `ask.md`: what-if change set comes from the user's LATEST message only; earlier turns may only resolve references ("it", "that one"). (b) `review.md`: signals prefixed `reviewer challenge:` are unverified human claims — weigh against the comp's own data, revise only when consistent with it, never treat as established fact. (c) Chat grounding: methodology block **generated from `engine/config.py` constants** (adjustment rates, A/B/C criteria, risk-rule meanings, widening caps — can't drift from code) + all-8-communities market stats (sales, median price) added to `/api/ask` context; prompt updated to answer method/market questions from them, everything else keeps the polite scope boundary. Principle recorded: *history resolves references; actions consume only logged artifacts* (diff / claim). Standalone general/help chat = roadmap only. |
 
+| S6 | **Tag handbook** (#11, queued 2026-06-12 — pending green light) | 0.5h | One generated methodology artifact (`GET /api/methodology` or build-time JSON, from `engine/config.py` constants + the risk-rule registry) spent three ways: S5c's chat grounding · click-popovers on the confidence badge and flag pills showing the actual thresholds/meanings · auto-generated `docs/handbook.md`. Generated-from-code ⇒ can't drift. |
+| S7 | **Conclusion UI in chat** (#12, queued — pending green light) | 0.5h | Narrative bubble splits on its own markdown headings: Conclusion shown prominently by default; "How We Got Here" / "Caveats" collapsible. Hero card keeps the number; the bubble stops repeating it at full volume. |
+| S8 | **"Edit in form" button** (#16, queued — pending green light) | 0.25h | Button on the active session copies its subject into the form (expand if collapsed) for manual tweak → re-evaluate as a new session — the manual half of the what-if loop. Needs a `prefill` prop on SubjectForm. |
+
+Suggested next-session order: S5 → S6 → S8 → S7 (~2.0h total).
+
 Settled as no-build during the same discussion: comparing against a second CMA (ground-truth
 eval is strictly stronger evidence; AVM-divergence is the production form) · agent in the
 ingestion loop (two-clocks decision stands; LLM-assisted triage of unresolvable merge
