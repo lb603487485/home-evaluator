@@ -99,7 +99,9 @@ time* searches the local merged store in milliseconds.
   (capped age, lot deadband, marginal $/sqft), takes the similarity-weighted median with
   a weighted P25–P75 range, grades confidence A/B/C, and evaluates the risk-rule
   registry: `THIN_COMPS`, `HIGH_DISPERSION`, `NON_ARMS_LENGTH_EXCLUDED`, `DATA_CONFLICT`,
-  `EXTRAPOLATION`, `STALE_COMPS`, `WIDENED_SEARCH`.
+  `EXTRAPOLATION`, `STALE_COMPS`, `WIDENED_SEARCH`, `BASELINE_DIVERGENCE` (estimate vs a
+  median-$/sqft market-norm yardstick — the honest AVM stand-in; disagreement flags,
+  never replaces).
 - **narrate** streams an appraiser-style reconciliation under a hard rule: only numbers
   present in the data block.
 
@@ -115,6 +117,11 @@ And around the run, the UI:
   triple garage?" comes back as a field diff (`garage_stalls: 2 → 3`, computed in code,
   never trusted from the LLM) and spawns a linked session through the normal pipeline —
   every what-if is a full audited evaluation, never an LLM-adjusted number.
+- **Comp challenges** — disagree with a comp ("comp 2 backs onto a highway") and the
+  agent *re-reviews it with your claim as evidence*: it either revises (the engine
+  re-reconciles; the card shows "⚖ challenge applied — revised from $X" with the
+  original preserved) or defends its verdict — your objection stays in the record
+  either way. The human supplies evidence; the agent judges; the engine computes.
 
 ## How to run
 
@@ -129,9 +136,10 @@ npm install
 npm run dev                             # UI on :5173 (proxies /api → :8000)
 
 # extras — from backend/
-uv run pytest                           # 93 tests
+uv run pytest                           # 100 tests
 uv run python -m agent.run_demo        # CLI event stream on 3 demo subjects
 uv run python -m eval.eval             # eval vs ground truth → eval/results.md
+uv run python -m eval.calibrate        # hedonic fit vs engine rates → eval/calibration.md
 uv run python -m data.generate --seed 42   # regenerate the synthetic world
 uv run langgraph dev --port 2025       # LangGraph Studio: visual step-through of the graph
 ```
@@ -242,10 +250,13 @@ button that silently bends the report.
 6. Expert-editable methodology → prompts are files in `backend/agent/prompts/`; lending
    staff can revise the appraisal instructions without code changes.
 
-ML roadmap (deliberately not in the prototype): subscribe the trend index to a real HPI,
-fit adjustment coefficients by hedonic regression on licensed solds, add an AVM-divergence
-risk rule, learn similarity weights from the firm's own appraisal archive. Models
-calibrate and cross-check the explainable engine — they never replace it.
+ML roadmap: subscribe the trend index to a real HPI, fit adjustment coefficients by
+hedonic regression on licensed solds, add an AVM-divergence risk rule, learn similarity
+weights from the firm's own appraisal archive. Models calibrate and cross-check the
+explainable engine — they never replace it. Two of these seams already run in this repo:
+`eval/calibration.md` (hedonic fit recovering the per-factor rates, R² 0.98 — the same
+code fits the real market on licensed data) and the `BASELINE_DIVERGENCE` rule (the
+divergence wiring a production AVM would slot into).
 
 ## Time log
 

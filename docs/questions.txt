@@ -16,3 +16,6 @@
 
 
 9. should we have an agent or flow to allow the agent response to some generally related question about a home?
+
+
+10. how does our agent differ what-if and re-review? what are the prompt/context, tool level about this?

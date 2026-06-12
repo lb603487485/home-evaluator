@@ -242,5 +242,18 @@ Format: **decision** · alternative rejected · why.
     run-to-run review-verdict variance, engine identical; official results.md kept);
     2 new screenshots in docs/images; README updated (sessions/chat section, production
     notes: geocoder seam, server-side run state, sign-off backstop)
-- **Remaining**: stretch S1–S3 (spec §8, clock-permitting) · T11 video (Friday, protected
-  1.5h box) + GitHub repo push (gitignore `backend/.langgraph_api/` first)
+- **2026-06-12 (after midnight)** — Stretch queue S1–S3 all landed (~0.7h vs 2.25h boxed,
+  100 tests):
+  - S1 comp challenge → re-review: live test "comp 2 backs onto a highway" → agent
+    re-reviewed with the claim as evidence → exclude with reasoning → engine
+    re-reconciled → hero card "⚖ challenge applied — revised from $639,679 (B)",
+    original preserved, exchange in transcript. Video beat: human gives *evidence*,
+    agent re-judges, engine recomputes — nobody edits a number
+  - S2 `BASELINE_DIVERGENCE` risk rule: median-$/sqft yardstick × subject size vs the
+    estimate; ±15% tolerance, silent under 5 sales (thin-market yardsticks are noise)
+  - S3 calibration demo (`eval/calibration.md`): hedonic fit on 2,603 sales, **R² 0.976**,
+    recovers bed $8,185 vs config $8,000 · garage $11,596 vs $10,000 · lot $2/sqft exact ·
+    trend ≈1.1%/q vs 1.2% config; honest note on marginal-vs-full $/sqft. Roadmap item 2
+    as running code
+- **Remaining**: T11 video (Friday, protected 1.5h box) + GitHub repo push (gitignore
+  `backend/.langgraph_api/` first) · final read-through
