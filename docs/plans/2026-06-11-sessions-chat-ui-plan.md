@@ -182,9 +182,9 @@ export function persistSessions(s: SessionsState)    // keep newest 30 sessions 
 
 `App.tsx` calls `persistSessions` in a `useEffect` on state change. Background continuation works because `run(subject)` captures the session id in its closure: `evaluate(subject, ev => dispatch({ type: 'run-event', id, action: ev }))` — the stream dispatches no matter which session is displayed.
 
-- [ ] **Step 1:** Write `sessions.ts` as above (move + extend reducer).
-- [ ] **Step 2:** `npx tsc -b --noEmit` → clean (App.tsx still compiles using the moved types).
-- [ ] **Step 3:** Commit — `"refactor: lift run reducer into multi-session store with persistence"`
+- [x] **Step 1:** Write `sessions.ts` as above (move + extend reducer).
+- [x] **Step 2:** `npx tsc -b --noEmit` → clean (App.tsx still compiles using the moved types).
+- [x] **Step 3:** Commit — `"refactor: lift run reducer into multi-session store with persistence"`
 
 ### Task 4: Exclusions in the comps event (backend, additive)
 
@@ -511,3 +511,4 @@ Mechanic: `ask.md` gains a third reply shape `{"type": "comp_challenge", "addres
 - 2026-06-11 20:00 — Task 1 done: subject.address field + intake cross-check prompt line, 86 tests green. Next: Task 2 (frontend address + auto-fill).
 - 2026-06-11 20:05 — Task 2 done: address input + deterministic auto-fill + mismatch warning, tsc clean. F1 closed under box. Next: Task 3 (session store).
 - 2026-06-11 20:12 — Task 4 done (pulled before Task 3 so types compile in one pass): exclusions on comps event (search-node accumulate, incomplete filtered, cap 20), 87 tests. Next: Task 3 sessions.ts.
+- 2026-06-11 20:16 — Task 3 done: sessions.ts store (runReducer moved+extended, sessionsReducer, localStorage best-effort). App.tsx swaps over in Task 5. Next: Task 5 (layout + components).
