@@ -95,6 +95,13 @@ export interface ChatMsg {
   ts: number
 }
 
+export interface Feedback {
+  rating: number                // 1–5
+  comment: string
+  userEstimate?: number
+  at: number
+}
+
 export interface Session {
   id: string
   name: string                  // address if set, else "community · type"
@@ -105,6 +112,7 @@ export interface Session {
   qa: ChatMsg[]
   seenDone: boolean             // false ⇒ green "done ●" badge in the list
   whatIfOf?: string             // parent session id for what-if spawns
+  feedback?: Feedback           // capture-only; never feeds the engine
 }
 
 export interface SessionsState {
@@ -121,6 +129,7 @@ export type SessionsAction =
   | { type: 'run-event'; id: string; action: RunAction }
   | { type: 'qa'; id: string; msg: ChatMsg }
   | { type: 'revalue'; id: string; valuation: ValuationPayload }
+  | { type: 'feedback'; id: string; feedback: Feedback }
 
 export function sessionsReducer(s: SessionsState, a: SessionsAction): SessionsState {
   switch (a.type) {
@@ -175,6 +184,11 @@ export function sessionsReducer(s: SessionsState, a: SessionsAction): SessionsSt
           (a.valuation.adjustments ?? []).map(adj => [adj.address_key, adj])),
       }
       return { ...s, byId: { ...s.byId, [a.id]: { ...target, run } } }
+    }
+    case 'feedback': {
+      const target = s.byId[a.id]
+      if (!target) return s
+      return { ...s, byId: { ...s.byId, [a.id]: { ...target, feedback: a.feedback } } }
     }
   }
 }

@@ -90,6 +90,21 @@ export async function extract(text: string): Promise<ExtractResponse> {
   return res.json()
 }
 
+export function postFeedback(body: {
+  session_id: string
+  rating: number
+  comment: string
+  user_estimate: number | null
+  snapshot: unknown
+}): void {
+  // fire-and-forget: a failed server write must never block the local save
+  fetch('/api/feedback', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }).catch(() => {})
+}
+
 export const cad = new Intl.NumberFormat('en-CA', {
   style: 'currency',
   currency: 'CAD',

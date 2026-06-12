@@ -4,12 +4,13 @@ from __future__ import annotations
 
 import json
 import time
-from datetime import date
+from datetime import date, datetime
 from functools import lru_cache
+from pathlib import Path
 from uuid import uuid4
 
 from fastapi import APIRouter
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sse_starlette import EventSourceResponse
 
 from agent import llm
@@ -85,6 +86,31 @@ async def extract(req: ExtractRequest) -> dict:
         return {"fields": fields, "community": community}
     except Exception:
         return empty
+
+
+FEEDBACK_PATH = Path(__file__).resolve().parent.parent / "data" / "feedback.jsonl"
+
+
+class FeedbackRequest(BaseModel):
+    session_id: str
+    rating: int = Field(ge=1, le=5)
+    comment: str = ""
+    user_estimate: int | None = None
+    snapshot: dict  # the valuation as displayed at rating time (self-contained line)
+
+
+@router.post("/feedback")
+async def feedback(req: FeedbackRequest) -> dict:
+    """Capture-only: feedback never feeds the engine at runtime. Each appended
+    line carries its own snapshot, so it reads as a complete (input, output,
+    human label) example with no session store — the seed of the offline
+    tuning loop (see eval.feedback)."""
+    record = {**req.model_dump(),
+              "at": datetime.now().isoformat(timespec="seconds")}
+    FEEDBACK_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with FEEDBACK_PATH.open("a") as f:
+        f.write(json.dumps(record) + "\n")
+    return {"stored": True}
 
 
 class AskRequest(BaseModel):

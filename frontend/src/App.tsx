@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useState } from 'react'
-import { evaluate, fetchCommunities } from './api'
+import { evaluate, fetchCommunities, postFeedback } from './api'
 import ChatInput from './components/ChatInput'
+import FeedbackStrip from './components/FeedbackStrip'
 import HeroCard from './components/HeroCard'
 import SessionList from './components/SessionList'
 import SubjectForm from './components/SubjectForm'
@@ -53,6 +54,29 @@ export default function App() {
       }))
   }
 
+  // Local save first, then fire-and-forget to the durable log: each line carries
+  // the valuation as displayed at rating time, so it's self-contained later.
+  const submitFeedback = (s: Session,
+                          fb: { rating: number; comment: string; userEstimate?: number }) => {
+    dispatch({ type: 'feedback', id: s.id, feedback: { ...fb, at: Date.now() } })
+    const v = s.run.valuation
+    postFeedback({
+      session_id: s.id,
+      rating: fb.rating,
+      comment: fb.comment,
+      user_estimate: fb.userEstimate ?? null,
+      snapshot: {
+        subject: s.subject,
+        estimate: v?.estimate ?? null,
+        low: v?.low ?? null,
+        high: v?.high ?? null,
+        confidence: v?.confidence ?? null,
+        comps: s.run.comps.map(c => ({ address_key: c.comp.address_key, score: c.score })),
+        flags: (v?.flags ?? []).map(f => f.code),
+      },
+    })
+  }
+
   const active = state.activeId ? state.byId[state.activeId] : null
 
   return (
@@ -91,6 +115,12 @@ export default function App() {
             <div className="shrink-0">
               <HeroCard session={active} now={now} />
             </div>
+            {active.run.phase === 'done' && active.run.valuation && (
+              <div className="shrink-0">
+                <FeedbackStrip session={active}
+                  onSubmit={fb => submitFeedback(active, fb)} />
+              </div>
+            )}
             <div className="min-h-0 flex-1 overflow-y-auto pr-1">
               <Transcript session={active} />
             </div>

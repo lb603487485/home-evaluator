@@ -32,6 +32,11 @@ export default function SessionList({ sessions, now, onSelect }: Props) {
           >
             <div className="flex items-center justify-between gap-2">
               <span className="truncate font-semibold text-slate-700">{s.name}</span>
+              {s.feedback && (
+                <span className="shrink-0 text-amber-500" title={`rated ${s.feedback.rating}/5`}>
+                  ★{s.feedback.rating}
+                </span>
+              )}
               {!s.seenDone && s.run.phase === 'done' && (
                 <span className="shrink-0 rounded-full bg-emerald-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
                   done ●
