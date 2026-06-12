@@ -383,5 +383,14 @@ Format: **decision** · alternative rejected · why.
   S7 verdict-callout + accordion style, S11 warm re-theme + 3-column layout queued (0.75h,
   reserve), S11+S7+S8 combined into one review unit (Bo) — order amended
   S5 ✅ → S9+S10 → S11+S7+S8 → S6. Spec §8 updated
-- **Remaining**: build queue above (~4.0h boxed incl. S11 on reserve) · T11 video (Friday,
-  protected 1.5h box) + GitHub repo push · final read-through
+- **2026-06-12 (afternoon)** — S9 feedback capture + S10 feedback report (`db5ca9d`, TDD,
+  124 tests, tsc clean): FeedbackStrip (5★ + comment + optional "your estimate $") under
+  the hero card → `session.feedback` + ★ badge + self-contained `feedback.jsonl` line
+  (valuation snapshot as displayed at rating time — joinless training example);
+  `uv run python -m eval.feedback` → sliced report (confidence/community/flag) with
+  n-everywhere honesty and callouts naming the `config.py` knob. Live-verified in browser:
+  rate → ★4 badge → JSONL with real session UUID → report (+3.5% B-slice); survives
+  reload. Video beat: rate a valuation, run one command, watch the report point at a
+  config knob — capture → diagnose → propose → validate on screen in twenty seconds
+- **Remaining**: build queue above (S11+S7+S8 unit then S6, ~2.0h boxed incl. S11 on
+  reserve) · T11 video (Friday, protected 1.5h box) + GitHub repo push · final read-through
