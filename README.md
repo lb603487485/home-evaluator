@@ -269,6 +269,14 @@ Server-side run persistence (in-flight runs surviving refresh) + underwriter fee
 loop (comp challenges → offline weight/prompt tuning between versions), semantic
 enrichment over listing remarks, title-check stage, and the production connectors above.
 
+**Conversational memory — only if demand shows up.** Today the chat remembers within a
+session (last 6 turns) and deliberately nothing across sessions or runs: every answer
+must be reproducible from that home's report alone. Two audit-compatible extensions if
+users ask for them: an explicit *compare-two-sessions* command (the user selects both —
+grounded in two auditable contexts, not implicit recall), and recurring challenge
+patterns feeding the offline tuning loop above. Implicit cross-session memory stays
+out — silent context is the enemy of a defensible number.
+
 Confidence calibration: the A/B/C grades are heuristic cuts (comp count, IQR, similarity
 floor in `engine/config.py`), not calibrated probabilities — eval case 5 carries an A grade
 with the table's largest error (+7.9%). Calibrating the cuts against a larger eval set is

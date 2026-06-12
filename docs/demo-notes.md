@@ -170,6 +170,11 @@ Format: **decision** · alternative rejected · why.
   $/sqft yardstick is honest (labeled what it is), genuinely diverges on planted cases, and
   exercises the exact production seam: independent estimator → disagreement becomes a risk
   flag, never a replacement estimate (2026-06-11)
+- **Chat memory scoped to the session; cross-session/cross-run memory excluded by design**
+  · agent remembering conversations across homes and runs · every answer must be
+  reproducible from that home's report alone (audit); roadmapped as needs-driven:
+  explicit compare-two-sessions command + challenge patterns feeding the offline tuning
+  loop — implicit memory stays out (2026-06-12)
 - **Time-log total = wall-clock union of intervals, with a per-row `Counted` column** ·
   summing raw row durations · parallel/overlapping sessions double-bill the 12h cap (Bo
   caught a real 0.1h double-count). Rows keep their true Duration; `Counted` carries the
@@ -242,7 +247,7 @@ Format: **decision** · alternative rejected · why.
     run-to-run review-verdict variance, engine identical; official results.md kept);
     2 new screenshots in docs/images; README updated (sessions/chat section, production
     notes: geocoder seam, server-side run state, sign-off backstop)
-- **2026-06-12 (after midnight)** — Stretch queue S1–S3 all landed (~0.7h vs 2.25h boxed,
+- **2026-06-12 (after midnight)** — Stretch queue S1–S3 all landed (~0.4h vs 2.25h boxed,
   100 tests):
   - S1 comp challenge → re-review: live test "comp 2 backs onto a highway" → agent
     re-reviewed with the claim as evidence → exclude with reasoning → engine
