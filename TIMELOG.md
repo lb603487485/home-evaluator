@@ -24,10 +24,13 @@ union of intervals). Total = sum of Counted; overlapping rows carry a note namin
 | 2026-06-11 | 19:15 | 19:50 | 0.6h | 0.6h | Session 4 cont.: design Q&A (Bo's Q5–7 + follow-ups) → 3 stretch items specced + 3 no-builds settled. Bo redesigned S1: challenge→re-review replaces click-override (human contributes evidence, agent re-judges, both logged). AVM stand-in = transparent $/sqft norm divergence flag, trained-fake rejected. ML calibration demo queued last. Spec §8 stretch queue added; green light to build |
 | 2026-06-11 | 19:50 | 20:10 | 0.3h | 0.3h | Session 5: time-log accounting audit (Bo spotted overlap double-billing) — fixed 0.1h block 2/3 double-count; convention reworked: Duration = real row time, total = wall-clock union of intervals, new Counted column = per-row contribution net of overlap (total = one column sum). 4 commits |
 
-**Total so far (wall-clock):** ~5.3h of 12h cap = sum of Counted column (Duration sums to
-5.9h; 0.6h of overlap counted once: 0.1h blocks 2/3 + 0.2h session 3 + 0.3h block 8/session 4).
-(4.7h build blocks + 2.0h reserve remaining.)
-**State: T0–T10 built and verified; README drafted; UX addendum approved (spec: `docs/specs/2026-06-11-sessions-chat-ui-design.md`, boxed 3.0h F1–F4).** Remaining: F1–F4 UX build · (Bo) record ≤3-min video + link it in README · create public GitHub repo + push · final read-through of README/demo-notes.
+| 2026-06-11 | 19:56 | 20:10 | 0.2h | 0h | Session 6 (UX build, parallel with session 5 audit — counted there): F1 complete — address on schema + intake cross-check (`2b177d3`), frontend auto-fill + mismatch warning (`892f9f3`) · exclusions on comps event (`cdd8e0d`) · session store (`03f78b6`). 87 tests |
+| 2026-06-11 | 23:05 | 23:55 | 0.8h | 0.8h | Session 6 cont. (after ~3h usage-limit gap; resume protocol held): F2 — SessionList/HeroCard/Transcript + App rewire, orphans removed, live-verified background runs / done-badge / reload persistence / auto-fill / mismatch; fixed latent narrative double-emit (`1b79ab9`) · F3 — `/api/ask` + ChatInput + what-if (`3d5dd9b`, `5769528`), live-verified: grounded answer cites computed evidence; what-if garage 2→3 spawned linked session, engine moved estimate +$10k · F4 — found+fixed intake gap (address-only subjects skipped the LLM cross-check; prompt restructured, verified live both directions), 93 tests, eval guard 20/20 ±10% (MAPE 2.5% this run vs 2.2% recorded — review-verdict variance, engine identical, official results.md kept), 2 screenshots, README + demo-notes updated. **F1–F4 actual ~1.0h vs 3.0h boxed; no hatches pulled** |
+
+**Total so far (wall-clock):** ~6.1h of 12h cap = sum of Counted column (Duration sums to
+6.9h; 0.8h of overlap counted once: 0.1h blocks 2/3 + 0.2h session 3 + 0.3h block 8/session 4
++ 0.2h session 6/session 5). (3.9h build blocks + 2.0h reserve remaining.)
+**State: T0–T10 + UX addendum (F1–F4) built and verified; README updated.** Remaining: stretch queue S1–S3 (spec §8, clock-permitting) · (Bo) record ≤3-min video + link it in README · create public GitHub repo + push (gitignore `backend/.langgraph_api/` first — Studio runtime churn) · final read-through of README/demo-notes.
 Time boxes are strict: a block hitting its box takes its escape hatch immediately — overruns bill the reserve.
 
 ## Plan vs actual (from spec §9)
@@ -41,5 +44,5 @@ Time boxes are strict: a block hitting its box takes its escape hatch immediatel
 | §7 API + Vite UI | 2.0h | ~0.4h | done — T8+T9, UI verified live |
 | §6 Tests + eval | 1.5h | ~0.1h | done — tests were in-line (TDD); T10 eval harness |
 | README + video | 1.5h | — | |
-| UX addendum (sessions/chat/address, spec 2026-06-11) | 0.5h design + 3.0h boxed build | 0.5h design | design done; F1–F4 boxes set at observed velocity, 4-step cut ladder armed |
+| UX addendum (sessions/chat/address, spec 2026-06-11) | 0.5h design + 3.0h boxed build | 1.1h design+Q&A · ~1.0h build | done — F1–F4 all in box, no hatches pulled; live-verified end-to-end. Stretch S1–S3 (spec §8) pending, clock-permitting |
 | Reserve (user's) | 2.0h | — | untouched (raised from 1h, 2026-06-10, to guarantee ≤12h total) |

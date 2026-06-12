@@ -21,7 +21,9 @@ async def intake_node(state: dict) -> dict:
         today = date.fromisoformat(today)
     base = {"subject": subject, "criteria": SearchCriteria(), "today": today}
     notes = subject.notes.strip()
-    if not llm.llm_enabled() or not notes:
+    # address-only subjects still get the LLM pass: the prompt cross-checks
+    # address vs community even when the notes box is empty
+    if not llm.llm_enabled() or not (notes or subject.address.strip()):
         return base | {"notes_signals": []}
     try:
         message = await llm.get_model("intake", max_tokens=500).ainvoke([

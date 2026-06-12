@@ -171,3 +171,26 @@ async def test_graph_completes_when_llm_always_raises(llm_on):
     assert out["narrative"] == ""
     assert all(r.unreviewed for r in out["reviews"])
     assert out["errors"]  # degradation was recorded, not hidden
+
+
+async def test_intake_runs_llm_for_address_only_subject(monkeypatch):
+    """Address cross-check must fire even when the notes box is empty."""
+    from agent import llm
+    from agent.nodes.intake import intake_node
+    from data.schema import SubjectProperty
+
+    class Fake:
+        async def ainvoke(self, _msgs):
+            class M:
+                content = ('{"signals": [], "concerns": '
+                           '["address mentions Tuscany but community is Evanston"]}')
+            return M()
+
+    monkeypatch.setattr(llm, "llm_enabled", lambda: True)
+    monkeypatch.setattr(llm, "get_model", lambda *a, **k: Fake())
+    subject = SubjectProperty(community="Evanston", address="44 Tuscany Hills Rd NW",
+                              property_type="detached", beds=3, baths=2.5,
+                              sqft=1850, year_built=2020)
+    out = await intake_node({"subject": subject})
+    assert out["notes_signals"] == [
+        "concern: address mentions Tuscany but community is Evanston"]

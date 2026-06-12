@@ -223,5 +223,24 @@ Format: **decision** · alternative rejected · why.
 - **2026-06-11 (late evening)** — Time-log accounting audit: fixed a 0.1h overlap double-count,
   reworked totals to wall-clock union of intervals with a per-row Counted column. 5.3h of 12h
   cap used, 2.0h reserve intact
-- **Remaining**: F1–F4 UX addendum build · T11 README + video (Friday, protected 1.5h box) +
-  GitHub repo push
+- **2026-06-11 (night)** — UX addendum F1–F4 built and live-verified (~1.0h vs 3.0h boxed,
+  93 tests green, survived a 3h usage-limit gap mid-build via the plan's resume protocol):
+  - F1 address intake: schema passthrough + deterministic community auto-fill + form
+    mismatch warning + intake LLM cross-check (found live: address-only subjects skipped
+    the LLM pass entirely — prompt restructured to two independent jobs, verified both
+    directions)
+  - F2 sessions + chat transcript + pinned hero valuation card (key-factors line,
+    flags as sentences, evaluated-at/as-of/duration, built-year in every recap, Adjusted $
+    column + similarity-breakdown chips in the comp table); background runs with done-●
+    badge; localStorage persistence with clobber guard. Bonus: fixed latent narrative
+    double-emit (streamed tokens + node-completion re-send — invisible until LLM-on UI use)
+  - F3 `/api/ask` + per-session chat: grounded answers (live test cited the 3 conflicted
+    comps and the demoted comp's 44.62 score from context); what-if "triple garage?" →
+    diff chip `garage_stalls: 2 → 3` → linked session → **engine** moved the estimate
+    +$10k ($629,679 → $639,679) — the guardrail story, demonstrated
+  - F4 eval guard: 20/20 within ±10% held (MAPE 2.5% this run vs 2.2% recorded —
+    run-to-run review-verdict variance, engine identical; official results.md kept);
+    2 new screenshots in docs/images; README updated (sessions/chat section, production
+    notes: geocoder seam, server-side run state, sign-off backstop)
+- **Remaining**: stretch S1–S3 (spec §8, clock-permitting) · T11 video (Friday, protected
+  1.5h box) + GitHub repo push (gitignore `backend/.langgraph_api/` first)

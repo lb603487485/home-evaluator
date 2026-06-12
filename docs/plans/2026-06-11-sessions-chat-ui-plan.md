@@ -469,11 +469,11 @@ On `answer`: push agent ChatMsg. On `what_if`: push agent ChatMsg of `text` + a 
 
 ## F4 — Verification + docs
 
-- [ ] **Step 1:** `cd backend && uv run pytest -q` → all green (expect ~90).
-- [ ] **Step 2:** `uv run python -m eval.eval` → identical table to `backend/eval/results.md` (engine untouched).
-- [ ] **Step 3:** Live script (servers up, browser): ① Evanston preset → transcript + hero card (key factors, flags as sentences, evaluated-at + duration, built-year in recap). ② Start Bearspaw, switch away mid-run, return on `done ●`. ③ Reload → done sessions survive. ④ Address "12 Tuscany Hills Rd NW" → auto-fill; force mismatch → amber warning; submit → intake concern appears in transcript. ⑤ Q&A grounded answer. ⑥ What-if → diff chip → linked session result. Screenshot ①+⑥ → `docs/images/`.
-- [ ] **Step 4:** README: update UI section + screenshots; add production notes (geocoder → existing haversine filter; server-side run state for refresh-proof in-flight runs; sign-off backstop note). Update `docs/demo-notes.md` §1 (transcript/what-if video beats) + §3; `TIMELOG.md` rows per block.
-- [ ] **Step 5:** Commit — `"docs: README + demo notes for sessions/chat/address UX"`
+- [x] **Step 1:** `cd backend && uv run pytest -q` → all green (expect ~90).
+- [x] **Step 2:** `uv run python -m eval.eval` → identical table to `backend/eval/results.md` (engine untouched).
+- [x] **Step 3:** Live script (servers up, browser): ① Evanston preset → transcript + hero card (key factors, flags as sentences, evaluated-at + duration, built-year in recap). ② Start Bearspaw, switch away mid-run, return on `done ●`. ③ Reload → done sessions survive. ④ Address "12 Tuscany Hills Rd NW" → auto-fill; force mismatch → amber warning; submit → intake concern appears in transcript. ⑤ Q&A grounded answer. ⑥ What-if → diff chip → linked session result. Screenshot ①+⑥ → `docs/images/`.
+- [x] **Step 4:** README: update UI section + screenshots; add production notes (geocoder → existing haversine filter; server-side run state for refresh-proof in-flight runs; sign-off backstop note). Update `docs/demo-notes.md` §1 (transcript/what-if video beats) + §3; `TIMELOG.md` rows per block.
+- [x] **Step 5:** Commit — `"docs: README + demo notes for sessions/chat/address UX"`
 
 ---
 
@@ -515,3 +515,5 @@ Mechanic: `ask.md` gains a third reply shape `{"type": "comp_challenge", "addres
 - 2026-06-11 20:14 — Task 5 done: SessionList/HeroCard/Transcript + App rewire, CompTable adjusted-$ column + similarity chips, form collapse; orphaned AgentTimeline/ValuationBanner removed. Live-verified: auto-fill, mismatch warning, background run + done badge, reload persistence. Bonus fix: narrative double-emit in api.py (latent, LLM-on only). F2 well in box. Next: Task 6 (/api/ask).
 - 2026-06-11 20:22 — Task 6 done: /api/ask (answer + what_if branches, code-computed diff, no-change demotes to answer, 200-on-failure), ask.md prompt, ASK default Sonnet. 92 tests. Next: Task 7 (ChatInput + what-if spawn).
 - 2026-06-11 20:36 — Task 7 done: ChatInput + ask() client + what-if spawn. Live-verified: grounded confidence answer (cites conflicts + demoted comp score), what-if garage 2→3 spawned linked session, engine moved estimate +$10k, diff recorded in parent transcript. Also: persistSessions empty-state clobber guard. F3 in box. Next: F4 verify + docs.
+- CORRECTION: Execution Log times for Tasks 5–7 above were wrong — a ~3h usage-limit gap hit at the Task-5 commit (20:10→23:05). Real times: Task 5 committed 23:25, Task 6 23:27, Task 7 23:32, F4 23:35–23:55. Resume protocol worked as designed.
+- 2026-06-11 23:55 — F4 done: 93 tests, eval guard 20/20, intake address-only gap fixed live, screenshots, README/demo-notes/TIMELOG updated. F1–F4 COMPLETE (~1.0h actual vs 3.0h boxed). Next: stretch S1 (comp challenge → re-review) if Bo wants it.

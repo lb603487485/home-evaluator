@@ -3,12 +3,16 @@
 An AI agent that does residential comp analysis the way a lender needs it done: it
 searches multi-source sales data, ranks comparables with auditable math, reviews each
 comp with LLM judgment, produces a valuation estimate with a confidence grade and risk
-flags, and explains its reasoning appraiser-style — live, in a streaming UI.
+flags, and explains its reasoning appraiser-style — live, in a chat-style streaming UI
+where each home is a session you can question afterward, and a "what if…" spawns a
+fully audited re-evaluation with the field change shown as a diff.
 
 Built for the KV Capital AI Engineer hackathon. **≤3-min demo video: _link goes here_.**
 
-| Normal market (Evanston) | Thin market (Bearspaw acreage) |
+| Sessions, transcript + hero valuation | What-if re-run (garage 2 → 3) |
 |---|---|
+| ![Sessions and chat](docs/images/ui-sessions.png) | ![What-if run](docs/images/ui-whatif.png) |
+| **Normal market (Evanston)** | **Thin market (Bearspaw acreage)** |
 | ![Evanston run](docs/images/ui-evanston.png) | ![Bearspaw run](docs/images/ui-bearspaw.png) |
 
 ## The problem
@@ -99,6 +103,19 @@ time* searches the local merged store in milliseconds.
 - **narrate** streams an appraiser-style reconciliation under a hard rule: only numbers
   present in the data block.
 
+And around the run, the UI:
+
+- **Sessions** — every home is its own session (form on the left; the typed address
+  auto-fills the community, and a mismatch is warned about in the form, cross-checked
+  again by intake, and flagged in the transcript). Runs continue in the background —
+  switch homes mid-evaluation and a green "done ●" badge marks results that finished
+  while you were away; completed sessions survive a reload (localStorage).
+- **Follow-up chat** — ask the finished evaluation questions ("why confidence B?");
+  answers are grounded in that session's computed results only. A "what if it had a
+  triple garage?" comes back as a field diff (`garage_stalls: 2 → 3`, computed in code,
+  never trusted from the LLM) and spawns a linked session through the normal pipeline —
+  every what-if is a full audited evaluation, never an LLM-adjusted number.
+
 ## How to run
 
 ```bash
@@ -112,7 +129,7 @@ npm install
 npm run dev                             # UI on :5173 (proxies /api → :8000)
 
 # extras — from backend/
-uv run pytest                           # 85 tests
+uv run pytest                           # 93 tests
 uv run python -m agent.run_demo        # CLI event stream on 3 demo subjects
 uv run python -m eval.eval             # eval vs ground truth → eval/results.md
 uv run python -m data.generate --seed 42   # regenerate the synthetic world
@@ -206,6 +223,15 @@ repo implements; each becomes a `CompSource` adapter:
 - **Pillar 9 (MLS)** — RESO Web API under a negotiated data license; sold-data access is
   commercially gated but a well-trodden vendor path.
 
+Three production notes the prototype's seams already anticipate: a **geocoder** turns
+the subject address into lat/lon feeding the *existing* haversine distance filter (today
+the search anchors at the community center — the address is display + cross-check only,
+it can never move the number); **server-side run state** lets an in-flight evaluation
+survive a browser refresh (finished sessions already do, via localStorage); and human
+disagreement stays **challenge → agent re-review** in chat, with a formal sign-off step
+(licensed reviewer, mandatory written justification) as the legal backstop — never a
+button that silently bends the report.
+
 ## Extension points
 
 1. New data source → implement the `CompSource` protocol; merge/provenance unchanged.
@@ -223,11 +249,16 @@ calibrate and cross-check the explainable engine — they never replace it.
 
 ## Time log
 
-Built in ~3.7h of wall-clock human-involved time against a 12h cap (design 1.6h, build +
-verification ~2.1h) — itemized per block with plan-vs-actual in [`TIMELOG.md`](TIMELOG.md).
+Built in ~6.1h of wall-clock human-involved time against a 12h cap — itemized per block
+with plan-vs-actual in [`TIMELOG.md`](TIMELOG.md).
 
 ## What's next
 
-Run persistence + underwriter feedback loop (thumbs on comps → offline weight/prompt
-tuning between versions), semantic enrichment over listing remarks, title-check stage,
-and the production connectors above.
+Server-side run persistence (in-flight runs surviving refresh) + underwriter feedback
+loop (comp challenges → offline weight/prompt tuning between versions), semantic
+enrichment over listing remarks, title-check stage, and the production connectors above.
+
+Confidence calibration: the A/B/C grades are heuristic cuts (comp count, IQR, similarity
+floor in `engine/config.py`), not calibrated probabilities — eval case 5 carries an A grade
+with the table's largest error (+7.9%). Calibrating the cuts against a larger eval set is
+the obvious next step.
