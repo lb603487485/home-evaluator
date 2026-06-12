@@ -86,6 +86,12 @@ candidate lines for the video — pull, don't read verbatim.
   one more risk rule) — they never replace the explainable comp logic. Every seam already
   exists in `engine/config.py` and the risk-rule registry.
 
+**Feedback loop one-liner** (2026-06-12, S9+S10)
+- Every weight is a named constant, every retune is a human decision validated against
+  ground truth — *adjustable everywhere, automatic nowhere*. Feedback captures (S9), the
+  report diagnoses (S10), calibrate proposes, eval disposes: capture today, calibrate
+  tomorrow, and the engine never moves on vibes.
+
 ---
 
 ## §2 Decisions & trade-offs
@@ -218,6 +224,22 @@ Format: **decision** · alternative rejected · why.
   caught a real 0.1h double-count). Rows keep their true Duration; `Counted` carries the
   net contribution (overlap attributed to the earliest row), so the total audits as one
   column sum (2026-06-11)
+- **User feedback = capture-only signal; weights retune only through the eval loop** ·
+  letting ratings tune the engine directly, or skipping feedback entirely · feedback is a
+  weak, biased label (anchoring on the shown estimate, selection, owner optimism) — it
+  *localizes* error, never moves a weight. S9 captures self-contained (input, output,
+  human label) lines to `feedback.jsonl` (snapshot of the valuation as displayed at rating
+  time, comp ids + scores included, so each line is a joinless training example); S10's
+  deterministic report slices user-vs-engine deltas by confidence/community/flags and
+  names the `config.py` knob to investigate; `eval.calibrate` proposes rates,
+  `eval.eval` validates against ground truth. Feedback proposes, eval disposes
+  (2026-06-12)
+- **Similarity recency weight kept at 20/100 (Bo's #17)** · weighting recent sales harder ·
+  the engine already *corrects* old prices forward via the trend index, so recency's job is
+  only the uncertainty correction can't fix (regime shifts, index lag); more recency weight
+  helps hot markets but starves thin ones (Bearspaw) of comps. Right answer is per-market
+  learned profiles = roadmap; today's weights validate against ground-truth eval, and
+  deadline-day retunes on vibes are how you make things worse (2026-06-12)
 
 ---
 
@@ -298,5 +320,9 @@ Format: **decision** · alternative rejected · why.
     recovers bed $8,185 vs config $8,000 · garage $11,596 vs $10,000 · lot $2/sqft exact ·
     trend ≈1.1%/q vs 1.2% config; honest note on marginal-vs-full $/sqft. Roadmap item 2
     as running code
-- **Remaining**: T11 video (Friday, protected 1.5h box) + GitHub repo push (gitignore
-  `backend/.langgraph_api/` first) · final read-through
+- **2026-06-12 (afternoon)** — Design block (#17/#18): similarity/recency question settled
+  (keep weights, three-rung adjustability story) · S9 feedback capture + S10 feedback
+  report designed and queued (spec §8) · final build order locked:
+  S5 → S9+S10 → S7 → S8 → S6, Bo reviews after each item
+- **Remaining**: build queue above (~3.25h boxed) · T11 video (Friday, protected 1.5h box)
+  + GitHub repo push · final read-through
