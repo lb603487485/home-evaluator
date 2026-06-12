@@ -86,9 +86,7 @@ candidate lines for the video — pull, don't read verbatim.
   one more risk rule) — they never replace the explainable comp logic. Every seam already
   exists in `engine/config.py` and the risk-rule registry.
 
-**Feedback loop one-liner** (2026-06-12, S9+S10 — **Bo's call ~15:30: NOT shown in the
-video**; the README's "Underwriter feedback loop" section carries it. Keep this line for
-judge Q&A only)
+**Feedback loop one-liner** (2026-06-12, S9+S10)
 - Every weight is a named constant, every retune is a human decision validated against
   ground truth — *adjustable everywhere, automatic nowhere*. Feedback captures (S9), the
   report diagnoses (S10), calibrate proposes, eval disposes: capture today, calibrate
@@ -113,6 +111,18 @@ completed session's chat; every cited number is config-true):
   the model is given facts, asked for judgments, and code does everything that acts.
   The only true tool-calling is search widening (engine-projected moves); what-ifs and
   challenges are typed JSON actions that audited code executes.
+
+**⚠ S9+S10 feedback-loop demo script** (2026-06-12 — Bo flagged this as easy to forget
+on camera; one real line already sits in `feedback.jsonl`: 4★/$620k vs $599.1k B —
+keep it, it makes the report non-empty):
+- On a completed session: open the feedback strip under the hero card → rate 4★ + comment
+  + "your estimate $620k" → strip collapses to its summary, ★4 badge appears in the
+  session list (survives reload)
+- Terminal: `uv run python -m eval.feedback` → show `eval/feedback_report.md`:
+  user-vs-engine delta sliced by confidence/community/risk flag, the "n < 10: directional
+  only" caveat, callouts naming the exact `engine/config.py` knob to investigate
+- The line to say: *feedback proposes, eval disposes* — capture today, calibrate
+  tomorrow; user labels never move a weight at runtime
 
 ---
 
@@ -287,11 +297,6 @@ Format: **decision** · alternative rejected · why.
   form/sessions height fight; live run badges always visible), width cap → full. Slotted
   after S9+S10: functional work ahead of polish, so cap pressure drops polish first
   (2026-06-12)
-- **S9+S10 stay out of the demo video** · demoing the feedback loop on camera · the 3-min
-  budget is already full and a live rating demo adds risk for a feature judges can read;
-  README gains a dedicated "Underwriter feedback loop (not shown in the demo video)"
-  section + the stale future-tense lines fixed; detailed README polish pass queued before
-  submission (Bo, 2026-06-12 ~15:30)
 
 ---
 

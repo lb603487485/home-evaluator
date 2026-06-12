@@ -129,6 +129,14 @@ And around the run, the UI:
   re-reconciles; the card shows "⚖ challenge applied — revised from $X" with the
   original preserved) or defends its verdict — your objection stays in the record
   either way. The human supplies evidence; the agent judges; the engine computes.
+- **Feedback capture → calibration report** — rate any finished evaluation (1–5★,
+  optional comment + your own estimate) in a strip under the valuation card. Each rating
+  is stored as a self-contained `(input, output, human label)` line in
+  `backend/data/feedback.jsonl` — a snapshot of the valuation *as displayed at rating
+  time*. `uv run python -m eval.feedback` turns the accumulated labels into a report
+  (user-vs-engine deltas sliced by confidence / community / risk flag) whose callouts
+  name the `engine/config.py` knob to investigate. Feedback proposes, eval disposes:
+  labels diagnose, ground-truth eval validates, and nothing retunes at runtime.
 
 ## How to run
 
@@ -196,29 +204,6 @@ degrade accuracy; it recovered an estimate, with the caveats attached. Full tabl
 The eval also caught a real agent bug during development: the model once *accepted* an
 empty comp set while a move provably yielded comps. That became the action-space
 guardrail above — ground truth → scenario assert → caught regression → code-enforced fix.
-
-## Underwriter feedback loop (in the repo — not shown in the demo video)
-
-> The 3-minute video doesn't reach this feature; it lives here and in the session UI.
-
-Every completed valuation can be rated in its session: a 5-level rating, a comment, and
-an optional "your estimate $" (the highest-value signal for later calibration). The
-rating persists on the session, and the strip fire-and-forgets one **self-contained**
-JSON line to `backend/data/feedback.jsonl` — the valuation *as displayed at rating time*
-(subject, estimate/range/confidence, comp ids + scores, risk flags) plus the human label,
-so each line is a complete (input, output, label) training example.
-
-```bash
-uv run python -m eval.feedback   # → backend/eval/feedback_report.md
-```
-
-The report computes user-vs-engine deltas and rating slices by confidence grade,
-community, and risk flag — n shown everywhere, "n < 10: directional only" caveat
-attached — and its callouts name the `engine/config.py` knob to investigate. The
-principle is the same one the LLM lives under: **feedback proposes, eval disposes.**
-User feedback is a weak, biased label (anchoring, selection, owner optimism), so it
-never moves a weight at runtime — capture (this feature) → diagnose (this report) →
-`eval.calibrate` proposes rates → `eval.eval` validates against ground truth.
 
 ## Design decisions & trade-offs
 
@@ -295,11 +280,9 @@ with plan-vs-actual in [`TIMELOG.md`](TIMELOG.md).
 
 ## What's next
 
-Server-side run persistence (in-flight runs surviving refresh) · the feedback loop's
-last mile (the captured ratings driving offline weight/prompt retunes between versions —
-capture and diagnosis already run in this repo, see the feedback-loop section above),
-semantic enrichment over listing remarks, title-check stage, and the production
-connectors above.
+Server-side run persistence (in-flight runs surviving refresh) + underwriter feedback
+loop (comp challenges → offline weight/prompt tuning between versions), semantic
+enrichment over listing remarks, title-check stage, and the production connectors above.
 
 **Chat grounding graduates to a read-only retrieval tool layer.** Today the chat is
 grounded by injection: the config-generated methodology block and all-community market
