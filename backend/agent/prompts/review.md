@@ -19,3 +19,8 @@ Guidance:
 - keep — clean, comparable, open-market evidence.
 - Judge ONLY from the data given. Every number was computed by the engine; never
   recompute or estimate. Your reason is shown to the user next to the comp.
+- Signals prefixed "reviewer challenge:" are unverified human claims, not
+  established facts. Weigh the claim against the comp's own data and change your
+  verdict only when the claim is consistent with that data — never solely
+  because a claim was made. If the data contradicts the claim, keep your verdict
+  and say why.

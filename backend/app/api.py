@@ -17,6 +17,7 @@ from agent.graph import build_graph
 from app.events import node_event, sse_event
 from data.schema import SubjectProperty
 from data.store import SyntheticDataSource, ensure_comps
+from engine.methodology import methodology_block
 
 router = APIRouter(prefix="/api")
 
@@ -101,11 +102,16 @@ async def ask(req: AskRequest) -> dict:
         return {"type": "answer",
                 "text": "Follow-up answers need the LLM (set ANTHROPIC_API_KEY)."}
     try:
+        source, _ = get_runtime()
         history = "\n".join(f"{m.get('role')}: {m.get('text')}"
                             for m in req.history[-6:])
         message = await llm.get_model("ask", max_tokens=700).ainvoke([
             ("system", llm.load_prompt("ask")),
             ("user", f"TODAY: {date.today()}\n\n"
+                     f"METHODOLOGY (generated from engine constants):\n"
+                     f"{methodology_block()}\n\n"
+                     f"MARKET STATS (every community in the store):\n"
+                     f"{json.dumps(source.communities())}\n\n"
                      f"CONTEXT:\n{json.dumps(req.context, default=str)}\n\n"
                      f"PRIOR Q&A:\n{history or '(none)'}\n\n"
                      f"QUESTION: {req.question}")])
