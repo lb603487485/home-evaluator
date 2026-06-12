@@ -412,5 +412,14 @@ Format: **decision** · alternative rejected · why.
   rate → ★4 badge → JSONL with real session UUID → report (+3.5% B-slice); survives
   reload. Video beat: rate a valuation, run one command, watch the report point at a
   config knob — capture → diagnose → propose → validate on screen in twenty seconds
-- **Remaining**: build queue above (S11+S7+S8 unit then S6, ~2.0h boxed incl. S11 on
-  reserve) · T11 video (Friday, protected 1.5h box) + GitHub repo push · final read-through
+- **2026-06-12 (late afternoon)** — S11+S7+S8 unit (`6cd8ae2`, 0.3h vs 1.5h boxed, tsc
+  clean, live browser verify w/ screenshots): warm re-theme app-wide (orange-50 page,
+  stone neutrals, orange-600 accent, dark hero w/ orange figure) + `[form]|[sessions]|[chat]`
+  3-column full-height layout · conclusion UI (orange callout + Confidence pill;
+  How-we-got-here/Caveats accordions w/ caveat-count badge; flat-bubble fallback so
+  degraded narratives never break) · edit-in-form button (session subject → form prefill →
+  manual what-if). Video benefit: the closing shot is the conclusion callout — the
+  agent's verdict reads like a verdict, not a wall of text. README screenshots stale →
+  retake during video prep
+- **Remaining**: S6 tag handbook (0.5h, pending green light) · detailed README pass
+  (Bo's ask) · T11 video (protected 1.5h box) + GitHub repo push · final read-through
