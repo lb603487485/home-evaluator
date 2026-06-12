@@ -30,3 +30,12 @@
 12. better UI of the conclusion in chat
 
 16. should we have a button to auto filled the current conversation's property to the property form?
+
+
+Q to Sam: what's the painpoint trying to solve? What's the expected behavior of the agent? 
+Does the agent have to use the data from browser or it can be from downloaded data / from api? Any UI format preference? 
+
+
+17. how does similarity work? when the compare history home sales, should closer-trading weight more???
+18. we might need allow users to feedback on the evaluation and store them for later improvement. reburics suchas: 5 level of goodness, what's good, what's bad, users' est, comments, etc. can be shortern to 2 boxes if it's too many fields.
+    may need a rating from user's feedback, only count those with feedbacks.
