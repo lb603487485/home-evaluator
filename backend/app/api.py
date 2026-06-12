@@ -1,14 +1,18 @@
-"""GET /api/communities · POST /api/evaluate (SSE stream of agent progress)."""
+"""GET /api/communities · POST /api/evaluate (SSE stream) · POST /api/ask (Q&A)."""
 
 from __future__ import annotations
 
+import json
 import time
+from datetime import date
 from functools import lru_cache
 from uuid import uuid4
 
 from fastapi import APIRouter
+from pydantic import BaseModel
 from sse_starlette import EventSourceResponse
 
+from agent import llm
 from agent.graph import build_graph
 from app.events import node_event, sse_event
 from data.schema import SubjectProperty
@@ -32,6 +36,47 @@ async def communities() -> list[dict]:
 @router.post("/evaluate")
 async def evaluate(subject: SubjectProperty) -> EventSourceResponse:
     return EventSourceResponse(_event_stream(subject))
+
+
+class AskRequest(BaseModel):
+    question: str
+    history: list[dict] = []  # [{role, text}] prior Q&A, oldest first
+    context: dict             # the session's result bundle (stateless backend)
+
+
+@router.post("/ask")
+async def ask(req: AskRequest) -> dict:
+    """Grounded Q&A over a completed evaluation; what-ifs return a modified
+    subject whose field diff is computed here in code, never trusted from the
+    LLM. Degrades to an apology answer on any failure — never 500s."""
+    if not llm.llm_enabled():
+        return {"type": "answer",
+                "text": "Follow-up answers need the LLM (set ANTHROPIC_API_KEY)."}
+    try:
+        history = "\n".join(f"{m.get('role')}: {m.get('text')}"
+                            for m in req.history[-6:])
+        message = await llm.get_model("ask", max_tokens=700).ainvoke([
+            ("system", llm.load_prompt("ask")),
+            ("user", f"TODAY: {date.today()}\n\n"
+                     f"CONTEXT:\n{json.dumps(req.context, default=str)}\n\n"
+                     f"PRIOR Q&A:\n{history or '(none)'}\n\n"
+                     f"QUESTION: {req.question}")])
+        data = llm.parse_json_block(llm.message_text(message.content))
+        if data.get("type") != "what_if":
+            return {"type": "answer", "text": str(data.get("text", ""))}
+        modified = SubjectProperty(**data["modified_subject"])
+        original = SubjectProperty(**req.context["subject"])
+        changes = [{"field": f, "before": getattr(original, f),
+                    "after": getattr(modified, f)}
+                   for f in SubjectProperty.model_fields
+                   if getattr(original, f) != getattr(modified, f)]
+        if not changes:
+            return {"type": "answer", "text": str(data.get("text", ""))}
+        return {"type": "what_if", "text": str(data.get("text", "")),
+                "modified_subject": modified.model_dump(), "changes": changes}
+    except Exception as exc:
+        return {"type": "answer",
+                "text": f"(assistant unavailable — {exc}; the tables above stand)"}
 
 
 async def _event_stream(subject: SubjectProperty):

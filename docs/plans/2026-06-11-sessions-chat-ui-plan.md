@@ -369,7 +369,7 @@ async def ask(req: AskRequest) -> dict:
 
 (`import json` at top of `api.py`. The diff is computed in code from the validated models — never trusted from the LLM, per spec §6.)
 
-- [ ] **Step 1: Failing tests** — `backend/tests/test_ask.py`, fake-model pattern from `tests/test_llm_nodes.py` (monkeypatch `agent.llm.get_model` / `llm_enabled`):
+- [x] **Step 1: Failing tests** — `backend/tests/test_ask.py`, fake-model pattern from `tests/test_llm_nodes.py` (monkeypatch `agent.llm.get_model` / `llm_enabled`):
 
 ```python
 import os
@@ -418,8 +418,8 @@ async def test_ask_llm_error_degrades(client, monkeypatch):
     assert r.status_code == 200 and "unavailable" in r.json()["text"]
 ```
 
-- [ ] **Step 2:** Run → FAIL (404). **Implement** as above (+ `ask.md`, + llm.py default). Run → PASS.
-- [ ] **Step 3:** Full suite `uv run pytest -q` → all green. Commit — `"feat: /api/ask — grounded Q&A + what-if with code-computed subject diff"`
+- [x] **Step 2:** Run → FAIL (404). **Implement** as above (+ `ask.md`, + llm.py default). Run → PASS.
+- [x] **Step 3:** Full suite `uv run pytest -q` → all green. Commit — `"feat: /api/ask — grounded Q&A + what-if with code-computed subject diff"`
 
 ### Task 7: Chat input + what-if spawn (frontend)
 
@@ -513,3 +513,4 @@ Mechanic: `ask.md` gains a third reply shape `{"type": "comp_challenge", "addres
 - 2026-06-11 20:12 — Task 4 done (pulled before Task 3 so types compile in one pass): exclusions on comps event (search-node accumulate, incomplete filtered, cap 20), 87 tests. Next: Task 3 sessions.ts.
 - 2026-06-11 20:16 — Task 3 done: sessions.ts store (runReducer moved+extended, sessionsReducer, localStorage best-effort). App.tsx swaps over in Task 5. Next: Task 5 (layout + components).
 - 2026-06-11 20:14 — Task 5 done: SessionList/HeroCard/Transcript + App rewire, CompTable adjusted-$ column + similarity chips, form collapse; orphaned AgentTimeline/ValuationBanner removed. Live-verified: auto-fill, mismatch warning, background run + done badge, reload persistence. Bonus fix: narrative double-emit in api.py (latent, LLM-on only). F2 well in box. Next: Task 6 (/api/ask).
+- 2026-06-11 20:22 — Task 6 done: /api/ask (answer + what_if branches, code-computed diff, no-change demotes to answer, 200-on-failure), ask.md prompt, ASK default Sonnet. 92 tests. Next: Task 7 (ChatInput + what-if spawn).
