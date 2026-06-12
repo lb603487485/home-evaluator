@@ -195,6 +195,19 @@ Format: **decision** · alternative rejected · why.
   API key + network dependency on demo day to answer a question the 8-community store
   doesn't ask. Production swaps the inference call for a real geocoder, wiring unchanged
   (2026-06-12)
+- **Chat history resolves references; actions consume only logged artifacts** · letting the
+  conversation directly shape what-ifs/re-reviews · "ok, run it" needs history to resolve
+  "it" — but the change set must come from the latest message and the re-review sees only
+  the distilled, logged claim (never the chat). Conversation carries intent to the doorway;
+  only an explicit, visible artifact (field diff / challenge claim) walks through. Dumb
+  questions stay inert: chat has no write path to results except the two audited doors
+  (2026-06-12)
+- **Method/market questions answered in every session chat, grounded** · a separate general
+  chat, or free general-knowledge opinions · questions arise in context ("what does B
+  mean?" while looking at a B); grounding = methodology generated from config constants +
+  the store's community stats, so answers can't drift from code or data. Open-ended
+  real-estate opinions stay excluded — ungrounded claims next to audited numbers would blur
+  the product's trust boundary. Standalone help chat = production roadmap (2026-06-12)
 - **Chat memory scoped to the session; cross-session/cross-run memory excluded by design**
   · agent remembering conversations across homes and runs · every answer must be
   reproducible from that home's report alone (audit); roadmapped as needs-driven:
