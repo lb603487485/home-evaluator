@@ -17,3 +17,6 @@ backend/data/raw/
 
 # Misc
 .DS_Store
+
+# LangGraph Studio runtime state
+backend/.langgraph_api/
