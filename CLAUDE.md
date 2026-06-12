@@ -5,13 +5,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project
 
 **home-evaluator** — AI comp-analysis agent for the KV Capital AI Engineer hackathon.
-Given a subject property (form + free-text notes), it retrieves and ranks comparable sales
-from multi-source synthetic Alberta data, produces a valuation estimate with confidence and
-risk flags, and explains its reasoning appraiser-style.
+Given a subject property (form, paste-box extraction, or free-text notes), it retrieves and
+ranks comparable sales from multi-source synthetic Alberta data, produces a valuation
+estimate with confidence and risk flags, and explains its reasoning appraiser-style — in a
+per-home session UI with follow-up Q&A, what-if re-runs, and comp challenges.
 
-- **Deadline: Fri 2026-06-12, 11:59 PM MST (firm).** Budget 11h + 1h reserve — see `TIMELOG.md`.
-- **Spec (the working contract): `docs/specs/2026-06-10-comp-analysis-agent-design.md`.**
-  Scope changes cost visible hours; check the spec's escape hatches before adding anything.
+- **Deadline: Fri 2026-06-12, 11:59 PM MST (firm).** Budget 12h hard cap — see `TIMELOG.md`
+  (Duration/Counted convention documented in its header).
+- **Specs (the working contract):** `docs/specs/2026-06-10-comp-analysis-agent-design.md`
+  (core) + `docs/specs/2026-06-11-sessions-chat-ui-design.md` (sessions/chat UX addendum;
+  §8 holds the stretch queue + checkpoint protocol).
+  Scope changes cost visible hours; check the specs' escape hatches before adding anything.
 - Submission: public GitHub repo, README, ≤3-min demo video.
 
 ## Architecture (read the spec for detail)
@@ -24,8 +28,14 @@ risk flags, and explains its reasoning appraiser-style.
 - `backend/agent/` — LangGraph graph: intake → search (agentic widening, ≤2 rounds) → score →
   review (parallel Send fan-out) → valuate → narrate (streamed). LLM = judgment + language only;
   **the LLM never produces a number the engine didn't compute.**
-- `backend/app/` — FastAPI: `GET /api/communities`, `POST /api/evaluate` (SSE stream)
-- `frontend/` — Vite + React + TS + Tailwind, single page, thin client over the API
+- `backend/app/` — FastAPI: `GET /api/communities` · `POST /api/evaluate` (SSE stream) ·
+  `POST /api/ask` (grounded Q&A; what-if returns a code-computed subject diff; comp
+  challenge re-runs the review + engine recompute) · `POST /api/extract` (paste-box →
+  form prefill, community constrained to known list). Backend is stateless across runs.
+- `frontend/` — Vite + React + TS + Tailwind: per-home **sessions** (multi-session store in
+  `src/sessions.ts`, runs continue in background, completed sessions persist to
+  localStorage), chat transcript + pinned hero valuation card, follow-up chat. The session
+  object is the future DB schema; persistence is isolated in `loadSessions`/`persistSessions`.
 
 ## Commands
 
@@ -37,6 +47,7 @@ uv run uvicorn app.main:app --reload       # API on :8000
 uv run pytest                    # all tests
 uv run pytest tests/test_scoring.py -k monotonic   # single test
 uv run python -m eval.eval       # eval vs ground truth → markdown table
+uv run python -m eval.calibrate  # hedonic fit vs engine rates → eval/calibration.md
 uv run langgraph dev --port 2025 # LangGraph Studio dev server (2024 is taken by another project)
 
 # frontend (from frontend/)
@@ -46,9 +57,9 @@ npm run dev                      # UI on :5173 (proxies /api → :8000)
 
 ## Conventions
 
-- Models per node via env (`INTAKE_MODEL`, `SEARCH_MODEL`, `REVIEW_MODEL`, `NARRATE_MODEL`);
-  defaults: Sonnet for search/narrate, Haiku for intake/review. `ANTHROPIC_API_KEY` required;
-  `LANGSMITH_TRACING=true` optional.
+- Models per node via env (`INTAKE_MODEL`, `SEARCH_MODEL`, `REVIEW_MODEL`, `NARRATE_MODEL`,
+  `ASK_MODEL`, `EXTRACT_MODEL`); defaults: Sonnet for search/narrate/ask/extract, Haiku for
+  intake/review. `ANTHROPIC_API_KEY` required; `LANGSMITH_TRACING=true` optional.
 - Prompts live in `backend/agent/prompts/` as files, not inline strings.
 - Every LLM node has a deterministic fallback — a failed LLM call degrades the result,
   never 500s the request.
