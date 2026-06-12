@@ -86,7 +86,9 @@ candidate lines for the video — pull, don't read verbatim.
   one more risk rule) — they never replace the explainable comp logic. Every seam already
   exists in `engine/config.py` and the risk-rule registry.
 
-**Feedback loop one-liner** (2026-06-12, S9+S10)
+**Feedback loop one-liner** (2026-06-12, S9+S10 — **Bo's call ~15:30: NOT shown in the
+video**; the README's "Underwriter feedback loop" section carries it. Keep this line for
+judge Q&A only)
 - Every weight is a named constant, every retune is a human decision validated against
   ground truth — *adjustable everywhere, automatic nowhere*. Feedback captures (S9), the
   report diagnoses (S10), calibrate proposes, eval disposes: capture today, calibrate
@@ -285,6 +287,11 @@ Format: **decision** · alternative rejected · why.
   form/sessions height fight; live run badges always visible), width cap → full. Slotted
   after S9+S10: functional work ahead of polish, so cap pressure drops polish first
   (2026-06-12)
+- **S9+S10 stay out of the demo video** · demoing the feedback loop on camera · the 3-min
+  budget is already full and a live rating demo adds risk for a feature judges can read;
+  README gains a dedicated "Underwriter feedback loop (not shown in the demo video)"
+  section + the stale future-tense lines fixed; detailed README polish pass queued before
+  submission (Bo, 2026-06-12 ~15:30)
 
 ---
 
