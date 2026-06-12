@@ -14,7 +14,7 @@ export default function SessionList({ sessions, now, onSelect }: Props) {
   if (!sessions.order.length) return null
   return (
     <div className="space-y-2">
-      <h2 className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+      <h2 className="text-[11px] font-semibold uppercase tracking-wide text-stone-400">
         Sessions ({sessions.order.length})
       </h2>
       {sessions.order.map(id => {
@@ -26,12 +26,12 @@ export default function SessionList({ sessions, now, onSelect }: Props) {
           <button
             key={id} type="button" onClick={() => onSelect(id)}
             className={`block w-full rounded-lg border p-2 text-left text-xs shadow-sm ${
-              active ? 'border-indigo-500 bg-indigo-50'
+              active ? 'border-orange-600 bg-orange-100'
               : s.run.phase === 'error' ? 'border-red-200 bg-white hover:bg-red-50'
-              : 'border-slate-200 bg-white hover:bg-slate-50'}`}
+              : 'border-stone-200 bg-white hover:bg-stone-50'}`}
           >
             <div className="flex items-center justify-between gap-2">
-              <span className="truncate font-semibold text-slate-700">{s.name}</span>
+              <span className="truncate font-semibold text-stone-700">{s.name}</span>
               {s.feedback && (
                 <span className="shrink-0 text-amber-500" title={`rated ${s.feedback.rating}/5`}>
                   ★{s.feedback.rating}
@@ -43,7 +43,7 @@ export default function SessionList({ sessions, now, onSelect }: Props) {
                 </span>
               )}
             </div>
-            <div className="mt-0.5 truncate text-slate-500">
+            <div className="mt-0.5 truncate text-stone-500">
               {s.run.phase === 'running' &&
                 `⏳ ${last} · ${Math.max(0, Math.round((now - s.createdAt) / 1000))}s`}
               {s.run.phase === 'done' && (v?.estimate != null

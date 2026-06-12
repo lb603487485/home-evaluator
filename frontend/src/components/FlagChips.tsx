@@ -20,7 +20,8 @@ export default function FlagChips({ flags }: { flags: RiskFlag[] }) {
           </span>
         ))}
       </div>
-      <ul className="text-xs text-slate-500">
+      {/* rendered on the dark hero card */}
+      <ul className="text-xs text-stone-300">
         {flags.map(flag => <li key={flag.code}>• {flag.message}</li>)}
       </ul>
     </div>

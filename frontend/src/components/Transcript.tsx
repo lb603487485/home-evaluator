@@ -1,11 +1,13 @@
+import ReactMarkdown from 'react-markdown'
+import { caveatCount, splitNarrative } from '../narrative'
 import type { Session } from '../sessions'
 import type { RunState } from '../sessions'
 import NarrativePanel from './NarrativePanel'
 
 const USER_BUBBLE =
-  'self-end max-w-[85%] rounded-2xl rounded-br-sm bg-blue-100 px-3 py-2 text-sm text-slate-800'
+  'self-end max-w-[85%] rounded-2xl rounded-br-sm bg-orange-100 px-3 py-2 text-sm text-stone-800'
 const AGENT_BUBBLE =
-  'self-start max-w-[85%] rounded-2xl rounded-bl-sm border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700'
+  'self-start max-w-[85%] rounded-2xl rounded-bl-sm border border-stone-200 bg-white px-3 py-2 text-sm text-stone-700'
 
 interface Line {
   key: string
@@ -67,8 +69,8 @@ export default function Transcript({ session }: { session: Session }) {
     <div className="flex flex-col gap-2">
       <div className={USER_BUBBLE}>
         📋 {recap}
-        {subject.notes && <span className="text-slate-600"> · “{subject.notes}”</span>}
-        <span className="ml-1 text-xs text-slate-500">
+        {subject.notes && <span className="text-stone-600"> · “{subject.notes}”</span>}
+        <span className="ml-1 text-xs text-stone-500">
           {' · '}
           {new Date(session.createdAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
         </span>
@@ -85,13 +87,66 @@ export default function Transcript({ session }: { session: Session }) {
         </div>
       ))}
 
-      {(run.narrative || run.phase === 'running') && run.valuation && (
-        <div className={AGENT_BUBBLE}>
-          🤖 <span className="text-xs font-semibold uppercase text-slate-400">Appraiser narrative</span>
-          <NarrativePanel bare narrative={run.narrative}
-            streaming={run.phase === 'running' && run.narrative.length > 0} />
-        </div>
-      )}
+      {(run.narrative || run.phase === 'running') && run.valuation && (() => {
+        // while streaming (or when the sections are missing) keep the flat
+        // bubble; the structured view appears once the narrative is complete
+        const sections = run.phase === 'running' ? null : splitNarrative(run.narrative)
+        if (!sections) {
+          return (
+            <div className={AGENT_BUBBLE}>
+              🤖 <span className="text-xs font-semibold uppercase text-stone-400">Appraiser narrative</span>
+              <NarrativePanel bare narrative={run.narrative}
+                streaming={run.phase === 'running' && run.narrative.length > 0} />
+            </div>
+          )
+        }
+        const nCaveats = caveatCount(sections.caveats)
+        const detailRow =
+          'rounded-lg border border-stone-200 bg-white px-3 py-2'
+        const summaryRow =
+          'cursor-pointer select-none text-xs font-semibold uppercase text-stone-500'
+        return (
+          <div className="self-start flex w-[85%] max-w-[85%] flex-col gap-1.5">
+            <div className="rounded-xl border-l-4 border-orange-600 bg-orange-100/70 px-3 py-2 text-sm text-stone-800">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold uppercase text-orange-700">
+                  🤖 Conclusion
+                </span>
+                {run.valuation.confidence && (
+                  <span className="rounded-full bg-orange-600 px-2 py-0.5 text-[10px] font-bold text-white">
+                    Confidence {run.valuation.confidence}
+                  </span>
+                )}
+              </div>
+              <div className="prose prose-sm mt-1 max-w-none text-stone-800">
+                <ReactMarkdown>{sections.conclusion}</ReactMarkdown>
+              </div>
+            </div>
+            {sections.how && (
+              <details className={detailRow}>
+                <summary className={summaryRow}>How we got here</summary>
+                <div className="prose prose-sm mt-1 max-w-none text-stone-700">
+                  <ReactMarkdown>{sections.how}</ReactMarkdown>
+                </div>
+              </details>
+            )}
+            {sections.caveats && (
+              <details className={detailRow}>
+                <summary className={summaryRow}>
+                  Caveats{nCaveats > 0 && (
+                    <span className="ml-1.5 rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-800">
+                      {nCaveats}
+                    </span>
+                  )}
+                </summary>
+                <div className="prose prose-sm mt-1 max-w-none text-stone-700">
+                  <ReactMarkdown>{sections.caveats}</ReactMarkdown>
+                </div>
+              </details>
+            )}
+          </div>
+        )
+      })()}
 
       {session.qa.map((m, i) => (
         <div key={`qa${i}`} className={m.role === 'user' ? USER_BUBBLE : AGENT_BUBBLE}>

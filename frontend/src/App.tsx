@@ -15,6 +15,7 @@ export default function App() {
   const [communities, setCommunities] = useState<CommunityInfo[]>([])
   const [state, dispatch] = useReducer(sessionsReducer, undefined, loadSessions)
   const [formCollapsed, setFormCollapsed] = useState(false)
+  const [prefill, setPrefill] = useState<SubjectProperty | null>(null)
   const [now, setNow] = useState(() => Date.now())
 
   useEffect(() => {
@@ -80,29 +81,27 @@ export default function App() {
   const active = state.activeId ? state.byId[state.activeId] : null
 
   return (
-    <div className="mx-auto max-w-6xl p-4">
+    <div className="p-4">
       <header className="mb-4 flex items-baseline justify-between">
-        <h1 className="text-xl font-bold text-slate-800">
+        <h1 className="text-xl font-bold text-stone-800">
           home-evaluator
-          <span className="ml-2 text-sm font-normal text-slate-400">
+          <span className="ml-2 text-sm font-normal text-stone-400">
             comp-analysis agent · synthetic Calgary data
           </span>
         </h1>
       </header>
 
-      <div className="grid gap-4 lg:h-[calc(100vh-6.5rem)] lg:grid-cols-[20rem_1fr] lg:grid-rows-[minmax(0,1fr)]">
-        <div className="flex min-h-0 flex-col gap-3">
-          <div className="min-h-0 overflow-y-auto">
-            <SubjectForm
-              communities={communities} disabled={false}
-              collapsed={formCollapsed} onToggle={() => setFormCollapsed(c => !c)}
-              onSubmit={startRun}
-            />
-          </div>
-          <div className="min-h-0 flex-1 overflow-y-auto">
-            <SessionList sessions={state} now={now}
-              onSelect={id => dispatch({ type: 'select', id })} />
-          </div>
+      <div className="grid gap-4 lg:h-[calc(100vh-6.5rem)] lg:grid-cols-[20rem_15rem_1fr] lg:grid-rows-[minmax(0,1fr)]">
+        <div className="min-h-0 overflow-y-auto">
+          <SubjectForm
+            communities={communities} disabled={false}
+            collapsed={formCollapsed} onToggle={() => setFormCollapsed(c => !c)}
+            onSubmit={startRun} prefill={prefill}
+          />
+        </div>
+        <div className="min-h-0 overflow-y-auto">
+          <SessionList sessions={state} now={now}
+            onSelect={id => dispatch({ type: 'select', id })} />
         </div>
 
         {active ? (
@@ -113,6 +112,19 @@ export default function App() {
               </div>
             )}
             <div className="shrink-0">
+              <div className="mb-1 flex justify-end">
+                <button
+                  type="button"
+                  title="copy this session's subject into the form to tweak and re-evaluate"
+                  className="text-xs font-medium text-orange-700 hover:underline"
+                  onClick={() => {
+                    setPrefill({ ...active.subject }) // fresh object so the effect re-fires
+                    setFormCollapsed(false)
+                  }}
+                >
+                  ✎ edit in form
+                </button>
+              </div>
               <HeroCard session={active} now={now} />
             </div>
             {active.run.phase === 'done' && active.run.valuation && (
@@ -138,7 +150,7 @@ export default function App() {
             />
           </div>
         ) : (
-          <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-400">
+          <div className="rounded-xl border border-dashed border-stone-300 p-8 text-center text-sm text-stone-400">
             Fill the form (or take a preset) and hit Evaluate — each home becomes a
             session: watch the agent search, review and value it live, then ask
             follow-up questions.
