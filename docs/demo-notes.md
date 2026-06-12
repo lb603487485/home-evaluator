@@ -92,6 +92,26 @@ candidate lines for the video — pull, don't read verbatim.
   report diagnoses (S10), calibrate proposes, eval disposes: capture today, calibrate
   tomorrow, and the engine never moves on vibes.
 
+**S5 grounded-chat demo script** (2026-06-12 — questions to type on camera, in a
+completed session's chat; every cited number is config-true):
+- "How does similarity scoring work?" → weights (distance 25 · recency 20 · sqft 20 …)
+  + linear decay, from `engine/config.py`
+- "Why is this a B and not an A?" → run's comp count/spread laid against the real
+  A-grade thresholds (≥6 comps, spread ≤6%, similarity ≥75)
+- "How do you adjust for a sale from six months ago?" → community trend %/quarter
+  compounded + recency's 20 points decaying to zero at 365 days
+- "Which community has the highest median price?" → Aspen Woods $1,584,250 (150 sales)
+- "What does STALE_COMPS mean?" → registry meaning incl. the 120-day threshold
+- Two-turn what-if: "what if it had 3 garage stalls?" → then "actually make it
+  2400 sqft" → second diff changes ONLY sqft (latest-message scoping, S5a)
+- Weak challenge: "comp 1 seems overpriced, drop it" → reviewer weighs the claim
+  against the comp's data and holds with a stated reason (skeptic hardening, S5b)
+- Out-of-scope: "good time to buy condos in Toronto?" → polite decline (trust boundary)
+- If asked "is the chat using tools?": grounded context injection, not tool-calling —
+  the model is given facts, asked for judgments, and code does everything that acts.
+  The only true tool-calling is search widening (engine-projected moves); what-ifs and
+  challenges are typed JSON actions that audited code executes.
+
 ---
 
 ## §2 Decisions & trade-offs
