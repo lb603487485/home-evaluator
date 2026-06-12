@@ -279,9 +279,10 @@ endpoints stay stateless either way — the store sits beside the audit path, ne
 inside it — and server-stored sessions bring the usual lending-data obligations
 (retention, access control, encryption at rest).
 
-**Conversational memory — only if demand shows up.** Today the chat remembers within a
-session (last 6 turns) and deliberately nothing across sessions or runs: every answer
-must be reproducible from that home's report alone. Two audit-compatible extensions if
+**Cross-session memory — only if demand shows up.** Conversational memory already
+exists *within* a session (the chat keeps its full history; each question carries the
+recent turns). What's deliberately absent is memory *across* sessions and runs: every
+answer must be reproducible from that home's report alone. Two audit-compatible extensions if
 users ask for them: an explicit *compare-two-sessions* command (the user selects both —
 grounded in two auditable contexts, not implicit recall), and recurring challenge
 patterns feeding the offline tuning loop above. Implicit cross-session memory stays
