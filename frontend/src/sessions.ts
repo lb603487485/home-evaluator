@@ -180,6 +180,9 @@ export function loadSessions(): SessionsState {
 }
 
 export function persistSessions(s: SessionsState): void {
+  // nothing to record — and writing would clobber saved sessions if this
+  // render cycle started from a failed load (e.g. transient storage denial)
+  if (!s.order.length) return
   const keep = s.order
     .filter(id => ['done', 'error'].includes(s.byId[id]?.run.phase))
     .slice(0, 30)

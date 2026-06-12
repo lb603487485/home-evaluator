@@ -48,6 +48,27 @@ export async function evaluate(
   flush()
 }
 
+export interface AskResponse {
+  type: 'answer' | 'what_if'
+  text: string
+  modified_subject?: SubjectProperty
+  changes?: { field: string; before: unknown; after: unknown }[]
+}
+
+export async function ask(body: {
+  question: string
+  history: { role: string; text: string }[]
+  context: unknown
+}): Promise<AskResponse> {
+  const res = await fetch('/api/ask', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+  if (!res.ok) throw new Error(`ask: HTTP ${res.status}`)
+  return res.json()
+}
+
 export const cad = new Intl.NumberFormat('en-CA', {
   style: 'currency',
   currency: 'CAD',

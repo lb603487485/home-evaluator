@@ -459,9 +459,9 @@ const context = {
 
 On `answer`: push agent ChatMsg. On `what_if`: push agent ChatMsg of `text` + a diff chip line (`changes.map(c => \`${c.field}: ${c.before} → ${c.after}\`).join(' · ')`), then call the same `startRun(modified_subject, { whatIfOf: s.id, nameSuffix: ' (what-if)' })` used by the form — the spawn IS a normal evaluation session. On fetch error: push agent ChatMsg "(request failed — try again)".
 
-- [ ] **Step 1:** Implement; `npx tsc -b --noEmit` clean.
-- [ ] **Step 2: Live check** (needs `ANTHROPIC_API_KEY` in `backend/.env`): ask "why this confidence grade?" → grounded answer cites the comp count/spread from context. Ask "what if it were 2400 sqft?" → diff chip + linked session appears and runs.
-- [ ] **Step 3:** Commit — `"feat: per-session follow-up chat with what-if spawned re-evaluations"`
+- [x] **Step 1:** Implement; `npx tsc -b --noEmit` clean.
+- [x] **Step 2: Live check** (needs `ANTHROPIC_API_KEY` in `backend/.env`): ask "why this confidence grade?" → grounded answer cites the comp count/spread from context. Ask "what if it were 2400 sqft?" → diff chip + linked session appears and runs.
+- [x] **Step 3:** Commit — `"feat: per-session follow-up chat with what-if spawned re-evaluations"`
 
 **F3 box check (0.75h).** Over → cut ladder: (1) drop the what-if branch frontend handling (render it as a plain answer + tell the user to edit the form), (2) drop ChatInput entirely.
 
@@ -514,3 +514,4 @@ Mechanic: `ask.md` gains a third reply shape `{"type": "comp_challenge", "addres
 - 2026-06-11 20:16 — Task 3 done: sessions.ts store (runReducer moved+extended, sessionsReducer, localStorage best-effort). App.tsx swaps over in Task 5. Next: Task 5 (layout + components).
 - 2026-06-11 20:14 — Task 5 done: SessionList/HeroCard/Transcript + App rewire, CompTable adjusted-$ column + similarity chips, form collapse; orphaned AgentTimeline/ValuationBanner removed. Live-verified: auto-fill, mismatch warning, background run + done badge, reload persistence. Bonus fix: narrative double-emit in api.py (latent, LLM-on only). F2 well in box. Next: Task 6 (/api/ask).
 - 2026-06-11 20:22 — Task 6 done: /api/ask (answer + what_if branches, code-computed diff, no-change demotes to answer, 200-on-failure), ask.md prompt, ASK default Sonnet. 92 tests. Next: Task 7 (ChatInput + what-if spawn).
+- 2026-06-11 20:36 — Task 7 done: ChatInput + ask() client + what-if spawn. Live-verified: grounded confidence answer (cites conflicts + demoted comp score), what-if garage 2→3 spawned linked session, engine moved estimate +$10k, diff recorded in parent transcript. Also: persistSessions empty-state clobber guard. F3 in box. Next: F4 verify + docs.

@@ -1,5 +1,6 @@
 import { useEffect, useReducer, useState } from 'react'
 import { evaluate, fetchCommunities } from './api'
+import ChatInput from './components/ChatInput'
 import HeroCard from './components/HeroCard'
 import SessionList from './components/SessionList'
 import SubjectForm from './components/SubjectForm'
@@ -85,6 +86,16 @@ export default function App() {
             )}
             <HeroCard session={active} now={now} />
             <Transcript session={active} />
+            <ChatInput
+              session={active}
+              onMessage={(id, role, text) =>
+                dispatch({ type: 'qa', id, msg: { role, text, ts: Date.now() } })}
+              onWhatIf={(parent, modified, label) =>
+                startRun(modified, {
+                  whatIfOf: parent.id,
+                  nameSuffix: ` (what-if: ${label.slice(0, 32)})`,
+                })}
+            />
           </div>
         ) : (
           <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-400">
