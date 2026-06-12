@@ -19,6 +19,7 @@ backend/eval/feedback_report.md
 
 # Misc
 .DS_Store
+docs/questions.txt
 
 # LangGraph Studio runtime state
 backend/.langgraph_api/

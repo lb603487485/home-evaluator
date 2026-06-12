@@ -466,6 +466,12 @@ Format: **decision** · alternative rejected · why.
   promoted to main cut · deep-dive trued up to S6 (handbook row 14 in the feature table,
   removed from roadmap; lint line dropped from hardening backlog — fixed `acc6df5`;
   128 tests)
+- **2026-06-12 (early evening)** — Publish-prep scan: live `backend/.env`, generated
+  data, feedback JSONL, build outputs, caches, and `docs/questions.txt` are ignored;
+  tracked secret-pattern scan only hit placeholder env names, not values. `docs/questions.txt`
+  removed from tracking, repo-local `AGENTS.md` added. Verification passed: backend 128
+  tests, frontend lint, frontend build, staged diff whitespace. Push currently blocked:
+  no git remote configured and GitHub CLI token is invalid.
 - **Remaining**: review-pass triage (what-if code-enforcement, challenge-revaluation
   baseline) · T11 video (protected 1.5h box, 2.0h reserve intact) + GitHub repo push ·
   screenshot retake (warm theme) · final read-through
