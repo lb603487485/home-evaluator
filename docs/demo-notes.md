@@ -63,6 +63,23 @@ candidate lines for the video — pull, don't read verbatim.
   "what if the basement were finished?" spawns a *linked, fully audited re-evaluation* with the
   field change shown as a diff. Never an LLM-adjusted number.
 
+**"How do you know the explanation is real, not made up?"** (likely judge question, 2026-06-12)
+- The transcript isn't the LLM retelling its work — it's rendered from structured events
+  emitted by code *as each step ran*: criteria, counts, exclusions, verdicts. There is no
+  second model summarizing the process after the fact.
+- The widening "reasons" are the tool-call arguments captured at decision time — the same
+  string that drove the engine action is the one displayed. Explanation and action are one
+  artifact; they cannot diverge.
+- The narrative is constrained generation over the audit trail (only numbers in the data
+  block) and the trail itself is shown beside it — ladders, provenance, verdicts — so any
+  mismatch would be visible.
+- Honest caveat, stated not hidden: review/widening rationales are the model's
+  contemporaneous self-reports — LLM self-explanation faithfulness isn't formally
+  guaranteed by anyone. Our guarantees are structural: reasons are produced *with* the
+  decision (never reconstructed), the action space is code-gated so a bad rationale can't
+  produce an insane action, and the eval catches behavior diverging from claims — it
+  already did once (the empty-comp-set accept).
+
 **ML roadmap one-liner**
 - Same principle as the LLM rule, applied to ML: models *calibrate* the engine's constants
   (adjustment rates, trend index, similarity weights) and cross-check it (AVM divergence as
