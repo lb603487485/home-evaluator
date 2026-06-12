@@ -32,6 +32,7 @@ export default function CompTable({ comps, reviews, adjustments }: Props) {
             <th className="px-3 py-2">#</th>
             <th className="px-3 py-2">Address</th>
             <th className="px-3 py-2 text-right">Sold</th>
+            <th className="px-3 py-2 text-right">Adjusted $</th>
             <th className="px-3 py-2">Date</th>
             <th className="px-3 py-2">Attrs</th>
             <th className="px-3 py-2 text-right">Similarity</th>
@@ -57,6 +58,9 @@ export default function CompTable({ comps, reviews, adjustments }: Props) {
                   <td className="px-3 py-2 text-right">
                     {c.sold_price != null ? cad.format(c.sold_price) : '—'}
                   </td>
+                  <td className="px-3 py-2 text-right font-medium text-indigo-700">
+                    {adj ? cad.format(adj.adjusted_price) : '—'}
+                  </td>
                   <td className="px-3 py-2 text-slate-500">{c.sold_date}</td>
                   <td className="px-3 py-2 text-slate-500">
                     {c.beds}{c.beds_bsmt ? `+${c.beds_bsmt}` : ''}bd · {c.baths}ba · {c.sqft} sqft
@@ -77,9 +81,20 @@ export default function CompTable({ comps, reviews, adjustments }: Props) {
                 </tr>
                 {expanded && (
                   <tr className="border-t border-slate-100 bg-slate-50/60">
-                    <td colSpan={7} className="px-6 py-3">
+                    <td colSpan={8} className="px-6 py-3">
                       <div className="grid gap-4 md:grid-cols-2">
                         <div>
+                          <h4 className="text-xs font-semibold uppercase text-slate-400">
+                            Similarity breakdown
+                          </h4>
+                          <div className="mt-1 mb-3 flex flex-wrap gap-1">
+                            {Object.entries(scored.score_parts).map(([dim, pts]) => (
+                              <span key={dim}
+                                className="rounded bg-indigo-50 px-1.5 py-0.5 text-[10px] text-indigo-700">
+                                {dim}: {pts}
+                              </span>
+                            ))}
+                          </div>
                           <h4 className="text-xs font-semibold uppercase text-slate-400">
                             Adjustment ladder
                           </h4>

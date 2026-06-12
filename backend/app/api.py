@@ -40,11 +40,13 @@ async def _event_stream(subject: SubjectProperty):
     started = time.perf_counter()
     reviews: list[dict] = []
     exclusions: list[dict] = []
+    narrative_streamed = False
     yield node_event("intake", "started")
     try:
         async for mode, chunk in graph.astream({"subject": subject},
                                                stream_mode=["updates", "custom"]):
             if mode == "custom":
+                narrative_streamed = True
                 yield sse_event("narrative_delta", {"text": chunk})
                 continue
             for node, delta in chunk.items():
@@ -79,7 +81,9 @@ async def _event_stream(subject: SubjectProperty):
                         **(payload or {"estimate": None}),
                         "flags": [f.model_dump() for f in delta["risk_flags"]]})
                 elif node == "narrate":
-                    if delta.get("narrative"):
+                    # tokens already streamed via the custom channel; re-emit only
+                    # when the node produced text without streaming (fallback path)
+                    if delta.get("narrative") and not narrative_streamed:
                         yield sse_event("narrative_delta", {"text": delta["narrative"]})
                     yield node_event("narrate", "done")
     except Exception as exc:  # surface, don't 500 a half-sent stream

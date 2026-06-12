@@ -282,10 +282,10 @@ Null-estimate case: keep `ValuationBanner.tsx:13-22`'s message ("No usable compa
 
 **CompTable** — two edits: add `Adjusted $` column after `Sold` (value `adjustments[address_key]?.adjusted_price`, em-dash when absent); in the expanded row's left pane, above the ladder, render the breakdown that's currently only a tooltip (`CompTable.tsx` similarity cell `title`): `score_parts` as small `dim: pts` chips.
 
-- [ ] **Step 1:** Write `SessionList.tsx`, `HeroCard.tsx`, `Transcript.tsx`; rewire `App.tsx`; edit `CompTable.tsx`, `SubjectForm.tsx` (collapse prop).
-- [ ] **Step 2:** `npx tsc -b --noEmit` → clean.
-- [ ] **Step 3: Live check** (backend on :8000, `npm run dev`): run the Evanston preset → transcript builds, hero appears with key factors + timestamps; start a Bearspaw run, switch to Evanston mid-run, switch back → Bearspaw finished with `done ●` badge having appeared in the list; reload page → both sessions still listed and openable.
-- [ ] **Step 4:** Commit — `"feat: per-home sessions with background runs, chat transcript, pinned hero valuation card"`
+- [x] **Step 1:** Write `SessionList.tsx`, `HeroCard.tsx`, `Transcript.tsx`; rewire `App.tsx`; edit `CompTable.tsx`, `SubjectForm.tsx` (collapse prop).
+- [x] **Step 2:** `npx tsc -b --noEmit` → clean.
+- [x] **Step 3: Live check** (backend on :8000, `npm run dev`): run the Evanston preset → transcript builds, hero appears with key factors + timestamps; start a Bearspaw run, switch to Evanston mid-run, switch back → Bearspaw finished with `done ●` badge having appeared in the list; reload page → both sessions still listed and openable.
+- [x] **Step 4:** Commit — `"feat: per-home sessions with background runs, chat transcript, pinned hero valuation card"`
 
 **F2 box check (1.25h).** Over → cut ladder: (3) drop localStorage (skip `loadSessions`/`persistSessions`), (4) drop form collapse.
 
@@ -512,3 +512,4 @@ Mechanic: `ask.md` gains a third reply shape `{"type": "comp_challenge", "addres
 - 2026-06-11 20:05 — Task 2 done: address input + deterministic auto-fill + mismatch warning, tsc clean. F1 closed under box. Next: Task 3 (session store).
 - 2026-06-11 20:12 — Task 4 done (pulled before Task 3 so types compile in one pass): exclusions on comps event (search-node accumulate, incomplete filtered, cap 20), 87 tests. Next: Task 3 sessions.ts.
 - 2026-06-11 20:16 — Task 3 done: sessions.ts store (runReducer moved+extended, sessionsReducer, localStorage best-effort). App.tsx swaps over in Task 5. Next: Task 5 (layout + components).
+- 2026-06-11 20:14 — Task 5 done: SessionList/HeroCard/Transcript + App rewire, CompTable adjusted-$ column + similarity chips, form collapse; orphaned AgentTimeline/ValuationBanner removed. Live-verified: auto-fill, mismatch warning, background run + done badge, reload persistence. Bonus fix: narrative double-emit in api.py (latent, LLM-on only). F2 well in box. Next: Task 6 (/api/ask).

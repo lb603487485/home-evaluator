@@ -21,10 +21,14 @@ const PRESETS: Record<string, SubjectProperty> = {
 interface Props {
   communities: CommunityInfo[]
   disabled: boolean
+  collapsed?: boolean
+  onToggle?: () => void
   onSubmit: (subject: SubjectProperty) => void
 }
 
-export default function SubjectForm({ communities, disabled, onSubmit }: Props) {
+export default function SubjectForm({
+  communities, disabled, collapsed = false, onToggle, onSubmit,
+}: Props) {
   const [subject, setSubject] = useState<SubjectProperty>(PRESETS['Evanston detached'])
   const types = communities.find(c => c.community === subject.community)?.types
     ?? ['detached']
@@ -52,12 +56,28 @@ export default function SubjectForm({ communities, disabled, onSubmit }: Props) 
   const field = 'w-full rounded-md border border-slate-300 bg-white px-2 py-1.5 text-sm'
   const label = 'block text-xs font-medium text-slate-500 mt-3 mb-1'
 
+  if (collapsed) {
+    return (
+      <button
+        type="button" onClick={onToggle}
+        className="w-full rounded-xl bg-white p-3 text-left text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
+      >
+        ▸ Subject form
+      </button>
+    )
+  }
+
   return (
     <form
       className="rounded-xl bg-white p-4 shadow-sm"
       onSubmit={e => { e.preventDefault(); onSubmit(subject) }}
     >
-      <h2 className="text-sm font-semibold text-slate-700">Subject property</h2>
+      <h2
+        className={`text-sm font-semibold text-slate-700 ${onToggle ? 'cursor-pointer select-none' : ''}`}
+        onClick={onToggle}
+      >
+        {onToggle ? '▾ ' : ''}Subject property
+      </h2>
 
       <div className="mt-2 flex flex-wrap gap-1">
         {Object.entries(PRESETS).map(([name, preset]) => (
