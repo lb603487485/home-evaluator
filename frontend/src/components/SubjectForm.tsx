@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { extract } from '../api'
 import type { CommunityInfo, SubjectProperty } from '../types'
 
@@ -33,7 +33,13 @@ export default function SubjectForm({
 }: Props) {
   const [subject, setSubject] = useState<SubjectProperty>(PRESETS['Evanston detached'])
 
-  useEffect(() => { if (prefill) setSubject(prefill) }, [prefill])
+  // "edit in form": adopt a new prefill during render (App passes a fresh
+  // object per click, so identity change = new request)
+  const [lastPrefill, setLastPrefill] = useState<SubjectProperty | null>(null)
+  if (prefill && prefill !== lastPrefill) {
+    setLastPrefill(prefill)
+    setSubject(prefill)
+  }
   const [pasteText, setPasteText] = useState('')
   const [extracting, setExtracting] = useState(false)
   const [inferred, setInferred] =

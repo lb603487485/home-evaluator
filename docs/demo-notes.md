@@ -442,5 +442,15 @@ Format: **decision** · alternative rejected · why.
   combine), complete decision log with rejected alternatives (agent · product & UX ·
   data & ML · process), roadmap of not-yet-built work incl. the honest hardening
   backlog, and the build process. Screenshots still stale → retake in video prep
-- **Remaining**: S6 tag handbook (0.5h, pending green light) · T11 video (protected
-  1.5h box) + GitHub repo push · screenshot retake · final read-through
+- **2026-06-12 (late afternoon)** — S6 tag handbook (`7e9932f`, TDD, 0.1h vs 0.5h boxed,
+  128 tests): `docs/handbook.md` auto-generated from engine constants (580 words — small
+  by design: hand-written prose is what drifts) · `GET /api/methodology` · click-popovers
+  on the confidence badge + flag pills with the real thresholds/meanings · drift guard:
+  a pytest pins the checked-in handbook byte-for-byte to the generator. One artifact,
+  three spends (chat grounding, popovers, handbook) — none can disagree. Video beat if
+  wanted: click the B badge and the actual A/B/C thresholds pop up — the UI explains
+  itself from the same constants the engine computes with. **BUILD QUEUE COMPLETE**
+- **Remaining**: review-pass triage (lint on prefill effect, what-if code-enforcement,
+  challenge-revaluation baseline) · T11 video (protected 1.5h box, 2.0h reserve intact)
+  + GitHub repo push · screenshot retake (warm theme) · final read-through
+  (README · deep-dive · handbook · demo-notes)
