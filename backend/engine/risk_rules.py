@@ -12,7 +12,8 @@ from typing import Callable, Literal
 from pydantic import BaseModel, Field
 
 from data.schema import SubjectProperty
-from engine.config import CONFIDENCE, MIN_COMPS, STALE_DAYS
+from engine.config import (BASELINE_TOLERANCE, CONFIDENCE, MIN_COMPS,
+                           STALE_DAYS)
 from engine.scoring import ScoredComp
 from engine.valuation import Valuation
 
@@ -31,6 +32,8 @@ class ValuationContext(BaseModel):
     exclusions: list[dict] = Field(default_factory=list)  # {address_key, reason, ...}
     search_log: list[dict] = Field(default_factory=list)  # {round, criteria, found, reason}
     today: date
+    baseline_ppsf: float | None = None  # market median $/sqft (engine.baseline)
+    baseline_sample: int = 0
 
 
 def _thin_comps(ctx: ValuationContext) -> RiskFlag | None:
@@ -115,9 +118,31 @@ def _widened_search(ctx: ValuationContext) -> RiskFlag | None:
     return None
 
 
+def _baseline_divergence(ctx: ValuationContext) -> RiskFlag | None:
+    """Market-norm sanity check: comp-based estimate vs median $/sqft × subject
+    size. An independent (if crude) yardstick — disagreement becomes a flag the
+    narrative must explain, never a replacement estimate."""
+    if ctx.valuation is None or ctx.baseline_ppsf is None or not ctx.subject.sqft:
+        return None
+    baseline_value = round(ctx.baseline_ppsf * ctx.subject.sqft)
+    gap = (ctx.valuation.estimate - baseline_value) / baseline_value
+    if abs(gap) <= BASELINE_TOLERANCE:
+        return None
+    return RiskFlag(
+        code="BASELINE_DIVERGENCE", severity="caution",
+        message=f"Estimate is {gap:+.0%} vs the market-norm baseline "
+                f"(median $/sqft × subject size = ${baseline_value:,.0f} from "
+                f"{ctx.baseline_sample} nearby sales) — verify the adjustment "
+                "drivers explain the gap.",
+        evidence={"baseline_value": baseline_value,
+                  "baseline_ppsf": ctx.baseline_ppsf,
+                  "sample_n": ctx.baseline_sample,
+                  "gap_pct": round(gap, 3)})
+
+
 RISK_RULES: list[Callable[[ValuationContext], RiskFlag | None]] = [
     _thin_comps, _high_dispersion, _non_arms_length_excluded, _data_conflict,
-    _extrapolation, _stale_comps, _widened_search,
+    _extrapolation, _stale_comps, _widened_search, _baseline_divergence,
 ]
 
 

@@ -88,3 +88,34 @@ class TestRiskRules:
             assert "CUSTOM" in codes(context())
         finally:
             RISK_RULES.remove(rule)
+
+
+def test_market_ppsf_median_and_min_sample():
+    from engine.baseline import market_ppsf
+    recs = [rec(f"b{i}", price=600_000, sqft=2000) for i in range(5)]
+    ppsf, n = market_ppsf(recs)
+    assert n == 5 and ppsf == 300.0
+    ppsf, n = market_ppsf(recs[:4])  # below min sample → no yardstick
+    assert ppsf is None and n == 4
+
+
+def test_baseline_divergence_fires_within_tolerance_silent():
+    from engine.risk_rules import _baseline_divergence
+    from engine.valuation import Valuation
+
+    subject = SUBJECT.model_copy(update={"sqft": 2000})
+    val = Valuation(estimate=720_000, low=700_000, high=740_000,
+                    confidence="B", adjustments=[])
+    ctx = ValuationContext(subject=subject, scored=[], valuation=val, today=TODAY,
+                           baseline_ppsf=300.0, baseline_sample=8)
+    flag = _baseline_divergence(ctx)  # baseline 600k vs estimate 720k → +20%
+    assert flag is not None and flag.code == "BASELINE_DIVERGENCE"
+    assert flag.evidence["baseline_value"] == 600_000
+    assert flag.evidence["sample_n"] == 8
+
+    within = ctx.model_copy(update={
+        "valuation": val.model_copy(update={"estimate": 660_000})})  # +10%
+    assert _baseline_divergence(within) is None
+
+    no_baseline = ctx.model_copy(update={"baseline_ppsf": None})
+    assert _baseline_divergence(no_baseline) is None

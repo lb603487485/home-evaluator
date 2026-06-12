@@ -12,6 +12,7 @@ from agent.nodes.search import (make_search_node, make_widen_node,
                                 route_after_search, route_after_widen)
 from agent.state import AgentState
 from data.store import SyntheticDataSource
+from engine.baseline import market_ppsf
 from engine.config import TOP_N_REVIEW
 from engine.risk_rules import ValuationContext, evaluate_rules
 from engine.scoring import score_comps
@@ -44,10 +45,12 @@ async def valuate_node(state: dict) -> dict:
     reviews = {r.address_key: r for r in state.get("reviews") or []}
     kept = apply_reviews(state["scored"], reviews)
     valuation = valuate(kept, state["subject"], state["today"]) if kept else None
+    ppsf, sample_n = market_ppsf(state.get("candidates") or [])
     ctx = ValuationContext(subject=state["subject"], scored=kept, valuation=valuation,
                            exclusions=state.get("exclusions") or [],
                            search_log=state.get("search_log") or [],
-                           today=state["today"])
+                           today=state["today"],
+                           baseline_ppsf=ppsf, baseline_sample=sample_n)
     return {"valuation": valuation, "risk_flags": evaluate_rules(ctx)}
 
 

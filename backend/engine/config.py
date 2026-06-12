@@ -28,6 +28,11 @@ NON_ARMS_LENGTH_RATIO = 0.75  # price/assessed below this ⇒ suspect
 PRICE_CONFLICT_TOL = 0.005    # >0.5% MLS vs land-titles delta ⇒ Conflict
 STALE_DAYS = 120              # median comp age beyond this ⇒ STALE_COMPS
 
+# Market-norm baseline check (the honest AVM stand-in — production swaps the
+# $/sqft median for a model; the divergence rule and wiring don't change).
+BASELINE_TOLERANCE = 0.15     # |estimate vs $/sqft yardstick| beyond this ⇒ flag
+BASELINE_MIN_SAMPLE = 5       # fewer recent sales than this ⇒ yardstick unreliable, stay silent
+
 # Quarterly trend index the engine subscribes to (production: CREA/Teranet HPI).
 # Calibrated to the synthetic world's drift; used for time adjustments.
 MARKET_TREND_QOQ = {"Beltline": 0.018, "Bridgeland": 0.012, "Killarney": 0.012,
