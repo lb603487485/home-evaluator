@@ -14,9 +14,14 @@ dist/
 # Data artifacts
 *.parquet
 backend/data/raw/
+backend/data/feedback.jsonl
+backend/eval/feedback_report.md
 
 # Misc
 .DS_Store
 
 # LangGraph Studio runtime state
 backend/.langgraph_api/
+
+# Brainstorming mockups (visual companion)
+.superpowers/

@@ -272,6 +272,19 @@ Format: **decision** · alternative rejected · why.
   helps hot markets but starves thin ones (Bearspaw) of comps. Right answer is per-market
   learned profiles = roadmap; today's weights validate against ground-truth eval, and
   deadline-day retunes on vibes are how you make things worse (2026-06-12)
+- **S7 conclusion bubble: verdict callout + native `<details>` accordion** · tabs rejected
+  (hiding caveats behind a tab is bad transparency optics for an audited valuation) ·
+  conclusion always visible in a tinted callout w/ confidence pill; caveat count stays
+  visible while collapsed; splits on narrate's three known headings with a flat-bubble
+  fallback, so degraded LLM output never breaks rendering (2026-06-12, browser mockups)
+- **Listen360-warm theme app-wide + `[form] | [sessions] | [chat]` 3-column layout (S11)** ·
+  keep cool slate (my recommendation) or warm chat-pane only · Bo's pick after a
+  style-family survey + live listen360.com comparison: warm cream + single orange accent,
+  stock Tailwind tokens only (orange-50/stone/orange-600), app-wide because a half-warm
+  app reads as mismatch, not choice. Sessions leave the form's sidebar (ends the
+  form/sessions height fight; live run badges always visible), width cap → full. Slotted
+  after S9+S10: functional work ahead of polish, so cap pressure drops polish first
+  (2026-06-12)
 
 ---
 
@@ -364,5 +377,11 @@ Format: **decision** · alternative rejected · why.
   sale?" → answer cites Evanston 1.2%/quarter, 20-pt recency, 365-day decay — every
   number config-true; Toronto investment question politely declined. Video beat: ask the
   agent *how its own math works* and it answers from the engine's constants, not vibes
-- **Remaining**: build queue above (~3.25h boxed) · T11 video (Friday, protected 1.5h box)
-  + GitHub repo push · final read-through
+- **2026-06-12 (afternoon, parallel tab)** — S7 + S11 design locked with visual-companion
+  browser mockups: UI style-family survey (4 chat + 4 form), listen360.com comparison
+  (agent-browser screenshots), three temperature mockups, three layout wireframes. Outcome:
+  S7 verdict-callout + accordion style, S11 warm re-theme + 3-column layout queued (0.75h,
+  reserve), S11+S7+S8 combined into one review unit (Bo) — order amended
+  S5 ✅ → S9+S10 → S11+S7+S8 → S6. Spec §8 updated
+- **Remaining**: build queue above (~4.0h boxed incl. S11 on reserve) · T11 video (Friday,
+  protected 1.5h box) + GitHub repo push · final read-through
