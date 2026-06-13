@@ -13,10 +13,10 @@ from pydantic import BaseModel
 
 from agent import llm
 from data.schema import PropertyRecord
-from engine.config import NON_ARMS_LENGTH_RATIO, TOP_N_REVIEW
+from engine.config import (FLIP_GAIN_SUSPECT, FLIP_WINDOW_DAYS,
+                            NON_ARMS_LENGTH_RATIO, TOP_N_REVIEW)
 
 VERDICTS = ("keep", "demote", "exclude")
-FLIP_WINDOW_DAYS, FLIP_GAIN_SUSPECT = 183, 1.15
 
 
 class ReviewVerdict(BaseModel):

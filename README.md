@@ -7,7 +7,7 @@ flags, and explains its reasoning appraiser-style — live, in a chat-style stre
 where each home is a session you can question afterward, and a "what if…" spawns a
 fully audited re-evaluation with the field change shown as a diff.
 
-Built for the KV Capital AI Engineer hackathon. **≤3-min demo video: _link goes here_.**
+Built for the KV Capital AI Engineer hackathon. **demo video: [here](https://www.loom.com/share/c59b6a1f1b2640388e419e743f6d88bb)**
 
 | Sessions, transcript + hero valuation | What-if re-run (garage 2 → 3) |
 |---|---|
@@ -24,6 +24,11 @@ each source alone is incomplete: MLS misses private sales, land titles have no i
 attributes, assessments have no prices. Some signals are *only visible across sources* —
 a non-arm's-length transfer is detected by comparing the land-titles price against the
 assessed value.
+
+That search-and-cross-reference labor repeats on every deal, and none of it is the
+judgment an underwriter is actually paid for. This agent automates exactly that layer —
+retrieval, reconciliation, scoring, and arithmetic run in seconds — while the judgment
+stays human and visible: confirm the form, question the answer, challenge a comp.
 
 Alberta sold prices are locked behind Pillar 9 and land titles (Calgary open data has no
 sales and no interior attributes — verified). That data lock-up *is* the business
@@ -120,6 +125,12 @@ time* searches the local merged store in milliseconds.
    The model chooses the trade-off; the engine guarantees the choice is sane.
 3. **Graceful degradation.** Every LLM node has a deterministic fallback; a failed call
    degrades the result (marked in the UI), it never breaks the run.
+
+**Where the hybrid lives:** judgment = the LLM nodes above; arithmetic =
+`backend/engine/` (pure code, no LLM imports); ML = calibration and cross-check, never
+the number itself — `eval.calibrate` fits the per-factor rates by hedonic regression
+(R² 0.98) and `engine/baseline.py` is the AVM-divergence cross-check behind the
+`BASELINE_DIVERGENCE` flag.
 
 ### What a run looks like
 
@@ -331,7 +342,7 @@ button that silently bends the report.
 
 1. New data source → implement the `CompSource` protocol; merge/provenance unchanged.
 2. New risk factor → append a rule function to the registry (a test proves a lambda works).
-3. Model swaps → per-node env vars (`INTAKE_MODEL`, `SEARCH_MODEL`, `REVIEW_MODEL`, `NARRATE_MODEL`).
+3. Model swaps → per-node env vars (`INTAKE_MODEL`, `SEARCH_MODEL`, `REVIEW_MODEL`, `NARRATE_MODEL`, `ASK_MODEL`, `EXTRACT_MODEL`).
 4. Frontend swap → the SSE contract is the API; the React page is a thin renderer.
 5. New pipeline stage → a LangGraph node (e.g., title-check between review and valuate).
 6. Expert-editable methodology → prompts are files in `backend/agent/prompts/`; lending

@@ -14,6 +14,10 @@ export interface NarrativeSections {
 const SECTION_RE =
   /^\s*(?:#{1,4}\s*|\d+\.\s*)?\*{0,2}(conclusion|how we got here|caveats)\*{0,2}\s*[—:–-]*\s*/i
 
+// `---` separators some narrate outputs place between sections; kept lines would
+// render as an <hr> inside the section card, which reads as a truncation.
+const SEPARATOR_RE = /^\s*(?:[-*_]\s*){3,}$/
+
 const keyFor = (label: string): keyof NarrativeSections => {
   const l = label.toLowerCase()
   return l === 'conclusion' ? 'conclusion' : l === 'caveats' ? 'caveats' : 'how'
@@ -23,6 +27,7 @@ export function splitNarrative(text: string): NarrativeSections | null {
   const out: NarrativeSections = { conclusion: '', how: '', caveats: '' }
   let current: keyof NarrativeSections | null = null
   for (const line of text.split('\n')) {
+    if (SEPARATOR_RE.test(line)) continue
     const m = line.match(SECTION_RE)
     if (m) {
       current = keyFor(m[1])

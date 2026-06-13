@@ -27,6 +27,8 @@ CONFIDENCE = dict(A=dict(min_comps=6, max_iqr=0.06, min_sim=75),
 NON_ARMS_LENGTH_RATIO = 0.75  # price/assessed below this ⇒ suspect
 PRICE_CONFLICT_TOL = 0.005    # >0.5% MLS vs land-titles delta ⇒ Conflict
 STALE_DAYS = 120              # median comp age beyond this ⇒ STALE_COMPS
+FLIP_WINDOW_DAYS = 183        # resale gap under this …
+FLIP_GAIN_SUSPECT = 1.15      # … with price gain over this ⇒ quick-flip suspect
 
 # Market-norm baseline check (the honest AVM stand-in — production swaps the
 # $/sqft median for a model; the divergence rule and wiring don't change).
