@@ -7,7 +7,7 @@ flags, and explains its reasoning appraiser-style — live, in a chat-style stre
 where each home is a session you can question afterward, and a "what if…" spawns a
 fully audited re-evaluation with the field change shown as a diff.
 
-Built for the KV Capital AI Engineer hackathon. **demo video: [here](https://www.loom.com/share/c59b6a1f1b2640388e419e743f6d88bb)**
+Built for the [KV Capital AI Engineer hackathon](https://luma.com/s1katmg2?tk=TRcABF). **demo video: [here](https://www.loom.com/share/c59b6a1f1b2640388e419e743f6d88bb)**
 
 | Sessions, transcript + hero valuation | What-if re-run (garage 2 → 3) |
 |---|---|
