@@ -1,5 +1,7 @@
 # home-evaluator — comp-analysis agent
 
+![Hackathon Winner](https://img.shields.io/badge/🏆_KV_Capital_AI_Engineer_Hackathon-1st_Place-gold)
+
 An AI agent that does residential comp analysis the way a lender needs it done: it
 searches multi-source sales data, ranks comparables with auditable math, reviews each
 comp with LLM judgment, produces a valuation estimate with a confidence grade and risk
@@ -7,7 +9,7 @@ flags, and explains its reasoning appraiser-style — live, in a chat-style stre
 where each home is a session you can question afterward, and a "what if…" spawns a
 fully audited re-evaluation with the field change shown as a diff.
 
-Built for the [KV Capital AI Engineer hackathon](https://luma.com/s1katmg2?tk=TRcABF), hosted by [Leyuan Yu](https://www.linkedin.com/in/leyuanyu/). **demo video: [here](https://www.loom.com/share/c59b6a1f1b2640388e419e743f6d88bb)**
+🏆 **1st place at the [KV Capital AI Engineer hackathon](https://luma.com/s1katmg2?tk=TRcABF)**, hosted by [Leyuan Yu](https://www.linkedin.com/in/leyuanyu/). **demo video: [here](https://www.loom.com/share/c59b6a1f1b2640388e419e743f6d88bb)**
 
 | Sessions, transcript + hero valuation | What-if re-run (garage 2 → 3) |
 |---|---|
